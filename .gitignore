@@ -1,0 +1,26 @@
+/*
+!wp-content/
+
+
+!config/
+!db/
+
+!docker-compose.yml
+!package.json
+!gulpfile.js
+!.gitignore
+!.editorconfig
+!.nvmrc
+!README.md
+
+wp-content/*
+!wp-content/plugins/
+!wp-content/themes/
+!wp-content/languages/
+
+# default plugins, if we don't need them
+wp-content/plugins/hello.php
+wp-content/plugins/akismet
+
+# themes - this is important, you should not modify them, so put them here as a reminder
+wp-content/themes/twenty*
