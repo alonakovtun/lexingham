@@ -2,32 +2,186 @@
 # This file is distributed under the same license as the Plugins - Advanced Contact form 7 DB - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-07-11 06:39:26+0000\n"
+"PO-Revision-Date: 2022-01-09 05:32:40+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"X-Generator: GlotPress/3.0.0\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - Advanced Contact form 7 DB - Stable (latest release)\n"
 
+#: includes/vsz-cf7-db-function.php:333
+msgid "(Multiple entry start from new line)"
+msgstr "(La entrada múltiple comienza en una nueva línea)"
+
+#: admin/partials/import_cf7_csv.php:177
+msgid "Import Data"
+msgstr "Importar datos"
+
+#: admin/partials/import_cf7_csv.php:156
+msgid "Note:"
+msgstr "Nota:"
+
+#: admin/partials/contact_form_listing.php:504
+msgid "Currently not submission any form data."
+msgstr "Actualmente no se envían los datos del formulario."
+
+#: admin/partials/import_cf7_csv.php:169
+msgid "Upload CSV "
+msgstr "Subir CSV"
+
+#: admin/partials/import_cf7_csv.php:156
+msgid "If selected date format isn't matched with import sheet entry then consider today date."
+msgstr "Si el formato de fecha seleccionado no coincide con la entrada de la hoja de importación entonces considera la fecha de hoy."
+
+#: admin/partials/import_cf7_csv.php:147
+msgid "submit_time"
+msgstr "submit_time"
+
+#: admin/partials/import_cf7_csv.php:143 admin/partials/import_cf7_csv.php:148
+msgid "text"
+msgstr "texto"
+
+#: admin/partials/import_cf7_csv.php:142
+msgid "submit_ip"
+msgstr "submit_ip"
+
+#: admin/partials/import_cf7_csv.php:112
+msgid "Match CSV Column"
+msgstr "Coincidencia de la columna CSV"
+
+#: admin/partials/import_cf7_csv.php:111
+msgid "Type"
+msgstr "Tipo"
+
+#: admin/partials/import_cf7_csv.php:110
+msgid "Field name"
+msgstr "Nombre del campo"
+
+#: admin/partials/import_cf7_csv.php:106
+msgid "Field Setting"
+msgstr "Ajustes del campo"
+
+#: admin/partials/import_cf7_csv.php:70
+msgid "Import Settings"
+msgstr "Importar ajustes"
+
+#: admin/partials/import_cf7_csv.php:65
+msgid "Import Setting"
+msgstr "Ajustes de importación"
+
+#: admin/partials/contact_form_listing.php:442
+msgid "No records found."
+msgstr "No se encontraron registros."
+
+#: admin/partials/contact_form_listing.php:331
+msgid "Reset All"
+msgstr "Restablecer todo"
+
+#: admin/partials/contact_form_listing.php:325
+msgid "Search By Date"
+msgstr "Buscar por fecha"
+
+#: admin/partials/contact_form_listing.php:85
+#: admin/partials/contact_form_listing.php:89
+#: admin/partials/import_cf7_csv.php:74 admin/partials/import_cf7_csv.php:77
+msgid "Select Form name"
+msgstr "Selecciona el nombre del formulario"
+
+#: admin/partials/contact_form_listing.php:79
+msgid "View Form Information"
+msgstr "Ver información del formulario"
+
+#: admin/partials/contact_form_listing.php:20
+#: admin/partials/developer_support.php:21 admin/partials/import_cf7_csv.php:21
+msgid "Please update latest version for Contact Form plugin first."
+msgstr "Por favor, actualiza primero a la última versión del plugin Contact Form."
+
+#: admin/partials/contact_form_listing.php:15
+#: admin/partials/developer_support.php:16 admin/partials/import_cf7_csv.php:16
+msgid "Please activate Contact Form plugin first."
+msgstr "Por favor, activa primero el plugin Contact Form."
+
+#: admin/class-advanced-cf7-db-admin.php:590
+msgid "*(Field Type)"
+msgstr "*(Tipo de campo)"
+
+#: admin/class-advanced-cf7-db-admin.php:530
+#: admin/class-advanced-cf7-db-admin.php:706
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#: admin/class-advanced-cf7-db-admin.php:420
+msgid "Show record"
+msgstr "Mostrar registro"
+
+#: admin/class-advanced-cf7-db-admin.php:405
+msgid "You can rename the Field title, Hide field and change the position of fields using Drag and Drop from here."
+msgstr "Puedes renombrar el título del campo, ocultar el campo y cambiar la posición de los campos usando arrastrar y soltar desde aquí."
+
+#: admin/class-advanced-cf7-db-admin.php:381
+msgid "Edit"
+msgstr "Editar"
+
+#: admin/class-advanced-cf7-db-admin.php:380
+msgid "Edit Information"
+msgstr "Editar información"
+
+#: admin/class-advanced-cf7-db-admin.php:366
+msgid "To change the Field title, Hide field and change the position of fields using Drag and Drop from here."
+msgstr "Para cambiar el título del campo, ocultar el campo y cambiar la posición de los campos usando arrastrar y soltar desde aquí."
+
+#: admin/class-advanced-cf7-db-admin.php:1292
+msgid "File is not uploaded, kindly try again later."
+msgstr "El archivo no se ha subido, por favor inténtalo más tarde."
+
+#: admin/class-advanced-cf7-db-admin.php:1260
+msgid "You can upload maximum 7.60 MB file."
+msgstr "Puedes subir un archivo de 7,60 MB como máximo."
+
+#: admin/class-advanced-cf7-db-admin.php:1241
+#: admin/class-advanced-cf7-db-admin.php:1271
+msgid "Kindly upload valid file type."
+msgstr "Por favor, sube un tipo de archivo válido."
+
+#: admin/class-advanced-cf7-db-admin.php:892
+#: admin/class-advanced-cf7-db-admin.php:1336
+msgid "You do not have permission to delete files."
+msgstr "No tienes permiso para borrar archivos."
+
+#: admin/class-advanced-cf7-db-admin.php:1191
+#: admin/class-advanced-cf7-db-admin.php:1197
+#: admin/class-advanced-cf7-db-admin.php:1207
+#: admin/class-advanced-cf7-db-admin.php:1224
+#: admin/class-advanced-cf7-db-admin.php:1230
+#: admin/class-advanced-cf7-db-admin.php:1235
+#: admin/class-advanced-cf7-db-admin.php:1308
+#: admin/class-advanced-cf7-db-admin.php:1314
+#: admin/class-advanced-cf7-db-admin.php:1326
+#: admin/class-advanced-cf7-db-admin.php:1342
+#: admin/class-advanced-cf7-db-admin.php:1347
+#: admin/class-advanced-cf7-db-admin.php:1352
+msgid "Something may be wrong, please try again later."
+msgstr "Algo puede estar mal, por favor, inténtalo de nuevo más tarde."
+
 #: admin/class-advanced-cf7-db-admin.php:162
-msgid "Add-ons"
-msgstr "Extensiones"
+msgid "mounstride CRM"
+msgstr "CRM mounstride"
 
-#: admin/class-advanced-cf7-db-admin.php:161
-msgid "Developer Support"
-msgstr "Soporte para desarrolladores"
-
-#: admin/class-advanced-cf7-db-admin.php:1068
+#: admin/class-advanced-cf7-db-admin.php:1218
 msgid "You do not have permission to upload files."
 msgstr "No tienes permiso para subir archivos."
 
-#: admin/class-advanced-cf7-db-admin.php:315
-msgid "PDF"
-msgstr "PDF"
+#: admin/class-advanced-cf7-db-admin.php:161
+msgid "Add-ons"
+msgstr "Extensiones"
 
-#: admin/class-advanced-cf7-db-admin.php:314
+#: admin/class-advanced-cf7-db-admin.php:160
+msgid "Developer Support"
+msgstr "Soporte para desarrolladores"
+
+#: admin/class-advanced-cf7-db-admin.php:326
 msgid "Excel"
 msgstr "Excel"
 
@@ -39,85 +193,85 @@ msgstr "https://www.vsourz.com"
 msgid "Vsourz Digital"
 msgstr "Vsourz Digital"
 
-#. Plugin Name of the plugin
-msgid "Advanced CF7 DB"
-msgstr "Advanced CF7 DB"
-
-#: admin/partials/contact_form_listing.php:339
-msgid "items"
-msgstr "elementos"
-
-#: admin/partials/contact_form_listing.php:338
-msgid "item"
-msgstr "elemento"
-
-#: admin/partials/contact_form_listing.php:333
-msgid "Apply"
-msgstr "Aplicar"
-
-#: includes/vsz-cf7-db-function.php:312 includes/vsz-cf7-db-function.php:328
-#: includes/vsz-cf7-db-function.php:340 includes/vsz-cf7-db-function.php:352
-#: includes/vsz-cf7-db-function.php:364 includes/vsz-cf7-db-function.php:377
-#: includes/vsz-cf7-db-function.php:388 includes/vsz-cf7-db-function.php:399
-#: admin/class-advanced-cf7-db-admin.php:564
-#: admin/class-advanced-cf7-db-admin.php:593
-#: admin/class-advanced-cf7-db-admin.php:620
-msgid "Loading..."
-msgstr "Cargando..."
-
-#: admin/class-advanced-cf7-db-admin.php:331
-msgid "Type something..."
-msgstr "Escribe algo..."
-
-#: admin/class-advanced-cf7-db-admin.php:317
-msgid "Export"
-msgstr "Exportar"
-
-#: admin/class-advanced-cf7-db-admin.php:313
-msgid "CSV"
-msgstr "CSV"
-
-#: admin/class-advanced-cf7-db-admin.php:312
-msgid "Export to..."
-msgstr "Exportar a..."
-
-#: admin/class-advanced-cf7-db-admin.php:160
-msgid "Import CSV"
-msgstr "Importar CSV"
-
-#: admin/class-advanced-cf7-db-admin.php:332
-msgid "Search"
-msgstr "Buscar"
-
-#: admin/partials/contact_form_listing.php:346
-msgid "&raquo;"
-msgstr "&raquo;"
-
-#: admin/partials/contact_form_listing.php:345
-msgid "&laquo;"
-msgstr "&laquo;"
-
-#: admin/class-advanced-cf7-db-admin.php:353
-msgid "Display Settings"
-msgstr "Ajustes de visualización"
-
 #. Description of the plugin
 msgid "Save all contact form 7 submitted data to the database, View, Export, ordering, Change field labels, Import data using CSV very easily."
-msgstr "Guarda a base de datos todos los datos enviados por contact form 7, visualiza, exporta, ordena, cambia etiquetas de campos o importa datos utilizando CSV muy fácilmente."
-
-#: admin/partials/contact_form_listing.php:40
-#: admin/partials/import_cf7_csv.php:37
-msgid "You do not have sufficient permissions to access this page."
-msgstr "No tienes suficientes permisos para acceder a esta página."
-
-#: admin/partials/contact_form_listing.php:327
-msgid "Select bulk action"
-msgstr "Seleccionar la acción en lote"
-
-#: admin/partials/contact_form_listing.php:329
-msgid "Bulk Actions"
-msgstr "Acciones en lote"
+msgstr "Guarda en la base de datos todos los datos enviados por Contact Form 7. Visualiza, exporta, ordena, cambia las etiquetas de los campos o importa los datos usando CSV muy fácilmente."
 
 #. Plugin URI of the plugin
 msgid "https://wordpress.org/plugins/advanced-cf7-db/"
 msgstr "https://es.wordpress.org/plugins/advanced-cf7-db/"
+
+#. Plugin Name of the plugin
+msgid "Advanced CF7 DB"
+msgstr "Advanced CF7 DB"
+
+#: admin/partials/contact_form_listing.php:357
+msgid "&raquo;"
+msgstr "&raquo;"
+
+#: admin/partials/contact_form_listing.php:356
+msgid "&laquo;"
+msgstr "&laquo;"
+
+#: admin/partials/contact_form_listing.php:350
+msgid "items"
+msgstr "elementos"
+
+#: admin/partials/contact_form_listing.php:349
+msgid "item"
+msgstr "elemento"
+
+#: admin/partials/contact_form_listing.php:344
+msgid "Apply"
+msgstr "Aplicar"
+
+#: admin/partials/contact_form_listing.php:340
+msgid "Bulk Actions"
+msgstr "Acciones en lote"
+
+#: admin/partials/contact_form_listing.php:338
+msgid "Select bulk action"
+msgstr "Seleccionar la acción en lote"
+
+#: admin/class-advanced-cf7-db-admin.php:619
+#: admin/class-advanced-cf7-db-admin.php:656
+#: admin/class-advanced-cf7-db-admin.php:690
+#: includes/vsz-cf7-db-function.php:325 includes/vsz-cf7-db-function.php:346
+#: includes/vsz-cf7-db-function.php:365 includes/vsz-cf7-db-function.php:383
+#: includes/vsz-cf7-db-function.php:402 includes/vsz-cf7-db-function.php:422
+#: includes/vsz-cf7-db-function.php:441 includes/vsz-cf7-db-function.php:460
+msgid "Loading..."
+msgstr "Cargando..."
+
+#: admin/class-advanced-cf7-db-admin.php:367
+msgid "Display Settings"
+msgstr "Ajustes de visualización"
+
+#: admin/class-advanced-cf7-db-admin.php:346
+msgid "Search"
+msgstr "Buscar"
+
+#: admin/class-advanced-cf7-db-admin.php:345
+msgid "Type something..."
+msgstr "Escribe algo..."
+
+#: admin/class-advanced-cf7-db-admin.php:328
+msgid "Export"
+msgstr "Exportar"
+
+#: admin/class-advanced-cf7-db-admin.php:325
+msgid "CSV"
+msgstr "CSV"
+
+#: admin/class-advanced-cf7-db-admin.php:324
+msgid "Export to..."
+msgstr "Exportar a..."
+
+#: admin/partials/contact_form_listing.php:47
+#: admin/partials/import_cf7_csv.php:41
+msgid "You do not have sufficient permissions to access this page."
+msgstr "No tienes suficientes permisos para acceder a esta página."
+
+#: admin/class-advanced-cf7-db-admin.php:159
+msgid "Import CSV"
+msgstr "Importar CSV"

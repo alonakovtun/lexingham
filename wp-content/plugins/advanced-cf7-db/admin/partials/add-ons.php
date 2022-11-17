@@ -89,7 +89,9 @@ img {
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/schedule-report.jpg"></a>
+                            <a href="<?php print esc_url('https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647');?>" target="_blank">
+								<img src="<?php echo esc_url(VSZ_CF7_URL_PATH.'/images/schedule-report.jpg'); ?>">
+							</a>
                         </div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading">Schedule Report For Advanced CF7 DB </p>
@@ -108,15 +110,19 @@ img {
 							</div>
                         </div>
 						<div class="cf7db-extension-buy-now">
-                                    <a href="https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
-                            </div>
+                            <a href="<?php print esc_url('https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647');?>" class="buybtn" target="_blank">
+								<span class="buybtn-text">Get Now</span>
+							</a>
+                        </div>
                     </div>
                 </article>
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/gdpr-compliant.jpg"></a>
-                        </div>
+                             <a href="<?php print esc_url('https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060');?>" target="_blank">
+								<img src="<?php echo esc_url(VSZ_CF7_URL_PATH.'/images/gdpr-compliant.jpg'); ?>">
+							</a>
+						</div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading">Advanced CF7 DB - GDPR compliant</p>
                             <div class="cf7db-extension-item-excerpt">
@@ -133,14 +139,16 @@ img {
 							</div>
                         </div>
 						 <div class="cf7db-extension-buy-now">
-                                    <a href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
+                                    <a href="<?php print esc_url('https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060');?>" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
                             </div>
                     </div>
                 </article>
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/user-access-manager.jpg"></a>
+                            <a href="<?php print esc_url('https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788');?>" target="_blank">
+								<img src="<?php echo esc_url(VSZ_CF7_URL_PATH.'/images/user-access-manager.jpg'); ?>">
+							</a>
                         </div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading"> Advanced CF7 DB - User Access Manager </p>
@@ -155,14 +163,16 @@ img {
 							</div>
                         </div>
 						<div class="cf7db-extension-buy-now">
-                                    <a href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
-                            </div>
+							<a href="<?php print esc_url('https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788');?>" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
+						</div>
                     </div>
                 </article>
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/advanced-cf7-db-reply-back/22478892" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/reply-back.jpg"></a>
+                            <a href="<?php print esc_url('https://codecanyon.net/item/advanced-cf7-db-reply-back/22478892');?>" target="_blank">
+								<img src="<?php echo esc_url(VSZ_CF7_URL_PATH.'/images/reply-back.jpg'); ?>">
+							</a>
                         </div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading"> Advanced CF7 DB - Reply Back </p>
@@ -178,8 +188,8 @@ img {
 							</div>
                         </div>
 						  <div class="cf7db-extension-buy-now">
-                                    <a href="https://codecanyon.net/item/advanced-cf7-db-reply-back/22478892" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
-                            </div>
+							<a href="<?php print esc_url('https://codecanyon.net/item/advanced-cf7-db-reply-back/22478892');?>" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
+						</div>
                     </div>
                 </article>
 

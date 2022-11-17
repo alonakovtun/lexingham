@@ -13,12 +13,12 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 //Check contact form class exist or not
 if(!is_plugin_active('contact-form-7/wp-contact-form-7.php')){
 	?><div class="notice error is-dismissible">
-		<p>Please activate Contact Form plugin first.</p>
+		<p><?php esc_html_e('Please activate Contact Form plugin first.',VSZ_CF7_TEXT_DOMAIN); ?></p>
 	</div><?php
 }
 else if(defined('WPCF7_VERSION') && WPCF7_VERSION < '4.6'){
 	?><div class="notice error is-dismissible">
-		<p>Please update latest version for Contact Form plugin first.</p>
+		<p><?php esc_html_e('Please update latest version for Contact Form plugin first.',VSZ_CF7_TEXT_DOMAIN); ?></p>
 	</div><?php
 }
 else{
@@ -27,7 +27,7 @@ else{
 	wp_enqueue_style('jquery-datetimepicker-css');
 	wp_enqueue_script('jquery-ui-sortable');
 	
-	wp_enqueue_script('wp_enqueue_style');
+	//wp_enqueue_script('wp_enqueue_style');
 	
 	//Get all existing contact form list
 	$form_list = vsz_cf7_get_the_form_list();
@@ -309,14 +309,17 @@ else{
 					<td>
 						<p><strong>Parameters : </strong>$fid</p>
 						<p>You can change "Display Settings" using this action.</p>
-						<p><?php
-$code = 'add_action("vsz_cf7_display_settings_btn","vsz_cf7_display_settings_btn_callback",10,1);
-function vsz_cf7_display_settings_btn_callback($fid){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_display_settings_btn"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_display_settings_btn_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span>
+								<span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_display_settings_btn_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$fid</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -324,15 +327,17 @@ function vsz_cf7_display_settings_btn_callback($fid){
 					<td>
 						<p><strong>Parameters : </strong>$fid</p>
 						<p>Using this action,you can add custom coding after date section in listing screen.</p>
-						<p><?php
-$code = '
-add_action("vsz_cf7_after_datesection_btn","vsz_cf7_after_datesection_btn_callback",10,1);
-function vsz_cf7_after_datesection_btn_callback($fid){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_after_datesection_btn"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_after_datesection_btn_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span>
+								<span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_after_datesection_btn_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$fid</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -340,14 +345,17 @@ function vsz_cf7_after_datesection_btn_callback($fid){
 					<td>
 						<p><strong>Parameters : </strong>$fid</p>
 						<p>Using this action,you can add custom coding after bulk action section in listing screen.</p>
-						<p><?php
-$code = 'add_action("vsz_cf7_after_bulkaction_btn","vsz_cf7_after_bulkaction_btn_callback",10,1);
-function vsz_cf7_after_bulkaction_btn_callback($fid){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_after_bulkaction_btn"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_after_bulkaction_btn_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span>
+								<span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_after_bulkaction_btn_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$fid</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -355,14 +363,16 @@ function vsz_cf7_after_bulkaction_btn_callback($fid){
 					<td>
 						<p><strong>Parameters : </strong>-</p>
 						<p>Using this action,you can display table header in edit column.</p>
-						<p><?php
-$code = 'add_action("vsz_cf7_admin_after_heading_field","vsz_cf7_admin_after_heading_field_callback",10);
-function vsz_cf7_admin_after_heading_field_callback(){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_admin_after_heading_field"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_admin_after_heading_field_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_admin_after_heading_field_callback</span><span class="function-bracket text-green">(</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -370,14 +380,17 @@ function vsz_cf7_admin_after_heading_field_callback(){
 					<td>
 						<p><strong>Parameters : </strong>$fid, $row_id</p>
 						<p>Using this action, you can add custom coding before edit icon.</p>
-						<p><?php
-$code = 'add_action("vsz_cf7_admin_after_body_field","vsz_cf7_admin_after_body_field_callback",10,2);
-function vsz_cf7_admin_after_body_field_callback($fid,$row_id){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_admin_after_body_field"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_admin_after_body_field_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span>
+								<span class="function-param text-pink">2</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_admin_after_body_field_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$fid</span><span class="funciton-separater text-green">,</span><span class="function-val text-blue">$row_id</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -385,14 +398,17 @@ function vsz_cf7_admin_after_body_field_callback($fid,$row_id){
 					<td>
 						<p><strong>Parameters : </strong>$fid</p>
 						<p>Using this action, you can add custom coding after whole form.</p>
-						<p><?php
-$code = 'add_action("vsz_cf7_after_admin_form","vsz_cf7_after_admin_form_callback",10,1);
-function vsz_cf7_after_admin_form_callback($fid){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_after_admin_form"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_after_admin_form_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span>
+								<span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_after_admin_form_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$fid</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -400,14 +416,16 @@ function vsz_cf7_after_admin_form_callback($fid){
 					<td>
 						<p><strong>Parameters : </strong>$contact_form</p>
 						<p>Using this action, you can customize form data before insert in data base.</p>
-						<p><?php
-$code = 'add_action("vsz_cf7_before_insert_db","vsz_cf7_before_insert_db_callback",10,1);
-function vsz_cf7_before_insert_db_callback($contact_form){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_before_insert_db"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_before_insert_db_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_before_insert_db_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$contact_form</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -415,14 +433,17 @@ function vsz_cf7_before_insert_db_callback($contact_form){
 					<td>
 						<p><strong>Parameters : </strong>$contact_form, $cf7_id, $data_id</p>
 						<p>Using this action, you can customize process after insert value in data base.</p>
-						<p><?php
-$code = 'add_action("vsz_cf7_after_insert_db","vsz_cf7_after_insert_db_callback",10,3);
-function vsz_cf7_after_insert_db_callback($fid,$cf7_id,$data_id){
-	// Your custom coding here
-
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_action<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_after_insert_db"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_after_insert_db_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span>
+								<span class="function-param text-pink">3</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_after_insert_db_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$fid</span><span class="funciton-separater text-green">,</span><span class="function-val text-blue">$cf7_id</span><span class="funciton-separater text-green">,</span><span class="function-val text-blue">$data_id</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 			</table>
@@ -433,15 +454,16 @@ function vsz_cf7_after_insert_db_callback($fid,$cf7_id,$data_id){
 					<td>
 						<p><strong>Parameters : </strong>String</p>
 						<p>You can change the order of fields using this filter.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_entry_order_by","vsz_cf7_entry_order_by_callback",10,1);
-function vsz_cf7_entry_order_by_callback($order){
-	// Your custom coding here
-
-	return $order;
-}';
-								echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_entry_order_by"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_entry_order_by_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_entry_order_by_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$order</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $order;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -449,15 +471,16 @@ function vsz_cf7_entry_order_by_callback($order){
 					<td>
 						<p><strong>Parameters : </strong>Integer (Default: 10)</p>
 						<p>You can change the number of entries per page using this filter.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_entry_per_page","vsz_cf7_entry_per_page_callback",10,1);
-function vsz_cf7_entry_per_page_callback($num){
-	// Your custom coding here
-
-	return $num;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_entry_per_page"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_entry_per_page_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_entry_per_page_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$num</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $num;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -465,15 +488,16 @@ function vsz_cf7_entry_per_page_callback($num){
 					<td>
 						<p><strong>Parameters : </strong>Integer (Default: 30)</p>
 						<p>This filter defines how many characters will be displayed in listing screen. You can change the number of characters displayed using this filter.</p>
-						<p><?php
-$code = 'add_filter("vsz_display_character_count","vsz_display_character_count_callback",10,1);
-function vsz_display_character_count_callback($count){
-	// Your custom coding here
-
-	return $count;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_display_character_count"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_display_character_count_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_display_character_count_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$count</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $count;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -481,15 +505,16 @@ function vsz_display_character_count_callback($count){
 					<td>
 						<p><strong>Parameters : </strong>Array</p>
 						<p>You can change non editable fields list using this filter.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_not_editable_fields","vsz_cf7_not_editable_fields_callback",10,1);
-function vsz_cf7_not_editable_fields_callback($arr){
-	// Your custom coding here
-
-	return $arr;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_not_editable_fields"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_not_editable_fields_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_not_editable_fields_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$arr</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $arr;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -497,15 +522,16 @@ function vsz_cf7_not_editable_fields_callback($arr){
 					<td>
 						<p><strong>Parameters : </strong>Array</p>
 						<p>You can add/remove any option for "Bulk Action" in listing screen.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_entry_actions","vsz_cf7_entry_actions_callback",10,1);
-function vsz_cf7_entry_actions_callback($arr){
-	// Your custom coding here
-
-	return $arr;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_entry_actions"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_entry_actions_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-param text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_entry_actions_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$arr</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $arr;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -513,16 +539,16 @@ function vsz_cf7_entry_actions_callback($arr){
 					<td>
 						<p><strong>Parameters : </strong>-</p>
 						<p>You can change the date format to import functionality with this filter.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_import_date_format","vsz_cf7_import_date_format_callback",10);
-function vsz_cf7_import_date_format_callback(){
-	// Your custom coding here
-	$format = "Y-m-d";
-
-	return $format;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_import_date_format"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_import_date_format_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green"><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_import_date_format_callback</span><span class="function-bracket text-green">(</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;$format = "Y-m-d";<br/>&nbsp;&nbsp;&nbsp;return $format;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -530,15 +556,16 @@ function vsz_cf7_import_date_format_callback(){
 					<td>
 						<p><strong>Parameters : </strong>Array</p>
 						<p>You can exclude contact form ids using this filter and those form entries won't be inserted in advanced contact form database.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_unwanted_form_data_submission","vsz_cf7_unwanted_form_data_submission_callback",10,1);
-function vsz_cf7_unwanted_form_data_submission_callback($arr){
-	// Your custom coding here
-
-	return $arr;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_unwanted_form_data_submission"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_unwanted_form_data_submission_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_unwanted_form_data_submission_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$arr</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $arr;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -546,15 +573,16 @@ function vsz_cf7_unwanted_form_data_submission_callback($arr){
 					<td>
 						<p><strong>Parameters : </strong>$contact_form</p>
 						<p>You can change the entry data before it saved to database.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_modify_form_before_insert_data","vsz_cf7_modify_form_before_insert_data_callback",10,1);
-function vsz_cf7_modify_form_before_insert_data_callback($contact_form){
-	// Your custom coding here
-
-	return $contact_form;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_modify_form_before_insert_data"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_modify_form_before_insert_data_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_modify_form_before_insert_data_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$contact_form</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $contact_form;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -565,15 +593,16 @@ function vsz_cf7_modify_form_before_insert_data_callback($contact_form){
 						<p>1) Add new data to the CF7 Form<br>
 							2) Can modify the existing form submitted data<br>
 							3) Can unset or remove the existing form data of CF7</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_posted_data","vsz_cf7_posted_data_callback",10,1);
-function vsz_cf7_posted_data_callback($posted_data){
-	// Your custom coding here
-
-	return $posted_data;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_posted_data"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_posted_data_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_posted_data_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$posted_data</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $posted_data;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -581,15 +610,16 @@ function vsz_cf7_posted_data_callback($posted_data){
 					<td>
 						<p><strong>Parameters : </strong>Array</p>
 						<p>You can exclude contact form ids using this filter and those form field's entry won't be inserted in advanced contact form database.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_no_save_fields","vsz_cf7_no_save_fields_callback",10,1);
-function vsz_cf7_no_save_fields_callback($arr){
-	// Your custom coding here
-
-	return $arr;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_no_save_fields"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_no_save_fields_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_no_save_fields_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$arr</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $arr;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -597,15 +627,16 @@ function vsz_cf7_no_save_fields_callback($arr){
 					<td>
 						<p><strong>Parameters : </strong>Value,Key</p>
 						<p>You can modify specific field value using this filter.</p>
-						<p><?php
-$code = 'add_filter("cf7d_entry_value","cf7d_entry_value_callback",10,2);
-function cf7d_entry_value_callback($val,$key){
-	// Your custom coding here
-
-	return $val;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"cf7d_entry_value"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"cf7d_entry_value_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">2</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">cf7d_entry_value_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$val</span><span class="function-val text-pink">,</span><span class="function-val text-blue">$key</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $val;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -613,17 +644,17 @@ function cf7d_entry_value_callback($val,$key){
 					<td>
 						<p><strong>Parameters : </strong>Fields, fid</p>
 						<p>You can modify fields displaying in listing screen using this filter.</p>
-						<p>
-							<span class="code">
-								<pre><?php
-$code = 'add_filter("vsz_cf7_admin_fields","vsz_cf7_admin_fields_callback",10,2);
-function vsz_cf7_admin_fields_callback($fields,$fid){
-	// Your custom coding here
-
-	return $fields;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_admin_fields"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_admin_fields_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">2</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_admin_fields_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$fields</span><span class="function-val text-pink">,</span><span class="function-val text-blue">$fid</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $fields;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
+						
 					</td>
 				</tr>
 				<tr class="form-field">
@@ -631,15 +662,17 @@ function vsz_cf7_admin_fields_callback($fields,$fid){
 					<td>
 						<p><strong>Parameters : </strong>$current_action</p>
 						<p>If you have added additional option in "Bulk Actions", then you need to do custom coding for that additional option over here.</p>
-						<p><?php
-$code = 'add_filter("vsz_cf7_get_current_action","vsz_cf7_get_current_action_callback",10,1);
-function vsz_cf7_get_current_action_callback($current_action){
-	// Your custom coding here
-
-	return $current_action;
-}';
-						echo "<div class='code-php'>".get_highlighted_code($code)."</div>";
-						?></p>
+						<div class='code-php'>
+							<div class="action-filter-name">
+								add_filter<span class="function-bracket text-green">(</span><span class="action-name text-blue">"vsz_cf7_get_current_action"</span><span class="funciton-separater text-green">,</span><span class="action-name text-blue">"vsz_cf7_get_current_action_callback"</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">10</span><span class="funciton-separater text-green">,</span><span class="function-piority text-pink">1</span><span class="function-bracket text-green">)</span>;
+							</div>
+							<div class="function-def">
+								<strong class="text-black">function</strong> <span class="function-defined">vsz_cf7_get_current_action_callback</span><span class="function-bracket text-green">(</span><span class="function-val text-blue">$current_action</span><span class="function-bracket text-green">)</span><span class="function-bracket text-green">{</span>
+									<p>&nbsp;&nbsp;&nbsp;// Your custom coding here<br/>&nbsp;&nbsp;&nbsp;return $current_action;</p>
+								<span class="function-bracket text-green">}</span>
+							</div>
+						</div>
+						
 					</td>
 				</tr>
 			</table>

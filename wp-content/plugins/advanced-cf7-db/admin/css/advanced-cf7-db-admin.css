@@ -691,3 +691,8 @@ h3.advanced {
 	background-color:#0073AA;
 	color: #fff;
 }
+.code-php{ white-space:nowrap; }
+.code-php .text-blue{ color: #0000ff; }
+.code-php .text-green{ color: #009900; }
+.code-php .text-pink{ color: #cc66cc; }
+.code-php .text-black{ color: #000000; }

@@ -1,9 +1,9 @@
 === Advanced Contact form 7 DB ===
 Contributors: vsourz1td
-Tags: contact form 7 db, advanced cf7 db, contact form 7 database, contact form db, contact form 7, save form data, save contact form, save cf7, database, cf7db, save-contact-form, Save-Forms-Data, import-cf7, export-contact-data, view-cf7-entry
+Tags: contact form 7 db, contact form db, advanced cf7 db, contact form 7 database, contact form db, contact form 7, save form data, save contact form, save cf7, database, cf7db, save-contact-form, Save-Forms-Data, import-cf7, export-contact-data, view-cf7-entry
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 1.7.2
+Tested up to: 6.0.1
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,7 @@ Every form that is submitted in the website will be captured into database using
 * View list of all forms received through Contact Form 7
 * Search / filter form details using keyword
 * Search / filter enquiries using custom date-range filter
-* Export data in **CSV, Excel or PDF** format by applying filters
+* Export data in **CSV, Excel** format by applying filters
 * View attachment download link
 * Advanced pagination with an option to jump to any page to view specific entries
 * Enable/Disable columns with personalized tabular structure
@@ -42,7 +42,7 @@ Every form that is submitted in the website will be captured into database using
 
 == Commercial Features ==
 **1. Advanced CF7 DB - GDPR Compliant**
-Advanced CF7 DB – GDPR Compliant plugin assists website and web-shop owners to comply with European privacy regulations known as GDPR. Advanced CF7 DB – GDPR Compliant is an add-on of Advanced CF7 DB, it is based on GDPR rules to export or erase user’s personal data stored with advanced CF7 DB. 
+Advanced CF7 DB – GDPR Compliant plugin assists website and web-shop owners to comply with European privacy regulations known as GDPR. Advanced CF7 DB – GDPR Compliant is an add-on of Advanced CF7 DB, it is based on GDPR rules to export or erase user’s personal data stored with advanced CF7 DB.
 
 Download Advanced CF7 DB – GDPR Complaint plugin from <a target="_blank" href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060">here</a>
 
@@ -61,7 +61,7 @@ We have introduced a new add-on “Schedule Report” focusing on day-to-day bus
 * Weekly Report
 * Monthly Report
 
-Reports will be automatically generated and will be available to you in your e-mail address as per scheduled routine. 
+Reports will be automatically generated and will be available to you in your e-mail address as per scheduled routine.
 
 Download Schedule Report plugin from <a target="_blank" href="https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647?s_rank=8">here</a>
 
@@ -74,14 +74,31 @@ Download Schedule Report plugin from <a target="_blank" href="https://codecanyon
 * Scheduled Report will also be added to wp-cron and will be triggered as per schedule
 
 **3. Advanced CF7 DB - User Access Manager**
-Need to provide access to other users? Your, search ends now, this plugin provides access to individual users or user groups and accordingly user(s) can view or edit their contact form DB data. 
+Need to provide access to other users? Your, search ends now, this plugin provides access to individual users or user groups and accordingly user(s) can view or edit their contact form DB data.
 
 Download Advanced CF7 DB – User Access Manager plugin from <a target="_blank" href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788">here</a>
- 
+
 = Advanced CF7 DB - User Access Manager Plugin Features =
 * Provide access of CF7 DB to view & update data to individual users or user groups
 * Provide access to single user for creating single/multiple forms
 
+
+**mountstride CRM**
+Do you want to effectively manage your end to end customer engagement and want to automate your business workflow?
+
+Looking for CRM that Collaborates, Saves Time & Makes Work Easier for You.
+
+Try mountstride!
+
+mountstride is a simple, efficient & easy to use solution for managing, prioritising and organising your leads.
+
+We empower Salespeople by focusing on providing Simple tools to effectively capture, nurture and convert their leads. With less time spent on trying to stay organised your Sales Teams can focus on winning more deals.
+
+Free for up to 5 users, no fixed contracts, no credit card required.
+
+Start collaborating as a team, as you always wanted to. - <a target="_blank" href="https://www.mountstride.com/contact/">Contact Us</a>.
+
+Download Integration of Contact form 7 to mountstride CRM plugin from <a target="_blank" href="https://wordpress.org/plugins/cf7-mountstride-crm-integration/">here</a>
 
 
 == Plugin Customization ==
@@ -101,7 +118,7 @@ For support, email us at: <wp.support@vsourz.com>
 == Installation ==
 
 = Install via WordPress Admin =
-1. Go to Admin > Plugins > Add New 
+1. Go to Admin > Plugins > Add New
 2. On the upper portion click the Upload link.
 3. Using the file upload field, upload the plugin zip file here and activate the plugin.
 
@@ -146,7 +163,7 @@ Please follow below steps:
 – You need to add different shortcode for each site with specific siteId. If you need to restrict for all the sites then just place the shortcode without the parameter.
 
 = How to restrict the plugin from storing form entry to Contact Form DB? =
-Please follow below steps for restricting the plugin to store data 
+Please follow below steps for restricting the plugin to store data
 – Goto -> wp-content/themes/{active theme folder}/functions.php
 – Open the functions.php file and place below code at the end of the file.
 add_filter(‘vsz_cf7_unwanted_form_data_submission’,’vsz_restrict_form_data_submission’);
@@ -160,7 +177,7 @@ add_filter(‘vsz_cf7_unwanted_form_data_submission’,’vsz_restrict_form_data
 function vsz_restrict_form_data_submission($contact_form_ids){
 $contact_form_ids[] = [‘{your-contact-form-id}’,'{your-contact-form-id}’];
 return $contact_form_ids;
-} 
+}
 
 
 == Screenshots ==
@@ -174,6 +191,41 @@ return $contact_form_ids;
 
 
 == Changelog ==
+
+= 1.9 =
+* We have upgraded with Security patches
+
+= 1.8.8 =
+* We have upgraded with Security patches
+
+= 1.8.7 =
+* We have upgraded with Security patches
+
+= 1.8.6 =
+* We have upgraded with Security patches
+
+= 1.8.5 =
+* We have upgraded with Security patches
+
+= 1.8.4 =
+* We have upgraded with Security patches
+* Remove Export to PDF support
+
+
+= 1.8.3 =
+* We have upgraded with Security patch.
+* Compatible with latest version wordpress 5.8.2
+
+= 1.8.2 =
+* Fixed save file related issue.
+* Compatible with latest version wordpress 5.7.2
+
+= 1.8.1 =
+* Minor bug fixes
+
+= 1.8.0 =
+* Excel issues fixed while importing and exporting data.
+* Compatible with latest version wordpress 5.5
 
 = 1.7.2 =
 * Fixed the delete data case as throws database error.
@@ -240,11 +292,11 @@ return $contact_form_ids;
 = 1.1.2 =
 * Fix error related to PHP 7.1.
 
-= 1.1.1 = 
+= 1.1.1 =
 * Made changes to resolve the issue of user feasibility when editing the form fields.
 * Minor tweak related to export functionality and attachment download functionality.
 
-= 1.1.0 = 
+= 1.1.0 =
 * Update Import Functionality.
 * Fix CF7 Version related issue.
 

@@ -69,7 +69,7 @@ class Advanced_Cf7_Db {
 	public function __construct() {
 
 		$this->plugin_name = 'advanced-cf7-db';
-		$this->version = '1.6.2';
+		$this->version = '1.9';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -180,7 +180,7 @@ class Advanced_Cf7_Db {
 		$this->loader->add_action('vsz_cf7_admin_after_heading_field',$plugin_admin, 'vsz_cf7_admin_after_heading_field_callback', 11, 2);
 
 		//Display edit information link here
-		$this->loader->add_action('vsz_cf7_admin_after_body_field',$plugin_admin, 'vsz_cf7_admin_after_body_edit_field_func', 21, 2);
+		$this->loader->add_action('vsz_cf7_admin_after_body_field',$plugin_admin, 'vsz_cf7_admin_after_body_edit_field_func', 21, 3);
 
 		//Display field setting form here
 		$this->loader->add_action('vsz_cf7_after_admin_form', $plugin_admin,'vsz_cf7_after_admin_setting_form_callback');

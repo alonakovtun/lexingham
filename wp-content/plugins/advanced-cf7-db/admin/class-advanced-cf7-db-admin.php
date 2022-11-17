@@ -40,6 +40,11 @@ class Advanced_Cf7_Db_Admin {
 	 */
 	private $version;
 
+	/*
+	* Define table name for advance Cf 7 DB
+	*/
+	private $vsz_data_entry_table;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -51,6 +56,7 @@ class Advanced_Cf7_Db_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->vsz_data_entry_table = sanitize_text_field(VSZ_CF7_DATA_ENTRY_TABLE_NAME);
 
 	}
 
@@ -74,9 +80,9 @@ class Advanced_Cf7_Db_Admin {
 		 */
 
 		wp_register_style( 'vsz-cf7-db-admin-css', plugin_dir_url( __FILE__ ) . 'css/advanced-cf7-db-admin.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'font_awesome_css', plugin_dir_url( __FILE__ ) . 'css/font-awesome.css', array(), $this->version, 'all' );
+		wp_register_style( 'font_awesome_css', plugin_dir_url( __FILE__ ) . 'css/font-awesome.css', array(), $this->version, 'all' );
 		wp_register_style( 'jquery-datetimepicker-css', plugin_dir_url( __FILE__ ) . 'css/jquery.datetimepicker.css', array(), $this->version, 'all');
-
+		wp_register_style( 'mounstride-CRM-css', plugin_dir_url( __FILE__ ) . 'css/mounstride-CRM.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -98,8 +104,8 @@ class Advanced_Cf7_Db_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/advanced-cf7-db-admin.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( 'datepicker-min-js', plugin_dir_url( __FILE__ ) . 'js/jquery.datetimepicker.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( 'advanced_cf7_db_admin_js', plugin_dir_url( __FILE__ ) . 'js/advanced-cf7-db-admin.js', array( 'jquery' ), time(), false );//$this->version
+		wp_register_script( 'datepicker_min_js', plugin_dir_url( __FILE__ ) . 'js/jquery.datetimepicker.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -127,8 +133,7 @@ class Advanced_Cf7_Db_Admin {
 		}
 		$user = wp_get_current_user();
 
-		//$role = get_role('subscriber');
-		//var_dump($user);exit;
+		//check current user capability
 		if(isset($user) && !empty($user)){
 			foreach($user->allcaps as $key=>$capability){
 				if($capability == true){
@@ -141,12 +146,12 @@ class Advanced_Cf7_Db_Admin {
 			}
 		}
 
+		//check current user view capability access
 		if($cap == 'no_access'){
 			if(isset($user) && !empty($user)){
 				foreach($user->allcaps as $key=>$capability){
 					if($capability == true){
 						if(strpos($key, 'cf7_db_form_view') !== false){
-
 							$cap = 'exist';
 							break;
 						}
@@ -160,6 +165,7 @@ class Advanced_Cf7_Db_Admin {
 		add_submenu_page( 'contact-form-listing', __('Import CSV', 'advanced-cf7-db'), __('Import CSV', ' advanced-cf7-db'), $cap, 'import_cf7_csv',array($this,'vsz_import_cf7_csv') );
 		add_submenu_page( 'contact-form-listing', __('Developer Support', 'advanced-cf7-db'), __('Developer Support', ' advanced-cf7-db'), $cap, 'shortcode',array($this,'vsz_shortcode') );
 		add_submenu_page( 'contact-form-listing', __('Add-ons', 'advanced-cf7-db'), __('Add-ons', ' advanced-cf7-db'), $cap, 'extentions',array($this,'vsz_extension') );
+		add_submenu_page( 'contact-form-listing', __('mounstride CRM', 'advanced-cf7-db'), __('mounstride CRM', ' advanced-cf7-db'), $cap, 'mounstride-CRM',array($this,'vsz_mounstride_CRM') );
 	}
 
 	/**
@@ -170,6 +176,7 @@ class Advanced_Cf7_Db_Admin {
 
 	function vsz_contact_form_callback(){
 
+		//register CSS and JS file here
 		wp_enqueue_style('vsz-cf7-db-admin-css');
 
 		require_once plugin_dir_path( __FILE__ ) . 'partials/contact_form_listing.php';
@@ -197,6 +204,16 @@ class Advanced_Cf7_Db_Admin {
 
 		require_once plugin_dir_path( __FILE__ ) . 'partials/add-ons.php';
 
+	}
+
+	/*
+	mounstride CRM landing page
+	*/
+
+	function vsz_mounstride_CRM(){
+
+		wp_enqueue_style('mounstride-CRM-css');
+		require_once plugin_dir_path( __FILE__ ) . 'partials/mounstride-CRM.php';
 	}
 
 	/**
@@ -252,7 +269,7 @@ class Advanced_Cf7_Db_Admin {
 					//Check if field name match with form field name or not
 					if(isset($arr_type['name']) && array_key_exists($arr_type['name'],$fields)){
 						//If field type match with form field name then set field name in array
-						$return[$arr_type['name']] = $fields[$arr_type['name']];
+						$return[$arr_type['name']] = esc_html($fields[$arr_type['name']]);
 						//Remove current keys from field array
 						unset($fields[$arr_type['name']]);
 					}
@@ -307,14 +324,14 @@ class Advanced_Cf7_Db_Admin {
 		if( empty( $fid ) ){
 			return 'Select at least one form';
 		}
+
 		?><!-- Display Export functionality button here-->
-		<select id="vsz-cf7-export" name="vsz-cf7-export" data-fid="<?php echo $fid; ?>">
-			<option value="-1"><?php _e('Export to...'); ?></option>
-			<option value="csv"><?php _e('CSV'); ?></option>
-			<option value="excel"><?php _e('Excel'); ?></option>
-			<option value="pdf"><?php _e('PDF'); ?></option>
+		<select id="vsz-cf7-export" name="vsz-cf7-export" data-fid="<?php echo esc_html($fid); ?>">
+			<option value="-1"><?php esc_html_e('Export to...',VSZ_CF7_TEXT_DOMAIN); ?></option>
+			<option value="csv"><?php esc_html_e('CSV',VSZ_CF7_TEXT_DOMAIN); ?></option>
+			<option value="excel"><?php esc_html_e('Excel',VSZ_CF7_TEXT_DOMAIN); ?></option>
 		</select>
-		<button class="button action" title="<?php _e('Export'); ?>" type="submit" name="btn_export"><?php _e('Export'); ?></button><?php
+		<button class="button action" title="<?php esc_html_e('Export',VSZ_CF7_TEXT_DOMAIN); ?>" type="submit" name="btn_export"><?php esc_html_e('Export',VSZ_CF7_TEXT_DOMAIN); ?></button><?php
 	}
 
 	/**
@@ -328,16 +345,19 @@ class Advanced_Cf7_Db_Admin {
 			$fid = (int)sanitize_text_field($_REQUEST['cf7_id']);
 			$url .= '&cf7_id='.$fid;
 		}
-		?><input value="<?php echo ((isset($_POST['search_cf7_value'])) && !empty($_POST['search_cf7_value']) ? htmlspecialchars(stripslashes(sanitize_text_field($_POST['search_cf7_value']))) : ''); ?>" type="text" class="" id="cf7d-search-q" name="search_cf7_value" placeholder="<?php echo _e('Type something...'); ?>" id="" />
-		<button data-url="<?php echo esc_url($url); ?>" class="button" type="button" id="cf7d-search-btn" title="<?php _e('Search'); ?>" ><?php _e('Search'); ?></button>
-		<?php
+
+		$searchVal = isset($_POST['search_cf7_value']) && !empty($_POST['search_cf7_value']) ? htmlspecialchars(stripslashes(sanitize_text_field($_POST['search_cf7_value']))) : '';
+
+		?><input value="<?php esc_html_e($searchVal,VSZ_CF7_TEXT_DOMAIN); ?>" type="text" class="" id="cf7d-search-q" name="search_cf7_value" placeholder="<?php esc_html_e('Type something...',VSZ_CF7_TEXT_DOMAIN);?>" />
+		<button data-url="<?php echo esc_url($url); ?>" class="button" type="button" id="cf7d-search-btn" title="<?php esc_html_e('Search',VSZ_CF7_TEXT_DOMAIN); ?>" ><?php esc_html_e('Search',VSZ_CF7_TEXT_DOMAIN);?></button><?php
+
 	}//Close search box design function
 
 	/**
 	 * Display table header in edit column here
 	 */
 	function vsz_cf7_admin_after_heading_field_callback(){
-		?><th style="width: 32px;" class="manage-column"><?php _e(''); ?></th><?php
+		?><th style="width: 32px;" class="manage-column"><?php esc_html_e('',VSZ_CF7_TEXT_DOMAIN);?></th><?php
 	}
 
 	/**
@@ -349,8 +369,8 @@ class Advanced_Cf7_Db_Admin {
         add_thickbox();
 		?><div class="span12">
 			<div class="display-setup">
-				<span>To change the Field title, Hide field and change the position of fields using Drag and Drop from here.</span>
-				<a title="<?php _e('Display Settings'); ?>" href="#TB_inline?width=600&height=550&inlineId=cf7d-modal-setting" id="cf7d_setting_form" class="thickbox page-title-action" name="Display Settings"><?php _e('Display Settings'); ?></a>
+				<span><?php esc_html_e('To change the Field title, Hide field and change the position of fields using Drag and Drop from here.',VSZ_CF7_TEXT_DOMAIN); ?></span>
+				<a title="<?php esc_html_e('Display Settings',VSZ_CF7_TEXT_DOMAIN); ?>" href="#TB_inline?width=600&height=550&inlineId=cf7d-modal-setting" id="cf7d_setting_form" class="thickbox page-title-action" name="Display Settings"><?php esc_html_e('Display Settings',VSZ_CF7_TEXT_DOMAIN); ?></a>
 			</div>
 		</div><?php
 	}
@@ -358,13 +378,13 @@ class Advanced_Cf7_Db_Admin {
 	/**
 	 * Display edit link with each entry in table
 	 */
-	function vsz_cf7_admin_after_body_edit_field_func($form_id, $row_id){
+	function vsz_cf7_admin_after_body_edit_field_func($form_id, $row_id,$getDatanonce){
 		//Define thickbox popup function
 		add_thickbox();
 		$row_id = (int)$row_id;
 		?><td>
-			<a data-rid="<?php echo $row_id; ?>" href="#TB_inline?width=600&height=550&inlineId=cf7d-modal-edit-value" id="cf7d-edit-form" class="thickbox cf7d-edit-value" name="Edit Information">
-				<i class="fa fa-pencil-square-o" title="Edit" aria-hidden="true" style="font-size:20px;"></i>
+			<a data-rid="<?php esc_html_e($row_id); ?>" data-nonce="<?php esc_html_e($getDatanonce);?>" href="#TB_inline?width=600&height=550&inlineId=cf7d-modal-edit-value" id="cf7d-edit-form" class="thickbox cf7d-edit-value" name="<?php esc_html_e('Edit Information',VSZ_CF7_TEXT_DOMAIN); ?>">
+				<i class="fa fa-pencil-square-o" title="<?php esc_html_e('Edit',VSZ_CF7_TEXT_DOMAIN); ?>" aria-hidden="true" style="font-size:20px;"></i>
 			</a>
 		</td><?php
 	}
@@ -386,41 +406,52 @@ class Advanced_Cf7_Db_Admin {
 		//Define Design related structure here
 		?><div id="cf7d-modal-setting" style="display:none;">
 			<form action="" id="cf7d-modal-form" method="POST" class="setting-form">
-            	<div class="popup-note"><span>You can rename the Field title, Hide field and change the position of fields using Drag and Drop from here.</span></div>
-				<input type="hidden" name="fid" value="<?php echo $fid; ?>" />
-				<input type="hidden" name="vsz_cf7_setting_nonce"  value="<?php echo $nonce; ?>" />
-				<ul id="cf7d-list-field">
+            	<div class="popup-note">
+					<span><?php
+						esc_html_e('You can rename the Field title, Hide field and change the position of fields using Drag and Drop from here.',VSZ_CF7_TEXT_DOMAIN);
+					?></span>
+				</div>
+				<input type="hidden" name="fid" value="<?php esc_html_e($fid); ?>" />
+				<input type="hidden" name="vsz_cf7_setting_nonce"  value="<?php esc_html_e($nonce); ?>" />
+				<ul id="cf7d-list-field"><?php
 
-					<?php
 					//Get form id related fields settings value from option table
 					$field_settings = get_option('vsz_cf7_settings_field_' . $fid, array());
 					$show_record = '';
-					$show_record = get_option('vsz_cf7_settings_show_record_' . $fid, array());
+					$show_record = (int) get_option('vsz_cf7_settings_show_record_' . $fid, '');
 					if(empty($show_record)){
 						$show_record = 10;
-					}?>
-					<li class="ui-state-disabled"><span class="label">Show record</span> <input class="" type="text" name="cf7_show_record" value="<?php echo $show_record;?>"></li>
-					<?php
+					}
+					?><li class="ui-state-disabled">
+						<span class="label"><?php esc_html_e('Show record',VSZ_CF7_TEXT_DOMAIN); ?></span>
+						<input class="" type="text" name="cf7_show_record" value="<?php esc_html_e($show_record);?>">
+					</li><?php
+
 					//Check fields setting define or not
 					if($field_settings == ""){
 						$field_settings = array();
 					}
 					//If fields setting not define then
 					if(count($field_settings) == 0){ //no settings found
+
 						//Fetch all existing fields information
 						foreach ($arr_form_tag as $k => $v) {
 							if($v->type == 'submit' || $v->type == 'recaptcha') continue;
 							$show = 1;
 							$k = esc_html($v->name);
 							$label = esc_html($v->name);
-							$show_hide_field = '<input type="hidden" class="txt_show" name="field['.$k.'][show]" value="'.$show.'" />';
+							$showClass = $show == 1 ? 'show' : 'hide';
+							$dashiconsClass = $show == 1 ? 'visibility' : 'hidden';
+							$fieldName = "field[".$k."][label]";
+							$hiddenFieldName = "field[".$k."][show]";
+							//added in 1.8.4
 							//Setup fields in Setting popup
-							echo "<li class=\"".(($show == 1) ? "show" : "hide")."\">
-									<span class=\"label\">".$k."</span>
-									<input class=\"\" type=\"text\" name=\"field[".$k."][label]\" value=\"".$label."\" />
-									<span class=\"dashicons dashicons-".(($show == 1) ? "visibility" : "hidden")."\"></span>
-									".$show_hide_field."
-								</li>";
+							?><li class="<?php print esc_html($showClass);?>">
+								<span class="label"><?php print esc_html($k)?></span>
+								<input class="" type="text" name="<?php print esc_html($fieldName);?>" value="<?php print esc_html($label);?>" />
+								<span class="dashicons dashicons-<?php print esc_html($dashiconsClass);?>"></span>
+								<input type="hidden" class="txt_show" name="<?php print esc_html($hiddenFieldName);?>" value="<?php print esc_html($show);?>" />
+							</li><?php
 							if(isset($fields[$v->name]))
 								unset($fields[$v->name]);
 						}
@@ -429,14 +460,25 @@ class Advanced_Cf7_Db_Admin {
 								$show = 1;
 								$k = esc_html($v);
 								$label = esc_html($v);
-								$show_hide_field = '<input type="hidden" class="txt_show" name="field['.$k.'][show]" value="'.$show.'" />';
+								$showClass = $show == 1 ? 'show' : 'hide';
+								$dashiconsClass = $show == 1 ? 'visibility' : 'hidden';
+								$fieldName = "field[".$k."][label]";
+								$hiddenFieldName = "field[".$k."][show]";
+
+								//added in 1.8.4
 								//Setup fields in Setting popup
-								echo "<li class=\"".(($show == 1) ? "show" : "hide")."\"><span class=\"label\">".$k."</span> <input class=\"\" type=\"text\" name=\"field[".$k."][label]\" value=\"".$label."\" /><span class=\"dashicons dashicons-".(($show == 1) ? "visibility" : "hidden")."\"></span>".$show_hide_field."</li>";
+								?><li class="<?php print esc_html($showClass);?>">
+									<span class="label"><?php print esc_html($k)?></span>
+									<input class="" type="text" name="<?php print esc_html($fieldName);?>" value="<?php print esc_html($label);?>" />
+									<span class="dashicons dashicons-<?php print esc_html($dashiconsClass);?>"></span>
+									<input type="hidden" class="txt_show" name="<?php print esc_html($hiddenFieldName);?>" value="<?php print esc_html($show);?>" />
+								</li><?php
 							}
 						}
 					}//close fields setting if
 					//If fields settng found in option table
 					else{
+
 						//Display all existing fields information
 						foreach ($field_settings as $k => $v) {
 							if(isset($fields[$k])){
@@ -444,12 +486,22 @@ class Advanced_Cf7_Db_Admin {
 								$k = esc_html($k);
 								$show = (int)$field_settings[$k]['show'];
 								$label = esc_html($field_settings[$k]['label']);
-								//Set field display at front side or not information here
-								$show_hide_field = '<input type="hidden" class="txt_show" name="field['.$k.'][show]" value="'.$show.'" />';
-								//Display field in Setting POPUP
-								echo "<li class=\"".(($show == 1) ? "show" : "hide")."\"><span class=\"label\">".$k."</span> <input class=\"\" type=\"text\" name=\"field[".$k."][label]\" value=\"".$label."\" /><span class=\"dashicons dashicons-".(($show == 1) ? "visibility" : "hidden")."\"></span>".$show_hide_field."</li>";
+								$showClass = $show == 1 ? 'show' : 'hide';
+								$dashiconsClass = $show == 1 ? 'visibility' : 'hidden';
+								$fieldName = "field[".$k."][label]";
+								$hiddenFieldName = "field[".$k."][show]";
+
+								//added in 1.8.4
+								//Setup fields in Setting popup
+								?><li class="<?php print esc_html($showClass);?>">
+									<span class="label"><?php print esc_html($k)?></span>
+									<input class="" type="text" name="<?php print esc_html($fieldName);?>" value="<?php print esc_html($label);?>" />
+									<span class="dashicons dashicons-<?php print esc_html($dashiconsClass);?>"></span>
+									<input type="hidden" class="txt_show" name="<?php print esc_html($hiddenFieldName);?>" value="<?php print esc_html($show);?>" />
+								</li><?php
 								//Unset current field from DB fields array
 								unset($fields[$k]);
+
 							}//Close if
 						}//Close for each
 
@@ -461,19 +513,27 @@ class Advanced_Cf7_Db_Admin {
 								$k = esc_html($k);
 								$show = 1;
 								$label = esc_html($v);
-								//Set field display at front side or not information here
-								$show_hide_field = '<input type="hidden" class="txt_show" name="field['.$k.'][show]" value="'.$show.'" />';
-								//Display field in Setting POPUP
-								echo "<li class=\"".(($show == 1) ? "show" : "hide")."\"><span class=\"label\">".$k."</span> <input class=\"\" type=\"text\" name=\"field[".$k."][label]\" value=\"".$label."\" /><span class=\"dashicons dashicons-".(($show == 1) ? "visibility" : "hidden")."\"></span>".$show_hide_field."</li>";
+								$showClass = $show == 1 ? 'show' : 'hide';
+								$dashiconsClass = $show == 1 ? 'visibility' : 'hidden';
+								$fieldName = "field[".$k."][label]";
+								$hiddenFieldName = "field[".$k."][show]";
+
+								//added in 1.8.4
+								//Setup fields in Setting popup
+								?><li class="<?php print esc_html($showClass);?>">
+									<span class="label"><?php print esc_html($k)?></span>
+									<input class="" type="text" name="<?php print esc_html($fieldName);?>" value="<?php print esc_html($label);?>" />
+									<span class="dashicons dashicons-<?php print esc_html($dashiconsClass);?>"></span>
+									<input type="hidden" class="txt_show" name="<?php print esc_html($hiddenFieldName);?>" value="<?php print esc_html($show);?>" />
+								</li><?php
+
 							}
 						}//Close if for check remaining fields
 					}//Close else
-					?>
 
-				</ul>
-
+				?></ul>
 				<div id="cf7d-modal-footer">
-					<input type="submit" name="vsz_save_field_settings" value="Save Changes" class="button button-primary button-large" />
+					<input type="submit" name="vsz_save_field_settings" value="<?php esc_html_e('Save Changes',VSZ_CF7_TEXT_DOMAIN); ?>" class="button button-primary button-large" />
 				</div>
 			</form>
 			<script>
@@ -486,6 +546,7 @@ class Advanced_Cf7_Db_Admin {
 				});
 			</script>
 		</div><?php
+
 	}//Close setting POPUP function here
 
 	/**
@@ -528,14 +589,14 @@ class Advanced_Cf7_Db_Admin {
 		//Define nonce value which is validate on save time
 		$nonce = wp_create_nonce( 'vsz-cf7-edit-nonce-'.$form_id );
 		//Get not editable fields list
-		$not_editable_field = apply_filters('vsz_cf7_not_editable_fields',array());
+		$not_editable_field = (array) apply_filters('vsz_cf7_not_editable_fields',array());
 		//Setup edit form design here
 		?><div class="cf7d-modal" id="cf7d-modal-edit-value" style="display:none;">
 			<form action="" class="cf7d-modal-form loading" id="cf7d-modal-form-edit-value" method="POST">
-            	<div class="popup-note"><span>*(Field Type)</span></div>
-				<input type="hidden" name="fid" value="<?php echo $form_id; ?>" />
+            	<div class="popup-note"><span><?php esc_html_e('*(Field Type)',VSZ_CF7_TEXT_DOMAIN); ?></span></div>
+				<input type="hidden" name="fid" value="<?php esc_html_e($form_id); ?>" />
 				<input type="hidden" name="rid" value="" />
-				<input type="hidden" name="vsz_cf7_edit_nonce"  value="<?php echo $nonce; ?>" />
+				<input type="hidden" name="vsz_cf7_edit_nonce"  value="<?php esc_html_e($nonce); ?>" />
 				<ul id="cf7d-list-field-for-edit" class="edit-popup"><?php
 
 					//Get form id related header settings value
@@ -562,8 +623,15 @@ class Advanced_Cf7_Db_Admin {
 								$label = esc_html($v);
 								$k = esc_html($k);
 								$loading = __('Loading...');
+								$fieldName = "field[".$k."]";
+								$className = "field-$k";
 								//Display Text box design here
-								echo "<li class=\"clearfix\"><span class=\"label\">".$label."</span> <input class=\"field-".$k."\" type=\"text\" name=\"field[".$k."]\" value=\"".$loading."\" ".$disable." /><div class=\"clear\"></div></li>";
+								?><li class="clearfix">
+									<span class="label"><?php print esc_html($label);?></span>
+									<input class="<?php print esc_html($className);?>" type="text" name="<?php print esc_html($fieldName);?>" value="<?php print esc_html($loading);?>"  <?php print esc_html($disable);?> />
+									<div class="clear"></div>
+								</li><?php
+
 							}//Close else
 						}//Close foreach
 					}//Close if for  check fields settings
@@ -590,11 +658,19 @@ class Advanced_Cf7_Db_Admin {
 									//Get label name values which is define on Setting screen
 									$show = (int)$field_settings[$k]['show'];
 									$label = esc_html($field_settings[$k]['label']);
+									$k = esc_html($k);
 									$loading = __('Loading...');
+									$fieldName = "field[".$k."]";
+									$className = "field-$k";
+									//added in 1.8.4
 									//Display Text box design here
-									echo "<li><span class=\"label\">".$label."</span> <input class=\"field-".$k."\" type=\"text\" name=\"field[".$k."]\" value=\"".$loading."\" ".$disable." /></li>";
+									?><li>
+										<span class="label"><?php print esc_html($label);?></span>
+										<input class="<?php print esc_html($className);?>" type="text" name="<?php print esc_html($fieldName);?>" value="<?php print esc_html($loading);?>"  <?php print esc_html($disable);?> />
+									</li><?php
 								}
 								unset($fields[$k]);
+
 							}//Close If for check field name set in field array or not
 						}//close for each
 
@@ -618,8 +694,14 @@ class Advanced_Cf7_Db_Admin {
 									$label = esc_html($v);
 									$k = esc_html($k);
 									$loading = __('Loading...');
+									//added in 1.8.4
+									$fieldName = "field[".$k."]";
+									$className = "field-$k";
 									//Display Text box design here
-									echo "<li><span class=\"label\">".$label."</span> <input class=\"field-".$k."\" type=\"text\" name=\"field[".$k."]\" value=\"".$loading."\" ".$disable." /></li>";
+									?><li>
+										<span class="label"><?php print esc_html($label);?></span>
+										<input class="<?php print esc_html($className);?>" type="text" name="<?php print esc_html($fieldName);?>" value="<?php print esc_html($loading);?>"  <?php print esc_html($disable);?> />
+									</li><?php
 								}
 							}//close foreach
 						}//Close if
@@ -627,14 +709,14 @@ class Advanced_Cf7_Db_Admin {
 				?></ul>
 				<div class="cf7d-modal-footer">
 					<input type="hidden" name="arr_field_type" value="<?php print esc_html(json_encode($arr_field_type));?>">
-					<input type="submit" id="update_cf7_value" name="vsz_cf7_save_field_value" value="Save Changes" class="button button-primary button-large" />
+					<input type="submit" id="update_cf7_value" name="vsz_cf7_save_field_value" value="<?php esc_html_e('Save Changes',VSZ_CF7_TEXT_DOMAIN); ?>" class="button button-primary button-large" />
 				</div>
 			</form>
 			<!------------------------------------ Ajax loader ----------------------------------------->
 			<table style="display:none;" class="custom-overlay" id="overlayLoader">
 				<tbody>
 					<tr>
-						<td><img alt="Loading..." src="<?php echo plugin_dir_url(dirname( __FILE__)).'images/716.gif'; ?>"height="50" width="100"></td>
+						<td><img alt="Loading..." src="<?php echo esc_url(plugin_dir_url(dirname( __FILE__)).'images/716.gif'); ?>"height="50" width="100"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -681,11 +763,12 @@ class Advanced_Cf7_Db_Admin {
 					$arr_fields[$key]['show'] = intval($arrVal['show']);
 				}
 			}
-			$show_record = (int)($_POST['cf7_show_record']);
+			$show_record = (int)(sanitize_text_field($_POST['cf7_show_record']));
 			//Save Settings POPUP information in option table
 			add_option('vsz_cf7_settings_field_' . $fid, $arr_fields, '', 'no');
 			update_option('vsz_cf7_settings_field_' . $fid, $arr_fields);
 			update_option('vsz_cf7_settings_show_record_' . $fid, $show_record);
+
 		}//close if for save setting information
 
 		//Save form information here
@@ -713,18 +796,28 @@ class Advanced_Cf7_Db_Admin {
 				// This nonce is not valid.
 				return;
 			}
+
+			//added in 1.8.3
+			// Checking for the capability
+			$edit_cap = 'cf7_db_form_edit_'.$fid;
+			if(!cf7_check_capability( $edit_cap ) ){
+				//Current user does not have edit access
+				return;
+			}
+
+
 			$arr_field_type = '';
 
 			//Get field type information here
 			if(isset($_POST['arr_field_type']) && !empty($_POST['arr_field_type'])){
 				//Decode Json format string here
-				$arr_field_type = json_decode(wp_unslash($_POST['arr_field_type']),true);
+				$arr_field_type = json_decode(wp_unslash(sanitize_textarea_field($_POST['arr_field_type'])),true);
 			}
 
 			//Define option field type array
 			$arr_option_type = array('checkbox','radio','select');
 			//Get non editable fields information
-			$not_editable_field = apply_filters('vsz_cf7_not_editable_fields',array());
+			$not_editable_field = (array) apply_filters('vsz_cf7_not_editable_fields',array());
 			//Get entry related fields information
 			$arr_exist_keys = get_entry_related_fields_info($fid,$rid);
 
@@ -745,11 +838,11 @@ class Advanced_Cf7_Db_Admin {
 						//Check if field name already exist with entry or not
 						if(!empty($arr_exist_keys) && in_array($key,$arr_exist_keys)){
 							//If field name match with current entry then field information update
-							$wpdb->query($wpdb->prepare("UPDATE ".VSZ_CF7_DATA_ENTRY_TABLE_NAME." SET `value` = %s WHERE `name` = %s AND `data_id` = %d", sanitize_textarea_field($value), $key, $rid));
+							$wpdb->query($wpdb->prepare("UPDATE {$this->vsz_data_entry_table} SET `value` = %s WHERE `name` = %s AND `data_id` = %d", sanitize_textarea_field($value), sanitize_text_field($key), $rid));
 						}
 						else{
 							//If field name not match with current entry then new entry insert in DB
-							$wpdb->query($wpdb->prepare('INSERT INTO '.VSZ_CF7_DATA_ENTRY_TABLE_NAME.'(`cf7_id`, `data_id`, `name`, `value`) VALUES (%d,%d,%s,%s)', $fid, $rid, sanitize_text_field($key), sanitize_textarea_field($value)));
+							$wpdb->query($wpdb->prepare("INSERT INTO {$this->vsz_data_entry_table}(`cf7_id`, `data_id`, `name`, `value`) VALUES (%d,%d,%s,%s)", $fid, $rid, sanitize_text_field($key), sanitize_textarea_field($value)));
 						}
 					}
 					//Check if field type is text area
@@ -757,11 +850,11 @@ class Advanced_Cf7_Db_Admin {
 						//Check if field name already exist with entry or not
 						if(!empty($arr_exist_keys) && in_array($key,$arr_exist_keys)){
 							//If field name match with current entry then field information update
-							$wpdb->query($wpdb->prepare("UPDATE ".VSZ_CF7_DATA_ENTRY_TABLE_NAME." SET `value` = %s WHERE `name` = %s AND `data_id` = %d", sanitize_textarea_field($value), $key, $rid));
+							$wpdb->query($wpdb->prepare("UPDATE {$this->vsz_data_entry_table} SET `value` = %s WHERE `name` = %s AND `data_id` = %d", sanitize_textarea_field($value), sanitize_text_field($key), $rid));
 						}
 						else{
 							//If field name not match with current entry then new entry insert in DB
-							$wpdb->query($wpdb->prepare('INSERT INTO '.VSZ_CF7_DATA_ENTRY_TABLE_NAME.'(`cf7_id`, `data_id`, `name`, `value`) VALUES (%d,%d,%s,%s)', $fid, $rid, sanitize_text_field($key), sanitize_textarea_field($value)));
+							$wpdb->query($wpdb->prepare("INSERT INTO {$this->vsz_data_entry_table}(`cf7_id`, `data_id`, `name`, `value`) VALUES (%d,%d,%s,%s)", $fid, $rid, sanitize_text_field($key), sanitize_textarea_field($value)));
 						}
 
 					}//Close text area else if
@@ -769,11 +862,11 @@ class Advanced_Cf7_Db_Admin {
 						//Check if field name already exist with entry or not
 						if(!empty($arr_exist_keys) && in_array($key,$arr_exist_keys)){
 							//If field name match with current entry then field information update
-							$wpdb->query($wpdb->prepare("UPDATE ".VSZ_CF7_DATA_ENTRY_TABLE_NAME." SET `value` = %s WHERE `name` = %s AND `data_id` = %d", sanitize_text_field($value), $key, $rid));
+							$wpdb->query($wpdb->prepare("UPDATE {$this->vsz_data_entry_table} SET `value` = %s WHERE `name` = %s AND `data_id` = %d", sanitize_text_field($value), sanitize_text_field($key), $rid));
 						}
 						else{
 							//If field name not match with current entry then new entry insert in DB
-							$wpdb->query($wpdb->prepare('INSERT INTO '.VSZ_CF7_DATA_ENTRY_TABLE_NAME.'(`cf7_id`, `data_id`, `name`, `value`) VALUES (%d,%d,%s,%s)', $fid, $rid, sanitize_text_field($key), sanitize_text_field($value)));
+							$wpdb->query($wpdb->prepare("INSERT INTO {$this->vsz_data_entry_table}(`cf7_id`, `data_id`, `name`, `value`) VALUES (%d,%d,%s,%s)", $fid, $rid, sanitize_text_field($key), sanitize_text_field($value)));
 						}
 					}//Close else
 				}//Close foreach
@@ -793,9 +886,18 @@ class Advanced_Cf7_Db_Admin {
 						die('Security check');
 					}
 					//Get Delete row ID information
-					$del_id = implode(',', array_map('intval',$_POST['del_id']));
+					$del_id = array_map('sanitize_text_field',$_POST['del_id']);
+					$del_id = implode(',', array_map('intval',$del_id));
 					//Get Form ID
 					$fid = intval(sanitize_text_field($_POST['fid']));
+
+					//added in 1.8.3
+					// Checking for the capability
+					$edit_cap = 'cf7_db_form_edit_'.$fid;
+					if(!cf7_check_capability( $edit_cap ) ){
+						//Current user does not have edit access
+						wp_die(__('You do not have permission to delete files.'));
+					}
 
 					// Checking for file type
 					$arr_field_type_info = vsz_field_type_info($fid);
@@ -806,7 +908,7 @@ class Advanced_Cf7_Db_Admin {
 					$del_attach_key = array();
 					foreach ($fields as $k1 => $v1) {
 						if( isset($arr_field_type_info[$k1]) && $arr_field_type_info[$k1] == 'file'){
-							$del_attach_key[] = $k1;
+							$del_attach_key[] = sanitize_text_field($k1);
 						}
 					}
 
@@ -824,9 +926,10 @@ class Advanced_Cf7_Db_Admin {
 									$cf7d_upload_folder = VSZ_CF7_UPLOAD_FOLDER;
 									$dir_upload = $upload_dir['basedir'] . '/' . $cf7d_upload_folder;
 
-									$file_path = $dir_upload."/".basename($file_url);
-									if(file_exists($file_path)){
-										$ret = unlink($file_path);
+									$file_path = realpath($dir_upload."/".basename($file_url));
+									if(file_exists($file_path) && $file_path && (strpos($file_path, $dir_upload) === 0) ){
+										//$ret = unlink($file_path);
+										wp_delete_file( $file_path );
 									}
 								}
 							}
@@ -846,6 +949,7 @@ class Advanced_Cf7_Db_Admin {
 			$fid = (int)sanitize_text_field($_POST['fid']);
 
 			//Get export id related information
+			$ids_export = ((isset($_POST['del_id']) && !empty($_POST['del_id'])) ? implode(',', array_map('sanitize_text_field',$_POST['del_id'])) : '');
 			$ids_export = ((isset($_POST['del_id']) && !empty($_POST['del_id'])) ? implode(',', array_map('intval',$_POST['del_id'])) : '');
 			///Get export type related information
 			$type = sanitize_text_field($_POST['vsz-cf7-export']);
@@ -856,9 +960,6 @@ class Advanced_Cf7_Db_Admin {
 					break;
 				case 'excel':
 					vsz_cf7_export_to_excel($fid, $ids_export);
-					break;
-				case 'pdf':
-					vsz_cf7_export_to_pdf($fid, $ids_export);
 					break;
 				case '-1':
 					return;
@@ -876,6 +977,7 @@ class Advanced_Cf7_Db_Admin {
 	 * @param $_POST
 	 * rid = recordid
 	 * fid = CF7 formid
+	 * getEntryNonce = nonce value
 	 */
 	public function vsz_cf7_edit_form_ajax(){
 
@@ -883,28 +985,39 @@ class Advanced_Cf7_Db_Admin {
 		//Check entry id set or not in current request
 		$rid = ((isset($_POST['rid']) && !empty($_POST['rid'])) ? intval(sanitize_text_field($_POST['rid'])) : '');
 		$fid = ((isset($_POST['fid']) && !empty($_POST['fid'])) ? intval(sanitize_text_field($_POST['fid'])) : '');
+		//added in 1.8.3
+		$getEntryNonce = ((isset($_POST['getEntryNonce']) && !empty($_POST['getEntryNonce'])) ? sanitize_text_field($_POST['getEntryNonce']) : '');
 
 		if( empty( $rid ) || empty( $fid ) ){
-			echo json_encode('@@You do not have access to edit the data.');
+			echo esc_html(json_encode('@@You do not have access to edit the data.'));
 			exit;
 		}
+
+		//added in 1.8.3
+		//verify nonce value here
+		if(!wp_verify_nonce($getEntryNonce, 'vsz-cf7-get-entry-nonce-'.$fid)) {
+			echo esc_html(json_encode('@@You do not have access to edit the data.'));
+			exit;
+		}
+
+
 
 		// Checking for the capability
 		$edit_cap = 'cf7_db_form_edit_'.$fid;
 		if( !cf7_check_capability( $edit_cap ) ){
-			echo json_encode('@@You do not have access to edit the data for this form.');
+			echo esc_html(json_encode('@@You do not have access to edit the data for this form.'));
 			exit;
 		}
 
 		//If entry not empty
 		if(!empty($rid)){
 			//Get entry related all fields information
-			$sql = $wpdb->prepare("SELECT * FROM ".VSZ_CF7_DATA_ENTRY_TABLE_NAME." WHERE `data_id` = %d", $rid);
+			$sql = $wpdb->prepare("SELECT * FROM {$this->vsz_data_entry_table} WHERE `data_id` = %d", $rid);
 			$rows = $wpdb->get_results($sql);
 			$return = array();
 			//Set all fields name in array
 			foreach ($rows as $k => $v) {
-				$return[$v->name] = html_entity_decode(stripslashes($v->value));
+				$return[$v->name] = stripslashes($v->value);
 			}
 			//All fields encode in JSON format and return in AJAX request
 			exit(json_encode($return));
@@ -917,13 +1030,8 @@ class Advanced_Cf7_Db_Admin {
 	 * Define not editable fields name here
 	 */
 	public function vsz_cf7_not_editable_fields_callback(){
-		$cf7_not_editable_fields = array('submit_time','submit_ip','submit_user_id');
 
-		if(!empty($non_editable)){
-			foreach($non_editable as $val){
-				$cf7_not_editable_fields[] = $val;
-			}
-		}
+		$cf7_not_editable_fields = array('submit_time','submit_ip','submit_user_id');
 
 		return $cf7_not_editable_fields;
 	}
@@ -977,38 +1085,56 @@ class Advanced_Cf7_Db_Admin {
 			$role = get_role( 'administrator');
 			$args = array('post_type' => 'wpcf7_contact_form', 'posts_per_page' => -1);
 			$cf7Forms = get_posts( $args );
-			foreach($cf7Forms as $data){
-				$role->add_cap('cf7_db_form_view'.$data->ID);
-				$role->add_cap('cf7_db_form_edit_'.$data->ID);
+			//added in 1.8.4
+			if(!empty($cf7Forms)){
+				foreach($cf7Forms as $data){
+					$role->add_cap('cf7_db_form_view'.$data->ID);
+					$role->add_cap('cf7_db_form_edit_'.$data->ID);
+				}
 			}
 
-		}else if($cf7_db_version != $vsz_cf7db_current_version){
+
+		}
+		else if($cf7_db_version != $vsz_cf7db_current_version){
+
 			if (function_exists('is_multisite') && is_multisite()) {
-			// check if it is a network activation - if so, run the activation function for each blog id
-				 $old_blog = $wpdb->blogid;
+				// check if it is a network activation - if so, run the activation function for each blog id
+				$old_blog = $wpdb->blogid;
 				// Get all blog ids
 				$blogids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
-				foreach ($blogids as $blog_id) {
-					switch_to_blog($blog_id);
-					create_table_cf7_vdata_add_blog();
-					create_table_cf7_vdata_entry_add_blog();
+				//added in 1.8.4
+				if(!empty($blogids)){
+					foreach ($blogids as $blog_id) {
+						switch_to_blog($blog_id);
+						create_table_cf7_vdata_add_blog();
+						create_table_cf7_vdata_entry_add_blog();
+					}
 				}
 				switch_to_blog($old_blog);
-			}else{
-					create_table_cf7_vdata_add_blog();
-					create_table_cf7_vdata_entry_add_blog();
+
 			}
+			else{
+				//create new table entries here
+				create_table_cf7_vdata_add_blog();
+				create_table_cf7_vdata_entry_add_blog();
+			}
+
 			// Add Capability when update plugin
 			$role = get_role( 'administrator');
 			$args = array('post_type' => 'wpcf7_contact_form', 'posts_per_page' => -1);
 			$cf7Forms = get_posts( $args );
-			foreach($cf7Forms as $data){
-				$role->add_cap('cf7_db_form_view'.$data->ID);
-				$role->add_cap('cf7_db_form_edit_'.$data->ID);
+			//added in 1.8.4
+			if(!empty($cf7Forms)){
+				foreach($cf7Forms as $data){
+					$role->add_cap('cf7_db_form_view'.$data->ID);
+					$role->add_cap('cf7_db_form_edit_'.$data->ID);
+				}
 			}
+
 		   update_option('vsz_cf7_db_version',$vsz_cf7db_current_version);
 
 		}
+		//check current request from admin side
 		if(is_admin()){
 			// remove all capability assign to role or user
 			do_action('test_test',wp_get_current_user());
@@ -1021,15 +1147,17 @@ class Advanced_Cf7_Db_Admin {
 			}
 		}
 		add_shortcode( 'cf7-db-display-ip',array($this,'cf7_db_vsz_cf7_display_ip'));
+
 	}
 
 	/**
 	 * Short code execution related to hide the submit ip
 	 */
 	function cf7_db_vsz_cf7_display_ip($atts, $content, $name){
+
 		if(is_multisite()){
 			$arrInfo = shortcode_atts( array( 'site_id' => ''),$atts );
-			$check_id = $arrInfo['site_id'];
+			$check_id = sanitize_text_field($arrInfo['site_id']);
 			$current_id = get_current_blog_id();
 
 			if(!empty($check_id)){
@@ -1045,11 +1173,12 @@ class Advanced_Cf7_Db_Admin {
 			define('vsz_cf7_display_ip',true);
 		}
 
-		// define('vsz_cf7_display_ip',true);
 	}
 
 	// Create role and assign capability for user
 	public function vsz_cf7_create_role_for_contact_form($post_id){
+
+		$post_id = intval($post_id);
 		$post_type = get_post_type($post_id);
 		if($post_type != 'wpcf7_contact_form'){
 			return;
@@ -1057,40 +1186,71 @@ class Advanced_Cf7_Db_Admin {
 		$role = get_role( 'administrator');
 		$role->add_cap('cf7_db_form_view'.$post_id);
 		$role->add_cap('cf7_db_form_edit_'.$post_id);
+
 	}
 
 	// Function to upload file from edit file popup
 	function vsz_acf7_db_edit_scr_file_upload(){
 
-		// Verify the current user can upload files
-		if ( !current_user_can('upload_files') ){
-			print 'Not_accessed_to_upload_file';
-			wp_die(__('You do not have permission to upload files.'));
-		}
-		if(isset($_FILES) && is_array($_FILES) && empty($_FILES)){
-			print 'Not_accessed_to_upload_file';
+		//added in 1.8.3
+		// check nonce
+		if(!isset($_POST['vsz_cf7_edit_nonce']) || empty($_POST['vsz_cf7_edit_nonce'])){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
 			exit;
 		}
+
 		if(!isset($_POST["fid"]) || empty($_POST["fid"])){
-			print 'error';
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
 			exit;
 		}
+
+		$fid = (int)sanitize_text_field($_POST["fid"]);
+
+		//Verify nonce value
+		$nonce = sanitize_text_field($_POST['vsz_cf7_edit_nonce']);
+		if(!wp_verify_nonce( $nonce, 'vsz-cf7-edit-nonce-'.$fid)){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
+			exit;
+		}
+
+		// Verify the current user can upload or delete files
+		//added in 1.8.3
+		// Checking for the capability
+		$edit_cap = 'cf7_db_form_edit_'.$fid;
+		if(!cf7_check_capability( $edit_cap ) ){
+			//Current user does not have edit access
+			print esc_html('error@~@');
+			wp_die(__('You do not have permission to upload files.'));
+			exit;
+		}
+
+		if(isset($_FILES) && is_array($_FILES) && empty($_FILES)){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
+			exit;
+		}
+
 		if(!isset($_POST["rid"]) || empty($_POST["rid"])){
-			print 'error';
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
 			exit;
 		}
 		if(!isset($_POST["field"]) || empty($_POST["field"])){
-			print 'error';
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
 			exit;
 		}
 		$fileInfo = wp_check_filetype(basename($_FILES['image']['name']));
-		if (empty($fileInfo['ext'])) {
-			print 'Invalid_file_type._File_type_not_defined.';
+		if(empty($fileInfo['ext'])){
+			print esc_html('error@~@');
+			wp_die(__('Kindly upload valid file type.'));
 			exit;
 		}
 
 		global $wpdb;
-		$fid = (int)sanitize_text_field($_POST["fid"]);
 		$rid = (int)sanitize_text_field($_POST["rid"]);
 		$field = sanitize_text_field($_POST["field"]);
 
@@ -1100,9 +1260,12 @@ class Advanced_Cf7_Db_Admin {
 		wp_mkdir_p($temp_dir_upload);
 
 		if(is_array($_FILES) && !empty($_FILES)){
+
+			//verify file size here
 			$maxsize = 8000000;
 			if(($_FILES['image']['size'] >= $maxsize) || empty($_FILES['image']['size'])) {
-				echo  'invalid_size';
+				print esc_html('error@~@');
+				wp_die(__('You can upload maximum 7.60 MB file.'));
 				exit;
 			}
 			$filename = sanitize_text_field($_FILES["image"]["name"]);
@@ -1112,7 +1275,8 @@ class Advanced_Cf7_Db_Admin {
 			$validExtArray = array( 'jpg','jpeg','png','gif','pdf','doc','docx','ppt','pptx','odt','avi','ogg','m4a','mov','mp3','mp4','mpg','wav','wmv');
 			$ext = end((explode(".", $filename)));
 			if(!in_array($ext,$validExtArray)){
-				echo  'invalid_type';
+				print esc_html('error@~@');
+				wp_die(__('Kindly upload valid file type.'));
 				exit;
 			}
 
@@ -1120,16 +1284,21 @@ class Advanced_Cf7_Db_Admin {
 			$newfilename = wp_unique_filename($temp_dir_upload, $file_basename.$file_ext);
 
 			if(move_uploaded_file($_FILES["image"]["tmp_name"], $temp_dir_upload. '/' .$newfilename)){
-				$file_url = $upload_dir['baseurl'] . '/' . $acf7db_upload_folder.'/'.$newfilename;
+				$file_url = esc_url_raw($upload_dir['baseurl'] . '/' . $acf7db_upload_folder.'/'.$newfilename);
 
 				$res = $wpdb->update(VSZ_CF7_DATA_ENTRY_TABLE_NAME, array("value" => $file_url), array("data_id" => $rid, "cf7_id" => $fid, "name" => $field));
 				if($res !== false){
-					echo "$newfilename~~@@~~&&~~$file_url";
+					print esc_html('success@~@');
+					echo esc_html("$newfilename");
+					echo "~~@@~~&&~~";
+					echo esc_url("$file_url");
 					wp_die();
+					exit;
 				}
 				else{
-					echo "n";
-					wp_die();
+					print esc_html('error@~@');
+					wp_die(__('File is not uploaded, kindly try again later.'));
+					exit;
 				}
 			}
 		}
@@ -1142,24 +1311,57 @@ class Advanced_Cf7_Db_Admin {
 	 */
 	function vsz_acf7_db_edit_scr_file_delete(){
 
-		if(!isset($_POST["fid"]) || empty($_POST["fid"])){
-			print 'error';
-			exit;
-		}
-		if(!isset($_POST["rid"]) || empty($_POST["rid"])){
-			print 'error';
-			exit;
-		}
-		if(!isset($_POST["field"]) || empty($_POST["field"])){
-			print 'error';
-			exit;
-		}
-		if(!isset($_POST["val"]) || empty($_POST["val"])){
-			print 'error';
+		if(!isset($_POST["vsz_cf7_edit_nonce"]) || empty($_POST["vsz_cf7_edit_nonce"])){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
 			exit;
 		}
 
+		if(!isset($_POST["fid"]) || empty($_POST["fid"])){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
+			exit;
+		}
+
+		//get current form id here
 		$fid = (int)sanitize_text_field($_POST["fid"]);
+
+		//Verify nonce value
+		////add in 1.8.3
+		$nonce = sanitize_text_field($_POST['vsz_cf7_edit_nonce']);
+		if(!wp_verify_nonce( $nonce, 'vsz-cf7-edit-nonce-'.$fid)){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
+			exit;
+		}
+		// Verify the current user can upload or delete files
+		//added in 1.8.3
+		// Checking for the capability
+		$edit_cap = 'cf7_db_form_edit_'.$fid;
+		if(!cf7_check_capability( $edit_cap ) ){
+			//Current user does not have edit access
+			print esc_html('error@~@');
+			wp_die(__('You do not have permission to delete files.'));
+			exit;
+		}
+
+		if(!isset($_POST["rid"]) || empty($_POST["rid"])){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
+			exit;
+		}
+		if(!isset($_POST["field"]) || empty($_POST["field"])){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
+			exit;
+		}
+		if(!isset($_POST["val"]) || empty($_POST["val"])){
+			print esc_html('error@~@');
+			wp_die(__('Something may be wrong, please try again later.'));
+			exit;
+		}
+
+
 		$rid = (int)sanitize_text_field($_POST["rid"]);
 		$field = sanitize_text_field($_POST["field"]);
 		$val = sanitize_text_field($_POST["val"]);
@@ -1170,12 +1372,21 @@ class Advanced_Cf7_Db_Admin {
 			$upload_dir = wp_upload_dir();
 			$dir_upload = $upload_dir['basedir'] .'/' .VSZ_CF7_UPLOAD_FOLDER;
 
-			unlink($dir_upload.'/'.$val);
-			echo "y";
+			$delete_path = path_join($dir_upload,$val);
+
+			$realDeletePath = realpath($delete_path);
+			if(file_exists($realDeletePath) && $realDeletePath && (strpos($realDeletePath, $dir_upload) === 0)){
+				wp_delete_file( $realDeletePath );
+
+				echo esc_html("y");
+			}else{
+				echo esc_html("n");
+			}
+
 			wp_die();
 		}
 		else{
-			echo "n";
+			echo esc_html("n");
 			wp_die();
 		}
 	}
@@ -1186,11 +1397,24 @@ class Advanced_Cf7_Db_Admin {
  * Generate CSV file here
  */
 function vsz_cf7_export_to_csv($fid, $ids_export = ''){
-    global $wpdb;
+
+	global $wpdb;
+
+	if(!isset($_POST['_wpnonce']) || (isset($_POST['_wpnonce']) && empty($_POST['_wpnonce']))){
+		return esc_html('You do not have the permission to export the data');
+	}
+
+	//Get nonce value
+	$nonce = sanitize_text_field($_POST['_wpnonce']);
+	//Verify nonce value
+	if(!wp_verify_nonce($nonce, 'vsz-cf7-action-nonce')) {
+		return esc_html('You do not have the permission to export the data');
+	}
+
 
 	$fid = intval($fid);
     if( empty( $fid ) ){
-    	return 'You do not have the permission to export the data';
+    	return esc_html('You do not have the permission to export the data');
     }
     $fields = vsz_cf7_get_db_fields($fid);
 
@@ -1230,9 +1454,21 @@ function vsz_cf7_export_to_excel($fid, $ids_export){
 
 	global $wpdb;
 
+	if(!isset($_POST['_wpnonce']) || (isset($_POST['_wpnonce']) && empty($_POST['_wpnonce']))){
+		return esc_html('You do not have the permission to export the data');
+	}
+
+	//Get nonce value
+	$nonce = sanitize_text_field($_POST['_wpnonce']);
+	//Verify nonce value
+	if(!wp_verify_nonce($nonce, 'vsz-cf7-action-nonce')) {
+		return esc_html('You do not have the permission to export the data');
+	}
+
+
 	$fid = intval($fid);
 	if( empty( $fid ) ){
-    	return 'You do not have the permission to export the data';
+    	return esc_html('You do not have the permission to export the data');
     }
     $fields = vsz_cf7_get_db_fields($fid);
     $fields1 = vsz_field_type_info($fid);
@@ -1256,14 +1492,15 @@ function vsz_cf7_export_to_excel($fid, $ids_export){
 		//create excel class object
 		$xls = new PHPExcel();
 
+
 		//First we will set header in excel file
 		$col = 0;
 		$row = 1;
 		foreach($arrHeader as $colName){
-			$cell = $xls->getCellNo($row, $col);
-			$xls->setActiveSheetIndex(0)->setCellValue($cell,$colName);
+			$xls->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $colName);
 			$col++;
 		}
+
 
 		$row = 2;
 		foreach ($data_sorted as $k => $v){
@@ -1276,6 +1513,7 @@ function vsz_cf7_export_to_excel($fid, $ids_export){
 				$cell = $xls->getCellNo($row, $col);
 				$xls->setActiveSheetIndex(0)->setCellValue($cell,$colVal);
 				$col++;
+
 			}
 			//Consider new row for each entry here
 			$row++;
@@ -1294,121 +1532,7 @@ function vsz_cf7_export_to_excel($fid, $ids_export){
 		exit;
 	}
 }
-//Generate pdf file here
-function vsz_cf7_export_to_pdf($fid, $ids_export){
-	global $wpdb;
-	$fid = intval($fid);
-	if( empty( $fid ) ){
-    	return 'You do not have the permission to export the data';
-    }
-	$fields = vsz_cf7_get_db_fields($fid);
 
-	//Get form id related contact form object
-	$obj_form = vsz_cf7_get_the_form_list($fid);
-	//get current form title
-	$form_title = esc_html($obj_form[0]->title());
-	//Get export data
-	$data = create_export_query($fid, $ids_export, 'data_id desc');
-
-	if(!empty($data)){
-		//Setup export data
-		$data_sorted = wp_unslash(vsz_cf7_sortdata($data));
-
-		$arrHeader = array_values(array_map('sanitize_text_field',$fields));
-
-		//Check that the class exists before trying to use it
-		if(!class_exists('MYPDF')){
-			//Include pdf class file
-
-			require_once(dirname(__FILE__).'/pdfgenerate/dompdf/autoload.inc.php');
-
-			$pdf = new Dompdf\Dompdf();
-			$pdf->set_option('defaultFont', 'helvetica');
-			$pdf->setPaper('A4', 'landscape');
-			// add a page
-
-			$docName ="";
-			$timeStamp = date('Ymdhis');
-			$form_title = preg_replace('/\s+/', '_', $form_title);
-			$docName = $form_title."-".$timeStamp;
-
-			// pdf html content
-			$content = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-						"http://www.w3.org/TR/html4/loose.dtd">
-						<html>
-						<head>
-						<link rel="important stylesheet" href="chrome://messagebody/skin/messageBody.css">
-						<meta http-equiv="Content-Type" content="text/html; " />
-						</head>
-						<body><style>table, th, td {
-							border: 1px solid #ddd;
-							border-collapse: collapse;
-							table-layout:fixed;
-							width:100%;
-							white-space: normal;
-							word-wrap: break-word;
-							font-family: DroidSansFallback;
-						}
-						td{
-							padding:5px;
-						}
-						</style>';
-			$content.= '<div style="text-align:center;font-size:18px;margin:20px;line-height:30px;">'.$form_title.'</div>';
-			$content.= '<table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #ccc;margin-top:0;margin-left:auto;margin-right:auto;font-family:arial;margin-bottom:10px;width:100%;" >';
-
-			$i=0;
-			$content .= '<tr bgcolor="#000" style="color:#fff;">';
-				foreach($arrHeader as $colName){
-				$content .= '<td style="font-family:arial;font-weight:bold;font-size:14px;color:#fff;padding:5px;line-height:20px;" CELLSPACING=10>'.$colName.'</td>';
-			}
-			$content .= '</tr>';
-
-			foreach ($data_sorted as $k => $v){
-				$content .= '<tr>';
-				//Define column index here
-				$i=0;
-				//Consider new row for each entry here
-
-				//Get column order wise value here
-				foreach ($fields as $k2 => $v2){
-					$colVal = ((isset($v[$k2])) ? html_entity_decode($v[$k2]) : '');
-					$content .= '<td style="padding:5px;line-height:20px;" CELLSPACING=10>'.htmlentities(stripslashes($colVal)).'</td>';
-				}
-				$content .= '</tr>';
-
-			}
-
-
-			$content.='</table></body></html>';
-
-			// *******************************************************************
-			//Close and output PDF document
-
-			$upload_dir = wp_upload_dir();
-
-			$folderPath = $upload_dir['path']."/";
-
-
-			$fileFullName = $docName.'.pdf';
-			$readFilePath = $folderPath.$fileFullName;
-
-			//$filePath = $folderPath;
-			$pdf->loadHtml($content);
-			$pdf->render();
-			$pdf->stream($readFilePath);
-			// $pdf->Output($folderPath . $docName . '.pdf', 'F');
-			 if(file_exists($readFilePath)){
-				header('Content-Type: application/pdf');
-				header('Content-Disposition: attachment; filename="'.$docName.'.pdf"' );
-				readfile($readFilePath);
-				// delete pdf file
-				unlink($readFilePath);
-				exit;
-			}
-		}
-	}
-
-}
 
 //Setup export related query here
 function create_export_query($fid,$ids_export,$cf7d_entry_order_by){
@@ -1425,17 +1549,28 @@ function create_export_query($fid,$ids_export,$cf7d_entry_order_by){
 		$e_date = false;
 	}
 
+	//added in 1.8.3
+	if(!empty($ids_export)){
+		$ids_export = implode(',',array_map('intval',explode(',',$ids_export)));
+	}
+
+	$cf7d_entry_order_by = sanitize_sql_orderby($cf7d_entry_order_by);
+	//Get table name for data entry
+	$table_name = sanitize_text_field(VSZ_CF7_DATA_ENTRY_TABLE_NAME);
+
 	//Create Export Query on the basis of Listing screen filter
 
 	//Check any search related filter active or not
 	if(isset($_POST['search_cf7_value']) && !empty($_POST['search_cf7_value']) && isset($_POST['start_date']) && isset($_POST['end_date']) && empty($_POST['start_date']) && empty($_POST['end_date'])){
 
 		$search = sanitize_text_field($_POST['search_cf7_value']);
-		$query = "SELECT * FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME.
-						"` WHERE `cf7_id` = ".$fid." AND data_id IN(SELECT * FROM (SELECT data_id FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."`
-						WHERE 1 = 1 AND `cf7_id` = ".$fid." ".((!empty($search)) ? "AND `value` LIKE '%%".$search."%%'" : "").' '.
-						((!empty($ids_export)) ? " AND data_id IN(".$ids_export.")" : '').
-						"  GROUP BY `data_id` ORDER BY ".$cf7d_entry_order_by." ) temp_table) ORDER BY " . $cf7d_entry_order_by;
+
+		if(!empty($search) && !empty($ids_export)){
+			$query = $wpdb->prepare("SELECT * FROM `{$table_name}` WHERE `cf7_id` = %d AND data_id IN(SELECT * FROM (SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d AND `value` LIKE '%%"."%s"."%%' AND data_id IN({$ids_export}) GROUP BY `data_id` ORDER BY {$cf7d_entry_order_by} ) temp_table) ORDER BY {$cf7d_entry_order_by}", $fid, $fid, $search);
+
+		}else if(!empty($search) && empty($ids_export)){
+			$query = $wpdb->prepare("SELECT * FROM `{$table_name}` WHERE `cf7_id` = %d AND data_id IN(SELECT * FROM (SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d AND `value` LIKE '%%"."%s"."%%'  GROUP BY `data_id` ORDER BY {$cf7d_entry_order_by} ) temp_table) ORDER BY {$cf7d_entry_order_by}" , $fid, $fid, $search);
+		}
 	}
 	//Check date wise filter active or not
 	else if(isset($_POST['search_cf7_value']) && empty($_POST['search_cf7_value']) && isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['start_date']) && !empty($_POST['end_date']) && $s_date !== false && $e_date !== false){
@@ -1444,17 +1579,19 @@ function create_export_query($fid,$ids_export,$cf7d_entry_order_by){
 		$start_date =  date_format($s_date,"Y-m-d");
 
 		//Get end date information
-		$end_date =  date_format($e_date,"Y-m-d");
+		$end_date =  date_format($e_date,"Y-m-d")." 23:59:59";
 
-		$search_date_query = "AND `name` = 'submit_time' AND value between '".$start_date."' and '".$end_date." 23:59:59'";
+		if(!empty($ids_export)){
 
-		$query = "SELECT * FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."` WHERE `cf7_id` = ".$fid." AND data_id IN(
-					SELECT * FROM (
-						SELECT data_id FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."` WHERE 1 = 1 AND `cf7_id` = ".$fid." ".$search_date_query.' '. ((!empty($ids_export)) ? " AND data_id IN(".$ids_export.")" : '')."
-							GROUP BY `data_id` ORDER BY ".$cf7d_entry_order_by."
-						)
-					temp_table)
-					ORDER BY " . $cf7d_entry_order_by;
+			$query = $wpdb->prepare("SELECT * FROM `{$table_name}` WHERE `cf7_id` = %d AND data_id IN( SELECT * FROM ( SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d AND `name` = 'submit_time' AND value between %s and %s AND data_id IN({$ids_export}) GROUP BY `data_id` ORDER BY {$cf7d_entry_order_by} ) temp_table) ORDER BY {$cf7d_entry_order_by}", $fid, $fid, $start_date, $end_date);
+
+		}else if(empty($ids_export)){
+
+			$query = $wpdb->prepare("SELECT * FROM `{$table_name}` WHERE `cf7_id` = %d AND data_id IN( SELECT * FROM ( SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d AND `name` = 'submit_time' AND value between %s and %s GROUP BY `data_id` ORDER BY {$cf7d_entry_order_by} ) temp_table) ORDER BY {$cf7d_entry_order_by}", $fid, $fid, $start_date, $end_date);
+
+		}
+
+
 	}
 	//Check search and date wise filter active or not
 	else if(isset($_POST['search_cf7_value']) && !empty($_POST['search_cf7_value']) && isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['start_date']) && !empty($_POST['end_date']) && $s_date !== false && $e_date !== false){
@@ -1467,8 +1604,7 @@ function create_export_query($fid,$ids_export,$cf7d_entry_order_by){
 		//Get end date information
 		$end_date =  date_format($e_date,"Y-m-d").' 23:59:59';
 
-		$date_query = "SELECT data_id FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."` WHERE 1 = 1 AND `cf7_id` = ".$fid." AND `name` = 'submit_time' AND
-						value between '".$start_date."' and '".$end_date."' GROUP BY `data_id` ORDER BY `data_id` DESC";
+		$date_query = $wpdb->prepare("SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d AND `name` = 'submit_time' AND value between %s and %s GROUP BY `data_id` ORDER BY `data_id` DESC", $fid, $start_date, $end_date);
 
 		//print $date_query;
 		$rs_date = $wpdb->get_results($date_query);
@@ -1487,27 +1623,23 @@ function create_export_query($fid,$ids_export,$cf7d_entry_order_by){
 			}
 			$data_ids = rtrim($data_ids,',');
 		}
-		$search_date_query = "";
-		$query = "SELECT * FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."` WHERE `cf7_id` = ".$fid." AND data_id IN(
-					SELECT * FROM (
-						SELECT data_id FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."` WHERE 1 = 1 AND `cf7_id` = ".$fid." ".$search_date_query." ".((!empty($search)) ? "
-							AND `value` LIKE '%%".$search."%%'" : ""). " AND data_id IN (".$data_ids.")
-							GROUP BY `data_id` ORDER BY ".$cf7d_entry_order_by."
-						)
-					temp_table)
-					ORDER BY " . $cf7d_entry_order_by;
+
+		$query = $wpdb->prepare("SELECT * FROM `{$table_name}` WHERE `cf7_id` = %d AND data_id IN( SELECT * FROM ( SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d AND `value` LIKE '%%"."%s"."%%' AND data_id IN ({$data_ids}) GROUP BY `data_id` ORDER BY {$cf7d_entry_order_by}) temp_table) ORDER BY {$cf7d_entry_order_by}", $fid, $fid, $search);
 
 	}
 	//Not active any filter on listing screen
 	else{
 
-		$query = "SELECT * FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."` WHERE `cf7_id` = ".$fid." AND data_id IN(
-					SELECT * FROM (
-						SELECT data_id FROM `".VSZ_CF7_DATA_ENTRY_TABLE_NAME."` WHERE 1 = 1 AND `cf7_id` = ".$fid.' '. ((!empty($ids_export)) ? " AND data_id IN(".$ids_export.")" : '')."
-							GROUP BY `data_id` ORDER BY ".$cf7d_entry_order_by."
-						)
-					temp_table)
-					ORDER BY " . $cf7d_entry_order_by;
+		if(!empty($ids_export)){
+
+			$query = $wpdb->prepare("SELECT * FROM `{$table_name}` WHERE `cf7_id` = %d AND data_id IN( SELECT * FROM ( SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d AND data_id IN({$ids_export}) GROUP BY `data_id` ORDER BY {$cf7d_entry_order_by} ) temp_table) ORDER BY {$cf7d_entry_order_by}", $fid, $fid);
+
+		}else{
+
+			$query = $wpdb->prepare("SELECT * FROM `{$table_name}` WHERE `cf7_id` = %d AND data_id IN( SELECT * FROM ( SELECT data_id FROM `{$table_name}` WHERE 1 = 1 AND `cf7_id` = %d GROUP BY `data_id` ORDER BY {$cf7d_entry_order_by} ) temp_table) ORDER BY {$cf7d_entry_order_by}", $fid, $fid);
+
+		}
+
 	}
 
 	//Execuste query

@@ -178,6 +178,8 @@ jQuery(document).ready(function($) {
 		document.getElementById('overlayLoader').style.display = "block";
 		var rid = parseInt(jQuery(this).data('rid'));
 		var fid = parseInt(jQuery('#cf7_id').val());
+		//added in 1.8.3
+		var getEntryNonce = jQuery(this).data('nonce');
 
 		var arr_field_type = jQuery.parseJSON(jQuery('form#cf7d-modal-form-edit-value input[name="arr_field_type"]').val());
 		var arr_option = ['radio','checkbox','select'];
@@ -218,7 +220,9 @@ jQuery(document).ready(function($) {
             type: 'POST',
             data: {
             	 	'rid': rid,
-            	 	'fid': fid
+            	 	'fid': fid,
+					//added in 1.8.3
+            	 	'getEntryNonce': getEntryNonce
         		  },
         })
         .done(function(data) {
@@ -376,7 +380,10 @@ function add_remove_file(index,filename){
 				if(confirm("Are you sure to remove the file? File will be deleted permanently and could not be retrieved.")){
 
 					var fid = jQuery("input[name='fid']").val();
-					var rid = jQuery("input[name='rid']").val();
+					//var rid = jQuery("input[name='rid']").val();
+					//added in 1.8.3
+					var rid = jQuery(this).closest('form').find("input[name='rid']").val();
+					var editNonce = jQuery("input[name='vsz_cf7_edit_nonce']").val();
 					var field = index;
 
 					var fd = new FormData();
@@ -385,6 +392,8 @@ function add_remove_file(index,filename){
 					fd.append( "field", field);
 					fd.append( "val", filename);
 					fd.append( "action", "acf7_db_edit_scr_file_delete");
+					//added in 1.8.3
+					fd.append( "vsz_cf7_edit_nonce", editNonce);
 
 					jQuery.ajax({
 						url: ajaxurl,
@@ -396,80 +405,105 @@ function add_remove_file(index,filename){
 							document.getElementById('overlayLoader').style.display = "block";
 						},
 						success: function(data) {
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().prepend('<input type="file" name="field['+index+']" class="field-'+index+'-val edit-field-file-val" />');
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('a').remove();
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<span class="margin_left">Maximum file size allowed : 7.60 MB.</span><span class="margin_left" style="display: block;">It is possible that server has limit less than 7.60 MB, in that case it can terminate the request. It is advisable to keep upload file size as minimum as possible.</span>');
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).hide();
+							//add in 1.8.3
+							if(data.includes('@~@')){
 
-							document.getElementById('overlayLoader').style.display = "none";
-
-							jQuery(".field-"+index+"-val").change(function(){
-								var thisdata = jQuery(this);
-								var fileName = jQuery(thisdata).val();
-								var checkvalidate = 1;
-
-								if(fileName != "" && fileName != undefined){
-									var fd = new FormData();
-									var fid = jQuery("input[name='fid']").val();
-									var rid = jQuery("input[name='rid']").val();
-									var field = index;
-
-									fd.append( "image", jQuery(thisdata)[0].files[0]);
-									fd.append( "action", "acf7_db_edit_scr_file_upload");
-									fd.append( "fid", fid);
-									fd.append( "rid", rid);
-									fd.append( "field", field);
-
-									jQuery.ajax({
-										url: ajaxurl,
-										type: 'POST',
-										data : fd,
-										processData: false,
-										contentType: false,
-										beforeSend: function() {
-											document.getElementById('overlayLoader').style.display = "block";
-										},
-
-										success: function(data) {
-											if(data == "Not_accessed_to_upload_file"){
-												alert("You do not have permission to upload files.");
-											}
-											else if(data == "invalid_type"){
-												alert("Invalid file type.");
-											}
-											else if(data == "invalid_size"){
-												alert("Maximum file size allowed is 7.60 MB.");
-											}
-											else{
-												dataArr = data.split("~~@@~~&&~~");
-
-												var filename = dataArr[0];
-												var el = dataArr[1];
-
-												jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', filename);
-												jQuery('form#cf7d-modal-form-edit-value .field-' + index).css("border","");
-												jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a class="margin_left" href="'+el+'" target="_blank" download >Download</a>');
-												jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a value="Change" class="vsz_cf7_db_file_edit" style="margin-left: 10px;" href="javascript:void(0);" >Remove</a>');
-												jQuery('form#cf7d-modal-form-edit-value .field-' + index).show();
-												jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('.field-'+index+'-val').remove();
-												jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('span.margin_left').remove();
-
-												// Calling function which will handle the removal and new upload of the files
-												add_remove_file(index,filename);
-											}
-
-											document.getElementById('overlayLoader').style.display = "none";
-										},
-
-										error: function(data) {
-											console.log(data);
-											document.getElementById('overlayLoader').style.display = "none";
-											alert("Sorry file was not uploaded.");
-											return false;
-										},
-									});
+								var arrRes = data.split('@~@');
+								if(arrRes[0] == 'error'){
+									document.getElementById('overlayLoader').style.display = "none";
+									alert(arrRes[1]);
 								}
-							});
+							}
+							else{
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().prepend('<input type="file" name="field['+index+']" class="field-'+index+'-val edit-field-file-val" />');
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('a').remove();
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<span class="margin_left">Maximum file size allowed : 7.60 MB.</span><span class="margin_left" style="display: block;">It is possible that server has limit less than 7.60 MB, in that case it can terminate the request. It is advisable to keep upload file size as minimum as possible.</span>');
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).hide();
+
+								document.getElementById('overlayLoader').style.display = "none";
+
+								jQuery(".field-"+index+"-val").change(function(){
+									var thisdata = jQuery(this);
+									var fileName = jQuery(thisdata).val();
+									var checkvalidate = 1;
+
+									if(fileName != "" && fileName != undefined){
+										var fd = new FormData();
+										var fid = jQuery("input[name='fid']").val();
+										//var rid = jQuery("input[name='rid']").val();
+										//added in 1.8.3
+										var rid = jQuery(this).closest('form').find("input[name='rid']").val();
+										var field = index;
+										//added in 1.8.3
+										var editNonce = jQuery("input[name='vsz_cf7_edit_nonce']").val();
+
+										fd.append( "image", jQuery(thisdata)[0].files[0]);
+										fd.append( "action", "acf7_db_edit_scr_file_upload");
+										fd.append( "fid", fid);
+										fd.append( "rid", rid);
+										fd.append( "field", field);
+										//added in 1.8.3
+										fd.append( "vsz_cf7_edit_nonce", editNonce);
+
+										jQuery.ajax({
+											url: ajaxurl,
+											type: 'POST',
+											data : fd,
+											processData: false,
+											contentType: false,
+											beforeSend: function() {
+												document.getElementById('overlayLoader').style.display = "block";
+											},
+											success: function(data) {
+
+												//add in 1.8.3
+												if(data.includes('@~@')){
+
+													var arrRes = data.split('@~@');
+													if(arrRes[0] == 'error'){
+														document.getElementById('overlayLoader').style.display = "none";
+														alert(arrRes[1]);
+													}
+													else if(arrRes[0] == 'success'){
+
+														//get uploaded file information here
+														dataArr = arrRes[1].split("~~@@~~&&~~");
+
+														var filename = dataArr[0];
+														var el = dataArr[1];
+
+														jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', filename);
+														jQuery('form#cf7d-modal-form-edit-value .field-' + index).css("border","");
+														jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a class="margin_left" href="'+el+'" target="_blank" download >Download</a>');
+														jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a value="Change" class="vsz_cf7_db_file_edit" style="margin-left: 10px;" href="javascript:void(0);" >Remove</a>');
+														jQuery('form#cf7d-modal-form-edit-value .field-' + index).show();
+														jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('.field-'+index+'-val').remove();
+														jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('span.margin_left').remove();
+
+														// Calling function which will handle the removal and new upload of the files
+														add_remove_file(index,filename);
+														document.getElementById('overlayLoader').style.display = "none";
+
+													}
+												}
+												else{
+													document.getElementById('overlayLoader').style.display = "none";
+													alert("Sorry file was not uploaded, please try again later.");
+												}
+
+											},
+											error: function(data) {
+												console.log(data);
+												document.getElementById('overlayLoader').style.display = "none";
+												alert("Sorry file was not uploaded.");
+												return false;
+											},
+										});
+									}
+								});
+							}
+
+
 						},
 						error: function(data) {
 							console.log(data);
@@ -499,14 +533,20 @@ function add_remove_file(index,filename){
 			if(fileName != "" && fileName != undefined){
 				var fd = new FormData();
 				var fid = jQuery("input[name='fid']").val();
-				var rid = jQuery("input[name='rid']").val();
 				var field = index;
+				//var rid = jQuery("input[name='rid']").val();
+				//added in 1.8.3
+				var rid = jQuery(this).closest('form').find("input[name='rid']").val();
+				var editNonce = jQuery("input[name='vsz_cf7_edit_nonce']").val();
+
 
 				fd.append( "image", jQuery(thisdata)[0].files[0]);
 				fd.append( "action", "acf7_db_edit_scr_file_upload");
 				fd.append( "fid", fid);
 				fd.append( "rid", rid);
 				fd.append( "field", field);
+				//added in 1.8.3
+				fd.append( "vsz_cf7_edit_nonce", editNonce);
 
 				jQuery.ajax({
 					url: ajaxurl,
@@ -519,36 +559,42 @@ function add_remove_file(index,filename){
 					},
 
 					success: function(data) {
-						if(data == "Not_accessed_to_upload_file"){
-							alert("You do not have permission to upload files.");
-						}
-						else if(data == "invalid_type"){
-							alert("Invalid file type.");
-						}
-						else if(data == "invalid_size"){
-							alert("Maximum file size allowed is 7.60 MB.");
+
+						//add in 1.8.3
+						if(data.includes('@~@')){
+
+							var arrRes = data.split('@~@');
+							if(arrRes[0] == 'error'){
+								document.getElementById('overlayLoader').style.display = "none";
+								alert(arrRes[1]);
+							}
+							else if(arrRes[0] == 'success'){
+
+								//get uploaded file information here
+								dataArr = arrRes[1].split("~~@@~~&&~~");
+
+								var filename = dataArr[0];
+								var el = dataArr[1];
+
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', filename);
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).css("border","");
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a class="margin_left" href="'+el+'" target="_blank" download >Download</a>');
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a value="Change" class="vsz_cf7_db_file_edit" style="margin-left: 10px;" href="javascript:void(0);" >Remove</a>');
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).show();
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('.field-'+index+'-val').remove();
+								jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('span.margin_left').remove();
+
+								// Calling function which will handle the removal and new upload of the files
+								add_remove_file(index,filename);
+								document.getElementById('overlayLoader').style.display = "none";
+
+							}
 						}
 						else{
-							dataArr = data.split("~~@@~~&&~~");
-
-							var filename = dataArr[0];
-							var el = dataArr[1];
-
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', filename);
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).css("border","");
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a class="margin_left" href="'+el+'" target="_blank" download >Download</a>');
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a value="Change" class="vsz_cf7_db_file_edit" style="margin-left: 10px;" href="javascript:void(0);" >Remove</a>');
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).show();
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('.field-'+index+'-val').remove();
-							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('span.margin_left').remove();
-
-							// Calling function which will handle the removal and new upload of the files
-							add_remove_file(index,filename);
+							document.getElementById('overlayLoader').style.display = "none";
+							alert("Sorry file was not uploaded, please try again later.");
 						}
-
-						document.getElementById('overlayLoader').style.display = "none";
 					},
-
 					error: function(data) {
 						console.log(data);
 						document.getElementById('overlayLoader').style.display = "none";
