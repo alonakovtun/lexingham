@@ -50,3 +50,21 @@ require THEME_DIR . 'inc/session.php';
 
 /** woocommerce related hooks, filters and functions **/
 require THEME_DIR . 'inc/woocommerce.php';
+
+
+if (!defined('_S_VERSION')) {
+	// Replace the version number of the theme on each release.
+	define('_S_VERSION', '1.0.0');
+}
+
+function bt_scripts()
+{
+    wp_enqueue_style('bt-style', get_stylesheet_uri(), array(), _S_VERSION);
+
+    wp_enqueue_style('bt-main-style', get_template_directory_uri() . '/assets/css/main.min.css', array(), _S_VERSION);
+
+    wp_register_script('bt-scripts', get_template_directory_uri() . '/assets/js/main.min.js', array(), _S_VERSION, true);
+   
+    wp_enqueue_script('bt-scripts');
+}
+add_action('wp_enqueue_scripts', 'bt_scripts');

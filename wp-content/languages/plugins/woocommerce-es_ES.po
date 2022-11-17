@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-06-19 15:41:07+0000\n"
+"PO-Revision-Date: 2021-07-12 17:12:25+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1544,7 +1544,7 @@ msgstr "Códigos de país que son compatibles con los impuestos automáticos."
 
 #: packages/woocommerce-admin/src/API/OnboardingTasks.php:138
 msgid "Sorry, you are not allowed to retrieve onboarding status."
-msgstr "Lo siento, no tienes permisos para recuperar el estado de despegue."
+msgstr "Lo siento, no tienes permisos para recuperar el estado de la puesta en marcha."
 
 #: packages/woocommerce-admin/src/API/Notes.php:364
 msgid "Please provide an array of IDs through the noteIds param."
@@ -1792,7 +1792,7 @@ msgstr "Alibori"
 #: includes/tracks/events/class-wc-admin-setup-wizard-tracking.php:171
 #: includes/admin/class-wc-admin-notices.php:278
 msgid "Onboarding is maintained in WooCommerce Admin."
-msgstr "El despegue sigue en la administración de WooCommerce."
+msgstr "La puesta en marcha sigue en la administración de WooCommerce."
 
 #: i18n/countries.php:18
 msgid "Åland Islands"
@@ -4212,7 +4212,7 @@ msgstr "Personaliza la página de inicio de tu tienda"
 
 #: packages/woocommerce-admin/src/Notes/PersonalizeStore.php:48
 msgid "The homepage is one of the most important entry points in your store. When done right it can lead to higher conversions and engagement. Don't forget to personalize the homepage that we created for your store during the onboarding."
-msgstr "La página de inicio es uno de los puntos de entrada más importantes de tu tienda. Cuando se hace bien, puede dirigir a mayores conversiones y participación. No olvides personalizar la página de inicio que hemos creado para tu tienda durante el despegue."
+msgstr "La página de inicio es uno de los puntos de entrada más importantes de tu tienda. Cuando se hace bien, puede dirigir a mayores conversiones y participación. No olvides personalizar la página de inicio que hemos creado para tu tienda durante la puesta en marcha."
 
 #: packages/woocommerce-admin/src/Notes/WooCommercePayments.php:104
 msgid "Securely accept credit and debit cards on your site. Manage transactions without leaving your WordPress dashboard. Only with <strong>WooCommerce Payments</strong>."
@@ -4304,7 +4304,7 @@ msgstr "Asistente de configuración de perfil"
 
 #: packages/woocommerce-admin/src/Features/Onboarding.php:907
 msgid "WooCommerce Onboarding"
-msgstr "Despegue de WooCommerce"
+msgstr "Puesta en marcha de WooCommerce"
 
 #. translators: site currency symbol (used to show that the product costs
 #. money)
@@ -4519,7 +4519,7 @@ msgstr "Si se completó o no el perfil."
 
 #: packages/woocommerce-admin/src/API/OnboardingProfile.php:146
 msgid "Onboarding profile data has been updated."
-msgstr "Los datos del perfil de despegue se han actualizado."
+msgstr "Los datos del perfil de la puesta en marcha se han actualizado."
 
 #: packages/woocommerce-admin/src/API/Notes.php:672
 msgid "An array of actions, if any, for the note."
@@ -9578,12 +9578,12 @@ msgstr "Icono de WooCommerce Services"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:1116
 msgid "A live rate is the exact cost to ship an order, quoted directly from the shipping carrier."
-msgstr "Una tarifa en directo es el coste exacto para enviar un pedido, cotizada directamente por el transportista de los envíos."
+msgstr "Una tarifa de producción es el coste exacto para enviar un pedido, cotizada directamente por el transportista de los envíos."
 
 #. translators: %1$s: live rates tooltip text, %2$s: shipping extensions URL
 #: includes/admin/class-wc-admin-setup-wizard.php:1104
 msgid "If you'd like to offer <span class=\"help_tip\" data-tip=\"%1$s\">live rates</span> from a specific carrier (e.g. UPS) you can find a variety of extensions available for WooCommerce <a href=\"%2$s\" target=\"_blank\">here</a>."
-msgstr "Si quieres ofrecer <span class=\"help_tip\" data-tip=\"%1$s\">tarifas en directo</span> de un transportista específico (p.ej. UPS) puedes encontrar una amplia variedad de extensiones disponibles para WooCommerce <a href=\"%2$s\" target=\"_blank\">aquí</a>."
+msgstr "Si quieres ofrecer <span class=\"help_tip\" data-tip=\"%1$s\">tarifas de producción</span> de un transportista específico (p.ej. UPS) puedes encontrar una amplia variedad de extensiones disponibles para WooCommerce <a href=\"%2$s\" target=\"_blank\">aquí</a>."
 
 #. translators: %s: country name including the 'the' prefix if needed
 #: includes/admin/class-wc-admin-setup-wizard.php:1011
@@ -11183,15 +11183,15 @@ msgstr "Pagar este pedido"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:171
 msgid "Sandbox API signature"
-msgstr "Firma de la API de pruebas"
+msgstr "Firma de la API del entorno de pruebas"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:163
 msgid "Sandbox API password"
-msgstr "Contraseña de la API de pruebas"
+msgstr "Contraseña de la API del entorno de pruebas"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:155
 msgid "Sandbox API username"
-msgstr "Nombre de usuario de la API de pruebas"
+msgstr "Nombre de usuario de la API del entorno de pruebas"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:147
 msgid "Live API signature"
@@ -11220,7 +11220,7 @@ msgstr "Avisos por correo electrónico de IPN"
 #. translators: %s: Link to PayPal sandbox testing guide page
 #: includes/gateways/paypal/class-wc-gateway-paypal.php:69
 msgid "SANDBOX ENABLED. You can use sandbox testing accounts only. See the <a href=\"%s\">PayPal Sandbox Testing Guide</a> for more details."
-msgstr "PRUEBAS ACTIVAS. Solo puedes usar cuentas de pruebas. Revisa la <a href=\"%s\">guía de pruebas de PayPal</a> para más detalles."
+msgstr "ENTORNO DE PRUEBAS ACTIVO. Solo puedes usar cuentas de entorno de pruebas. Revisa la <a href=\"%s\">guía de entornos de pruebas de PayPal</a> para más detalles."
 
 #: includes/data-stores/class-wc-webhook-data-store.php:106
 msgid "Invalid webhook."
@@ -13531,7 +13531,7 @@ msgstr "La REST API de WooCommerce permite a aplicaciones externas ver y gestion
 
 #: includes/admin/class-wc-admin-addons.php:410
 msgid "Display live rates from Canada Post at checkout to make shipping a breeze. Powered by WooCommerce Shipping."
-msgstr "Muestra las tarifas en vivo de Canada Post en la página de pago para facilitar el envío. Funciona con WooCommerce Shipping."
+msgstr "Muestra las tarifas de producción de Canada Post en la página de pago para facilitar el envío. Funciona con WooCommerce Shipping."
 
 #: includes/admin/class-wc-admin-addons.php:409
 msgid "Show Canada Post shipping rates"
@@ -14103,7 +14103,7 @@ msgstr "URL de la imagen"
 #. translators: %s: URL
 #: includes/gateways/paypal/includes/settings-paypal.php:50
 msgid "PayPal sandbox can be used to test payments. Sign up for a <a href=\"%s\">developer account</a>."
-msgstr "Se puede usar la zona de pruebas de PayPal para probar pagos. Crea una <a href=\"%s\">cuenta de desarrollador</a>."
+msgstr "Se puede usar el entorno de pruebas de PayPal para probar pagos. Crea una <a href=\"%s\">cuenta de desarrollador</a>."
 
 #. translators: %s: order ID.
 #: includes/gateways/paypal/includes/class-wc-gateway-paypal-ipn-handler.php:281
@@ -22487,7 +22487,7 @@ msgstr "Correo electrónico de PayPal"
 
 #: includes/gateways/paypal/includes/settings-paypal.php:29
 msgid "Pay via PayPal; you can pay with your credit card if you don't have a PayPal account."
-msgstr "Pagar con PayPal; puedes pagar con tu tarjeta de crédito si no tienes una cuenta de PayPal."
+msgstr "Paga a través de PayPal; puedes pagar con tu tarjeta de crédito si no tienes una cuenta de PayPal."
 
 #: includes/gateways/paypal/includes/settings-paypal.php:28
 msgid "This controls the description which the user sees during checkout."
@@ -25139,7 +25139,7 @@ msgstr "HTML / mensajes de correo electrónico de varias partes utilizan DOMDocu
 
 #: includes/admin/views/html-admin-page-status-report.php:394
 msgid "Some webservices like shipping use SOAP to get information from remote servers, for example, live shipping quotes from FedEx require SOAP to be installed."
-msgstr "Algunos servicios web, como los de envíos, usan SOAP para obtener información de servidores remotos, por ejemplo, los presupuestos de envío en vivo de FedEx necesitan que SOAP esté instalado."
+msgstr "Algunos servicios web, como los de envíos, usan SOAP para obtener información de servidores remotos, por ejemplo, los presupuestos de envío de producción de FedEx necesitan que SOAP esté instalado."
 
 #: includes/admin/views/html-admin-page-status-report.php:387
 msgid "Your server does not have fsockopen or cURL enabled - PayPal IPN and other scripts which communicate with other servers will not work. Contact your hosting provider."
@@ -27764,7 +27764,7 @@ msgstr "ID de transacción"
 #: packages/woocommerce-admin/src/Features/Onboarding.php:405
 #: packages/woocommerce-admin/dist/chunks/profile-wizard.js:1
 msgid "Other"
-msgstr "Otra"
+msgstr "Otro"
 
 #: templates/single-product/meta.php:30
 #: templates/order/order-details-customer.php:34

@@ -1,4 +1,4 @@
-function woof_qs_after_redraw_grid_1(){
-    
-}
-
+function woof_qs_after_redraw_grid_1(){
+    
+}
+

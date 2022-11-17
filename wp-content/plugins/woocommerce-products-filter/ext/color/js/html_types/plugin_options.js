@@ -1,3 +1,3 @@
-jQuery(function($){
-    $('.woof-color-picker').wpColorPicker();
-});
+jQuery(function($){
+    $('.woof-color-picker').wpColorPicker();
+});

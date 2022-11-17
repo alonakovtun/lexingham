@@ -1,9 +1,9 @@
-/**
- * tooltipster http://iamceege.github.io/tooltipster/
- * A rockin' custom tooltip jQuery plugin
- * Developed by Caleb Jacob and Louis Ameline
- * MIT license
- */
+/**
+ * tooltipster http://iamceege.github.io/tooltipster/
+ * A rockin' custom tooltip jQuery plugin
+ * Developed by Caleb Jacob and Louis Ameline
+ * MIT license
+ */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module unless amdModuleId is set
@@ -3340,7 +3340,7 @@ function transitionSupport() {
 
 // we'll return jQuery for plugins not to have to declare it as a dependency,
 // but it's done by a build task since it should be included only once at the
-// end when we concatenate the main file with a plugin
+// end when we concatenate the main file with a plugin
 // sideTip is Tooltipster's default plugin.
 // This file will be UMDified by a build task.
 

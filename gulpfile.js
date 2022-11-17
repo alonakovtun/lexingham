@@ -1,12 +1,13 @@
-let themeAssetsPath = "wp-content/themes/anomeo/assets/";
+let themeAssetsPath = "wp-content/themes/bt/assets/";
 
 const { src, dest, series, watch } = require("gulp");
 const webpack = require("webpack-stream");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
-const sass = require("gulp-sass");
+// const sass = require("gulp-sass");
 const concat = require("gulp-concat");
 const autoprefixer = require("gulp-autoprefixer");
+const sass = require('gulp-sass')(require('sass'));
 
 function scripts() {
     return (
