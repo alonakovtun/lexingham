@@ -2,9 +2,10 @@
 Contributors: mattsgarage
 Donate link: http://www.mattyl.co.uk/donate/
 Tags: search, sku, stock keeping unit, woocommerce, ecommerce, e-commerce, commerce, woothemes, wordpress ecommerce
-Requires at least: 3.0.1
-Tested up to: 4.9.8
-Stable tag: 0.6.2
+Requires at least: 3.1.0
+Tested up to: 5.7.2
+Requires PHP: 5.2.4
+Stable tag: 0.8.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,9 +14,14 @@ Extend the search functionality of woocommerce to include searching of sku
 == Description ==
 
 The search functionality in woocommerce doesn't search by sku by default.
-This simple plugin adds this functionality search facility of your site. Just install and activate - no config required.
-Tested with Woocommerce 1.5.6, 2.0.7, 2.0.18, 2.2.4, 2.2.10 and 3.4.4
-See the [Accompanying blog post](http://www.mattyl.co.uk/2012/12/11/woocommerce-plugin-to-search-products-by-sku/ "accompanying blog post") for more info.
+
+This simple plugin adds this functionality search facility of your site, in both the public site and admin panel
+
+Just install and activate - no config required.
+
+Tested with Woocommerce 1.5.6, 2.0.7, 2.0.18, 2.2.4, 2.2.10, 3.4.4, 4.0.1 and 4.2.0
+
+See the [Accompanying blog post](http://www.mattyl.co.uk/2012/12/11/woocommerce-plugin-to-search-products-by-sku/ "accompanying blog post") for more information.
 
 
 == Installation ==
@@ -25,6 +31,19 @@ See the [Accompanying blog post](http://www.mattyl.co.uk/2012/12/11/woocommerce-
 3. No configuration required :)
 
 == Changelog ==
+= 0.8.1 =
+Update Wordpress compatibility to 5.7.2
+= 0.8.0 =
+Compatibility with Woocommerce 5.5.0
+= 0.7.1 =
+Testing with Wordpress 5.4.2 and Woocommerce 4.2.0
+Remove compatibility warnings from plugin view. Achieved by adding woocommerce metadata flags.
+= 0.7.0 =
+Fix a long standing bug to search for multiple products. If you search for multiple SKUs at once EG `WB-12, WB-20` you will now search results for both products.
+Fix leading or trailing whitespace issue around SKUs
+Update contact information of [plugin maintainer - Unroll Digital](https://unrolldigital.com)
+= 0.6.3 =
+Testing the plugin still works with the latest versions of wordpress (5.4) and woocommerce (4.0.1).
 = 0.6.2 =
 Testing the plugin still works with the latest versions of wordpress (4.9.8) and woocommerce (3.4.4).
 = 0.6.1 =

@@ -3,27 +3,26 @@
 /**
  * A drop in replacement of WC_Admin_Post_Types::product_search()
  */
-add_filter('posts_search', 'product_search_sku',9);
-function product_search_sku($where) {
+add_filter('posts_clauses', 'product_search_sku', 11, 1);
+function product_search_sku($args)
+{
+    $where = $args['where'];
     global $pagenow, $wpdb, $wp;
-    //VAR_DUMP(http_build_query(array('post_type' => array('product','boobs'))));die();
-    $type = array('product', 'jam');
-    
-    
-    //var_dump(in_array('product', $wp->query_vars['post_type']));
-    if ((is_admin() && 'edit.php' != $pagenow) 
-            || !is_search()  
-            || !isset($wp->query_vars['s']) 
-            //post_types can also be arrays..
-            || (isset($wp->query_vars['post_type']) && 'product' != $wp->query_vars['post_type'])
-            || (isset($wp->query_vars['post_type']) && is_array($wp->query_vars['post_type']) && !in_array('product', $wp->query_vars['post_type']) ) 
-            ) {
-        return $where;
+
+    if ((is_admin() && 'edit.php' != $pagenow)
+        || !is_search()
+        || !isset($wp->query_vars['s'])
+        //post_types can also be arrays..
+        || (isset($wp->query_vars['post_type']) && 'product' != $wp->query_vars['post_type'])
+        || (isset($wp->query_vars['post_type']) && is_array($wp->query_vars['post_type']) && !in_array('product', $wp->query_vars['post_type']))
+    ) {
+        return $args;
     }
     $search_ids = array();
     $terms = explode(',', $wp->query_vars['s']);
 
     foreach ($terms as $term) {
+        $term = trim($term);
         //Include the search by id if admin area.
         if (is_admin() && is_numeric($term)) {
             $search_ids[] = $term;
@@ -38,12 +37,11 @@ function product_search_sku($where) {
         $search_ids = array_merge($search_ids, $sku_to_id, $sku_to_parent_id);
     }
 
-    $search_ids = array_filter(array_map('absint', $search_ids));
-
+    $search_ids = array_unique(array_filter(array_map('absint', $search_ids)));
     if (sizeof($search_ids) > 0) {
-        $where = str_replace(')))', ") OR ({$wpdb->posts}.ID IN (" . implode(',', $search_ids) . "))))", $where);
+        $where = str_replace('))', ") OR ({$wpdb->posts}.ID IN (" . implode(',', $search_ids) . ")))", $where);
     }
-    
+    $args['where'] = $where;
     remove_filters_for_anonymous_class('posts_search', 'WC_Admin_Post_Types', 'product_search', 10);
-    return $where;
+    return $args;
 }
