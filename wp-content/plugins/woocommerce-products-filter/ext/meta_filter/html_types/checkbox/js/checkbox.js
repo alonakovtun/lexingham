@@ -1,9 +1,9 @@
+"use strict";
 function woof_init_meta_checkbox() {
     if (icheck_skin != 'none') {
         
         jQuery('.woof_meta_checkbox').iCheck({
             checkboxClass: 'icheckbox_' + icheck_skin.skin + '-' + icheck_skin.color,
-            //checkboxClass: 'icheckbox_square-green'
         });
         
         jQuery('.woof_meta_checkbox').on('ifChecked', function (event) {

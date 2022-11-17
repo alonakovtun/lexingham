@@ -3,1576 +3,1620 @@
  * jQuery plugin for autocompletion
  * 
  * @author Łukasz Pawełczak (http://github.com/pawelczak)
- * @version 1.3.3
- * Copyright MIT License: https://github.com/pawelczak/easy-autocomplete/blob/master/LICENSE.txt
+ * @version 1.4.0
+ * Copyright  License: 
  */
 
 /*
  * EasyAutocomplete - Configuration 
  */
-var EasyAutocomplete = (function(scope){
-
-	scope.Configuration = function Configuration(options) {
-		var defaults = {
-			data: "list-required",
-			url: "list-required",
-			dataType: "json",
 
-			listLocation: function(data) {
-				return data;
-			},
+"use strict";
+
+(function ($) {
+    var EasyAutocomplete = (function (scope) {
+
+        scope.Configuration = function Configuration(options) {
+            var defaults = {
+                data: 'list-required',
+                url: 'list-required',
+                dataType: 'json',
+
+                listLocation: function (data) {
+                    return data;
+                },
+
+                xmlElementName: '',
+
+                getValue: function (element) {
+                    return element;
+                },
+
+                autocompleteOff: true,
 
-			xmlElementName: "",
+                placeholder: false,
 
-			getValue: function(element) {
-				return element;
-			},
+                ajaxCallback: function () {
+                },
 
-			autocompleteOff: true,
+                matchResponseProperty: false,
 
-			placeholder: false,
+                list: {
+                    sort: {
+                        enabled: false,
+                        method: function (a, b) {
+                            a = defaults.getValue(a);
+                            b = defaults.getValue(b);
+                            if (a < b) {
+                                return -1;
+                            }
+                            if (a > b) {
+                                return 1;
+                            }
+                            return 0;
+                        }
+                    },
 
-			ajaxCallback: function() {},
+                    maxNumberOfElements: 6,
 
-			matchResponseProperty: false,
-
-			list: {
-				sort: {
-					enabled: false,
-					method: function(a, b) {
-						a = defaults.getValue(a);
-						b = defaults.getValue(b);
-						if (a < b) {
-							return -1;
-						}
-						if (a > b) {
-							return 1;
-						}
-						return 0;
-					}
-				},
-
-				maxNumberOfElements: 6,
-
-				hideOnEmptyPhrase: true,
-
-				match: {
-					enabled: false,
-					caseSensitive: false,
-					method: function(a, b) {
-						a = defaults.getValue(a);
-						b = defaults.getValue(b);
-
-						if (a === b){
-							return true;
-						}  
-						return false;
-					}
-				},
-
-				showAnimation: {
-					type: "normal", //normal|slide|fade
-					time: 400,
-					callback: function() {}
-				},
-
-				hideAnimation: {
-					type: "normal",
-					time: 400,
-					callback: function() {}
-				},
-
-				/* Events */
-				onClickEvent: function() {},
-				onSelectItemEvent: function() {},
-				onLoadEvent: function() {},
-				onChooseEvent: function() {},
-				onKeyEnterEvent: function() {},
-				onMouseOverEvent: function() {},
-				onMouseOutEvent: function() {},	
-				onShowListEvent: function() {},
-				onHideListEvent: function() {}
-			},
+                    hideOnEmptyPhrase: true,
+
+                    match: {
+                        enabled: false,
+                        caseSensitive: false,
+                        method: function (element, phrase) {
+
+                            return element.search(phrase) > -1;
+                        }
+                    },
+
+                    showAnimation: {
+                        type: 'normal', //normal|slide|fade
+                        time: 400,
+                        callback: function () {
+                        }
+                    },
 
-			highlightPhrase: true,
-
-			theme: "",
-
-			cssClasses: "",
-
-			minCharNumber: 0,
-
-			requestDelay: 0,
-
-			adjustWidth: true,
-
-			ajaxSettings: {},
-
-			preparePostData: function(data, inputPhrase) {return data;},
-
-			loggerEnabled: true,
-
-			template: "",
-
-			categoriesAssigned: false,
-
-			categories: [{
-				maxNumberOfElements: 4
-			}]
-
-		};
-		
-
-		this.get = function(propertyName) {
-			return defaults[propertyName];
-		};
+                    hideAnimation: {
+                        type: 'normal',
+                        time: 400,
+                        callback: function () {
+                        }
+                    },
 
-		this.equals = function(name, value) {
-			if (isAssigned(name)) {
-				if (defaults[name] === value) {
-					return true;
-				}
-			} 
-			
-			return false;
-		};
+                    /* Events */
+                    onClickEvent: function () {
+                    },
+                    onSelectItemEvent: function () {
+                    },
+                    onLoadEvent: function () {
+                    },
+                    onChooseEvent: function () {
+                    },
+                    onKeyEnterEvent: function () {
+                    },
+                    onMouseOverEvent: function () {
+                    },
+                    onMouseOutEvent: function () {
+                    },
+                    onShowListEvent: function () {
+                    },
+                    onHideListEvent: function () {
+                    }
+                },
 
-		this.checkDataUrlProperties = function() {
-			if (defaults.url === "list-required" && defaults.data === "list-required") {
-				return false;
-			}
-			return true;
-		};
-		this.checkRequiredProperties = function() {
-			for (var propertyName in defaults) {
-				if (defaults[propertyName] === "required") {
-					logger.error("Option " + propertyName + " must be defined");
-					return false;
-				}
-			}
-			return true;
-		};
+                highlightPhrase: true,
 
-		this.printPropertiesThatDoesntExist = function(consol, optionsToCheck) {
-			printPropertiesThatDoesntExist(consol, optionsToCheck);
-		};
+                theme: '',
 
+                cssClasses: '',
 
-		prepareDefaults();
-
-		mergeOptions();
-
-		if (defaults.loggerEnabled === true) {
-			printPropertiesThatDoesntExist(console, options);	
-		}
-
-		addAjaxSettings();
-
-		processAfterMerge();
-		function prepareDefaults() {
+                minCharNumber: 0,
 
-			if (options.dataType === "xml") {
-				
-				if (!options.getValue) {
-
-					options.getValue = function(element) {
-						return $(element).text();
-					};
-				}
-
-				
-				if (!options.list) {
-
-					options.list = {};
-				} 
-
-				if (!options.list.sort) {
-					options.list.sort = {};
-				}
-
-
-				options.list.sort.method = function(a, b) {
-					a = options.getValue(a);
-					b = options.getValue(b);
-					if (a < b) {
-						return -1;
-					}
-					if (a > b) {
-						return 1;
-					}
-					return 0;
-				};
-
-				if (!options.list.match) {
-					options.list.match = {};
-				}
-
-				options.list.match.method = function(a, b) {
-					a = options.getValue(a);
-					b = options.getValue(b);
-
-					if (a === b){
-						return true;
-					}  
-					return false;
-				};
-
-			}
-			if (options.categories !== undefined && options.categories instanceof Array) {
-
-				var categories = [];
-
-				for (var i = 0, length = options.categories.length; i < length; i += 1) { 
-
-					var category = options.categories[i];
-
-					for (var property in defaults.categories[0]) {
-
-						if (category[property] === undefined) {
-							category[property] = defaults.categories[0][property];
-						}
-					}
-
-					categories.push(category);
-				}
-
-				options.categories = categories;
-			}
-		}
-
-		function mergeOptions() {
-
-			defaults = mergeObjects(defaults, options);
-
-			function mergeObjects(source, target) {
-				var mergedObject = source || {};
-
-				for (var propertyName in source) {
-					if (target[propertyName] !== undefined && target[propertyName] !== null) {
-
-						if (typeof target[propertyName] !== "object" || 
-								target[propertyName] instanceof Array) {
-							mergedObject[propertyName] = target[propertyName];
-						} else {
-							mergeObjects(source[propertyName], target[propertyName]);
-						}
-					}
-				}
-			
-				/* If data is an object */
-				if (target.data !== undefined && target.data !== null && typeof target.data === "object") {
-					mergedObject.data = target.data;
-				}
-
-				return mergedObject;
-			}
-		}	
-
-
-		function processAfterMerge() {
-			
-			if (defaults.url !== "list-required" && typeof defaults.url !== "function") {
-				var defaultUrl = defaults.url;
-				defaults.url = function() {
-					return defaultUrl;
-				};
-			}
-
-			if (defaults.ajaxSettings.url !== undefined && typeof defaults.ajaxSettings.url !== "function") {
-				var defaultUrl = defaults.ajaxSettings.url;
-				defaults.ajaxSettings.url = function() {
-					return defaultUrl;
-				};
-			}
-
-			if (typeof defaults.listLocation === "string") {
-				var defaultlistLocation = defaults.listLocation;
-
-				if (defaults.dataType.toUpperCase() === "XML") {
-					defaults.listLocation = function(data) {
-						return $(data).find(defaultlistLocation);
-					};
-				} else {
-					defaults.listLocation = function(data) {
-						return data[defaultlistLocation];
-					};	
-				}
-			}
-
-			if (typeof defaults.getValue === "string") {
-				var defaultsGetValue = defaults.getValue;
-				defaults.getValue = function(element) {
-					return element[defaultsGetValue];
-				};
-			}
-
-			if (options.categories !== undefined) {
-				defaults.categoriesAssigned = true;
-			}
-
-		}
-
-		function addAjaxSettings() {
-
-			if (options.ajaxSettings !== undefined && typeof options.ajaxSettings === "object") {
-				defaults.ajaxSettings = options.ajaxSettings;
-			} else {
-				defaults.ajaxSettings = {};	
-			}
-			
-		}
-
-		function isAssigned(name) {
-			if (defaults[name] !== undefined && defaults[name] !== null) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		function printPropertiesThatDoesntExist(consol, optionsToCheck) {
-			
-
-			checkPropertiesIfExist(defaults, optionsToCheck);
-
-			function checkPropertiesIfExist(source, target) {
-				for(var property in target) {
-					if (source[property] === undefined) {
-						consol.log("Property '" + property + "' does not exist in EasyAutocomplete options API.");		
-					}
-
-					if (typeof source[property] === "object" && !externalObject(property)) {
-						checkPropertiesIfExist(source[property], target[property]);
-					}
-				}	
-			}
-
-			function externalObject(property) {
-				var notTestedObjects = ["ajaxSettings", "template"];
-
-				Array.prototype.contains = function(obj) {
-					var i = this.length;
-				    while (i--) {
-				        if (this[i] === obj) {
-				            return true;
-				        }
-				    }
-				    return false;
-				};
-
-				return notTestedObjects.contains(property);
-			}
-		}
-	};
-
-	return scope;
-
-})(EasyAutocomplete || {});
-
-
-/*
- * EasyAutocomplete - Logger 
- */
-var EasyAutocomplete = (function(scope){
-	
-	scope.Logger = function Logger() {
-
-		this.error = function(message) {
-			console.log("ERROR: " + message);
-		};
-
-		this.warning = function(message) {
-			console.log("WARNING: " + message);
-		};
-	};
-
-	return scope;
-
-})(EasyAutocomplete || {});
-	
-
-/*
- * EasyAutocomplete - Constans
- */
-var EasyAutocomplete = (function(scope){	
-	
-	scope.Constans = function Constans() {
-		var constants = {
-			CONTAINER_CLASS: "easy-autocomplete-container",
-			CONTAINER_ID: "eac-container-",
+                requestDelay: 0,
 
-			WRAPPER_CSS_CLASS: "easy-autocomplete"
-		};
+                adjustWidth: true,
 
-		this.getValue = function(propertyName) {
-			return constants[propertyName];
-		};
+                ajaxSettings: {},
 
-	};
+                preparePostData: function (data, inputPhrase) {
+                    return data;
+                },
 
-	return scope;
+                loggerEnabled: true,
 
-})(EasyAutocomplete || {});
+                template: '',
 
-/*
- * EasyAutocomplete - ListBuilderService 
- *
- * @author Łukasz Pawełczak 
- *
- */
-var EasyAutocomplete = (function(scope) {
+                categoriesAssigned: false,
 
-	scope.ListBuilderService = function ListBuilderService(configuration, proccessResponseData) {
+                categories: [{
+                        maxNumberOfElements: 4
+                    }]
 
+            };
 
-		this.init = function(data) {
-			var listBuilder = [],
-				builder = {};
+            var externalObjects = ['ajaxSettings', 'template'];
 
-			builder.data = configuration.get("listLocation")(data);
-			builder.getValue = configuration.get("getValue");
-			builder.maxListSize = configuration.get("list").maxNumberOfElements;
+            this.get = function (propertyName) {
+                return defaults[propertyName];
+            };
 
-				
-			listBuilder.push(builder);
+            this.equals = function (name, value) {
+                if (isAssigned(name)) {
+                    if (defaults[name] === value) {
+                        return true;
+                    }
+                }
 
-			return listBuilder;
-		};
+                return false;
+            };
 
-		this.updateCategories = function(listBuilder, data) {
-			
-			if (configuration.get("categoriesAssigned")) {
+            this.checkDataUrlProperties = function () {
+                return !(defaults.url === 'list-required' && defaults.data === 'list-required');
 
-				listBuilder = [];
+            };
+            this.checkRequiredProperties = function () {
+                for (var propertyName in defaults) {
+                    if (defaults[propertyName] === 'required') {
+                        logger.error('Option ' + propertyName + ' must be defined');
+                        return false;
+                    }
+                }
+                return true;
+            };
 
-				for(var i = 0; i < configuration.get("categories").length; i += 1) {
+            this.printPropertiesThatDoesntExist = function (consol, optionsToCheck) {
+                printPropertiesThatDoesntExist(consol, optionsToCheck);
+            };
 
-					var builder = convertToListBuilder(configuration.get("categories")[i], data);
 
-					listBuilder.push(builder);
-				}
+            prepareDefaults();
 
-			} 
+            mergeOptions();
 
-			return listBuilder;
-		};
+            if (defaults.loggerEnabled === true) {
+                printPropertiesThatDoesntExist(console, options);
+            }
 
-		this.convertXml = function(listBuilder) {
-			if(configuration.get("dataType").toUpperCase() === "XML") {
+            addAjaxSettings();
 
-				for(var i = 0; i < listBuilder.length; i += 1) {
-					listBuilder[i].data = convertXmlToList(listBuilder[i]);
-				}
-			}
+            processAfterMerge();
+            function prepareDefaults() {
 
-			return listBuilder;
-		};
+                if (options.dataType === 'xml') {
 
-		this.processData = function(listBuilder, inputPhrase) {
+                    if (!options.getValue) {
 
-			for(var i = 0, length = listBuilder.length; i < length; i+=1) {
-				listBuilder[i].data = proccessResponseData(configuration, listBuilder[i], inputPhrase);
-			}
+                        options.getValue = function (element) {
+                            return $(element).text();
+                        };
+                    }
 
-			return listBuilder;
-		};
 
-		this.checkIfDataExists = function(listBuilders) {
+                    if (!options.list) {
 
-			for(var i = 0, length = listBuilders.length; i < length; i += 1) {
+                        options.list = {};
+                    }
 
-				if (listBuilders[i].data !== undefined && listBuilders[i].data instanceof Array) {
-					if (listBuilders[i].data.length > 0) {
-						return true;
-					}
-				} 
-			}
+                    if (!options.list.sort) {
+                        options.list.sort = {};
+                    }
 
-			return false;
-		};
 
+                    options.list.sort.method = function (a, b) {
+                        a = options.getValue(a);
+                        b = options.getValue(b);
+                        if (a < b) {
+                            return -1;
+                        }
+                        if (a > b) {
+                            return 1;
+                        }
+                        return 0;
+                    };
 
-		function convertToListBuilder(category, data) {
+                    if (!options.list.match) {
+                        options.list.match = {};
+                    }
 
-			var builder = {};
+                    options.list.match.method = function (element, phrase) {
 
-			if(configuration.get("dataType").toUpperCase() === "XML") {
+                        return element.search(phrase) > -1;
+                    };
 
-				builder = convertXmlToListBuilder();
-			} else {
+                }
+                if (options.categories !== undefined && options.categories instanceof Array) {
 
-				builder = convertDataToListBuilder();
-			}
-			
+                    var categories = [];
 
-			if (category.header !== undefined) {
-				builder.header = category.header;
-			}
+                    for (var i = 0, length = options.categories.length; i < length; i += 1) {
 
-			if (category.maxNumberOfElements !== undefined) {
-				builder.maxNumberOfElements = category.maxNumberOfElements;
-			}
+                        var category = options.categories[i];
 
-			if (configuration.get("list").maxNumberOfElements !== undefined) {
+                        for (var property in defaults.categories[0]) {
 
-				builder.maxListSize = configuration.get("list").maxNumberOfElements;
-			}
+                            if (category[property] === undefined) {
+                                category[property] = defaults.categories[0][property];
+                            }
+                        }
 
-			if (category.getValue !== undefined) {
+                        categories.push(category);
+                    }
 
-				if (typeof category.getValue === "string") {
-					var defaultsGetValue = category.getValue;
-					builder.getValue = function(element) {
-						return element[defaultsGetValue];
-					};
-				} else if (typeof category.getValue === "function") {
-					builder.getValue = category.getValue;
-				}
+                    options.categories = categories;
+                }
+            }
 
-			} else {
-				builder.getValue = configuration.get("getValue");	
-			}
-			
+            function mergeOptions() {
 
-			return builder;
+                defaults = mergeObjects(defaults, options);
 
+                function mergeObjects(source, target) {
+                    var mergedObject = source || {};
 
-			function convertXmlToListBuilder() {
+                    for (var propertyName in source) {
+                        if (target[propertyName] !== undefined && target[propertyName] !== null) {
 
-				var builder = {},
-					listLocation;
+                            if (typeof target[propertyName] !== 'object' ||
+                                    target[propertyName] instanceof Array) {
+                                mergedObject[propertyName] = target[propertyName];
+                            } else {
+                                mergeObjects(source[propertyName], target[propertyName]);
+                            }
+                        }
+                    }
 
-				if (category.xmlElementName !== undefined) {
-					builder.xmlElementName = category.xmlElementName;
-				}
+                    /* If data is an object */
+                    if (target.data !== undefined && target.data !== null && typeof target.data === 'object') {
+                        mergedObject.data = target.data;
+                    }
 
-				if (category.listLocation !== undefined) {
+                    return mergedObject;
+                }
+            }
 
-					listLocation = category.listLocation;
-				} else if (configuration.get("listLocation") !== undefined) {
+            function processAfterMerge() {
 
-					listLocation = configuration.get("listLocation");
-				}
+                if (defaults.url !== 'list-required' && typeof defaults.url !== 'function') {
+                    var defaultUrl = defaults.url;
+                    defaults.url = function () {
+                        return defaultUrl;
+                    };
+                }
 
-				if (listLocation !== undefined) {
-					if (typeof listLocation === "string") {
-						builder.data = $(data).find(listLocation);
-					} else if (typeof listLocation === "function") {
+                if (defaults.ajaxSettings.url !== undefined && typeof defaults.ajaxSettings.url !== 'function') {
+                    var defaultUrl = defaults.ajaxSettings.url;
+                    defaults.ajaxSettings.url = function () {
+                        return defaultUrl;
+                    };
+                }
 
-						builder.data = listLocation(data);
-					}
-				} else {
+                if (typeof defaults.listLocation === 'string') {
+                    var defaultlistLocation = defaults.listLocation;
 
-					builder.data = data;
-				}
+                    if (defaults.dataType.toUpperCase() === 'XML') {
+                        defaults.listLocation = function (data) {
+                            return $(data).find(defaultlistLocation);
+                        };
+                    } else {
+                        defaults.listLocation = function (data) {
+                            return data[defaultlistLocation];
+                        };
+                    }
+                }
 
-				return builder;
-			}
+                if (typeof defaults.getValue === 'string') {
+                    var defaultsGetValue = defaults.getValue;
+                    defaults.getValue = function (element) {
+                        return element[defaultsGetValue];
+                    };
+                }
 
+                if (options.categories !== undefined) {
+                    defaults.categoriesAssigned = true;
+                }
 
-			function convertDataToListBuilder() {
+            }
 
-				var builder = {};
+            function addAjaxSettings() {
 
-				if (category.listLocation !== undefined) {
+                if (options.ajaxSettings !== undefined && typeof options.ajaxSettings === 'object') {
+                    defaults.ajaxSettings = options.ajaxSettings;
+                } else {
+                    defaults.ajaxSettings = {};
+                }
 
-					if (typeof category.listLocation === "string") {
-						builder.data = data[category.listLocation];
-					} else if (typeof category.listLocation === "function") {
-						builder.data = category.listLocation(data);
-					}
-				} else {
-					builder.data = data;
-				}
+            }
 
-				return builder;
-			}
-		}
+            function isAssigned(name) {
+                return defaults[name] !== undefined && defaults[name] !== null;
+            }
+            function printPropertiesThatDoesntExist(consol, optionsToCheck) {
 
-		function convertXmlToList(builder) {
-			var simpleList = [];
+                checkPropertiesIfExist(defaults, optionsToCheck);
 
-			if (builder.xmlElementName === undefined) {
-				builder.xmlElementName = configuration.get("xmlElementName");
-			}
+                function checkPropertiesIfExist(source, target) {
+                    for (var property in target) {
+                        if (source[property] === undefined) {
+                            consol.log('Property \'' + property + '\' does not exist in EasyAutocomplete options API.');
+                        }
 
+                        if (typeof source[property] === 'object' && $.inArray(property, externalObjects) === -1) {
+                            checkPropertiesIfExist(source[property], target[property]);
+                        }
+                    }
+                }
+            }
+        };
 
-			$(builder.data).find(builder.xmlElementName).each(function() {
-				simpleList.push(this);
-			});
+        return scope;
 
-			return simpleList;
-		}
+    })(EasyAutocomplete || {});
 
-	};
+    /*
+     * EasyAutocomplete - Logger 
+     */
+    var EasyAutocomplete = (function (scope) {
 
-	return scope;
+        scope.Logger = function Logger() {
 
-})(EasyAutocomplete || {});
+            this.error = function (message) {
+                console.log('ERROR: ' + message);
+            };
 
+            this.warning = function (message) {
+                console.log('WARNING: ' + message);
+            };
+        };
 
-/*
- * EasyAutocomplete - Data proccess module
- *
- * Process list to display:
- * - sort 
- * - decrease number to specific number
- * - show only matching list
- *
- */
-var EasyAutocomplete = (function(scope) {
+        return scope;
 
-	scope.proccess = function proccessData(config, listBuilder, phrase) {
+    })(EasyAutocomplete || {});
 
-		var list = listBuilder.data,
-			inputPhrase = phrase;//TODO REFACTOR
 
-		list = findMatch(list, inputPhrase);
-		list = reduceElementsInList(list);
-		list = sort(list);
+    /*
+     * EasyAutocomplete - Constants
+     */
+    var EasyAutocomplete = (function (scope) {
 
-		return list;
+        scope.Constants = function Constants() {
 
+            var constants = {
+                CONTAINER_CLASS: 'easy-autocomplete-container',
+                CONTAINER_ID: 'eac-container-',
+                WRAPPER_CSS_CLASS: 'easy-autocomplete'
+            };
 
-		function findMatch(list, phrase) {
-			var preparedList = [],
-				value = "";
+            this.getValue = function (propertyName) {
+                return constants[propertyName];
+            };
 
-			if (config.get("list").match.enabled) {
+        };
 
-				for(var i = 0, length = list.length; i < length; i += 1) {
+        return scope;
 
-					value = config.get("getValue")(list[i]);
-					
-					if (!config.get("list").match.caseSensitive) {
+    })(EasyAutocomplete || {});
 
-						if (typeof value === "string") {
-							value = value.toLowerCase();	
-						}
-						
-						phrase = phrase.toLowerCase();
-					}
-					if (value.search(phrase) > -1) {
-						preparedList.push(list[i]);
-					}
-					
-				}
+    /*
+     * EasyAutocomplete - ListBuilderService 
+     *
+     * @author Łukasz Pawełczak 
+     *
+     */
+    var EasyAutocomplete = (function (scope) {
 
-			} else {
-				preparedList = list;
-			}
+        scope.ListBuilderService = function ListBuilderService(configuration, proccessResponseData) {
 
-			return preparedList;
-		}
 
-		function reduceElementsInList(list) {
-			if (listBuilder.maxNumberOfElements !== undefined && list.length > listBuilder.maxNumberOfElements) {
-				list = list.slice(0, listBuilder.maxNumberOfElements);
-			}
+            this.init = function (data) {
+                var listBuilder = [],
+                        builder = {};
 
-			return list;
-		}
+                builder.data = configuration.get('listLocation')(data);
+                builder.getValue = configuration.get('getValue');
+                builder.maxListSize = configuration.get('list').maxNumberOfElements;
 
-		function sort(list) {
-			if (config.get("list").sort.enabled) {
-				list.sort(config.get("list").sort.method);
-			}
 
-			return list;
-		}
-		
-	};
+                listBuilder.push(builder);
 
-	return scope;
+                return listBuilder;
+            };
 
+            this.updateCategories = function (listBuilder, data) {
 
+                if (configuration.get('categoriesAssigned')) {
 
-})(EasyAutocomplete || {});
+                    listBuilder = [];
 
+                    for (var i = 0; i < configuration.get("categories").length; i += 1) {
 
-/*
- * EasyAutocomplete - Template 
- *
- * 
- *
- */
-var EasyAutocomplete = (function(scope){
+                        var builder = convertToListBuilder(configuration.get('categories')[i], data);
 
-	scope.Template = function Template(options) {
+                        listBuilder.push(builder);
+                    }
 
+                }
 
-		var genericTemplates = {
-			basic: {
-				type: "basic",
-				method: function(element) { return element; },
-				cssClass: ""
-			},
-			description: {
-				type: "description",
-				fields: {
-					description: "description"
-				},
-				method: function(element) {	return element + " - description"; },
-				cssClass: "eac-description"
-			},
-			iconLeft: {
-				type: "iconLeft",
-				fields: {
-					icon: ""
-				},
-				method: function(element) {
-					return element;
-				},
-				cssClass: "eac-icon-left"
-			},
-			iconRight: {
-				type: "iconRight",
-				fields: {
-					iconSrc: ""
-				},
-				method: function(element) {
-					return element;
-				},
-				cssClass: "eac-icon-right"
-			},
-			links: {
-				type: "links",
-				fields: {
-					link: ""
-				},
-				method: function(element) {
-					return element;
-				},
-				cssClass: ""
-			},
-			custom: {
-				type: "custom",
-				method: function() {},
-				cssClass: ""
-			}
-		},
+                return listBuilder;
+            };
 
+            this.convertXml = function (listBuilder) {
+                if (configuration.get('dataType').toUpperCase() === 'XML') {
 
+                    for (var i = 0; i < listBuilder.length; i += 1) {
+                        listBuilder[i].data = convertXmlToList(listBuilder[i]);
+                    }
+                }
 
-		/*
-		 * Converts method with {{text}} to function
-		 */
-		convertTemplateToMethod = function(template) {
+                return listBuilder;
+            };
 
+            this.processData = function (listBuilder, inputPhrase) {
 
-			var _fields = template.fields,
-				buildMethod;
+                for (var i = 0, length = listBuilder.length; i < length; i += 1) {
+                    listBuilder[i].data = proccessResponseData(configuration, listBuilder[i], inputPhrase);
+                }
 
-			if (template.type === "description") {
+                return listBuilder;
+            };
 
-				buildMethod = genericTemplates.description.method; 
+            this.checkIfDataExists = function (listBuilders) {
 
-				if (typeof _fields.description === "string") {
-					buildMethod = function(elementValue, element) {
-						return elementValue + " - <span>" + element[_fields.description] + "</span>";
-					};					
-				} else if (typeof _fields.description === "function") {
-					buildMethod = function(elementValue, element) {
-						return elementValue + " - <span>" + _fields.description(element) + "</span>";
-					};	
-				}
+                for (var i = 0, length = listBuilders.length; i < length; i += 1) {
 
-				return buildMethod;
-			}
+                    if (listBuilders[i].data !== undefined && listBuilders[i].data instanceof Array) {
+                        if (listBuilders[i].data.length > 0) {
+                            return true;
+                        }
+                    }
+                }
 
-			if (template.type === "iconRight") {
+                return false;
+            };
 
-				if (typeof _fields.iconSrc === "string") {
-					buildMethod = function(elementValue, element) {
-						return elementValue + "<img class='eac-icon' src='" + element[_fields.iconSrc] + "' />" ;
-					};					
-				} else if (typeof _fields.iconSrc === "function") {
-					buildMethod = function(elementValue, element) {
-						return elementValue + "<img class='eac-icon' src='" + _fields.iconSrc(element) + "' />" ;
-					};
-				}
 
-				return buildMethod;
-			}
+            function convertToListBuilder(category, data) {
 
+                var builder = {};
 
-			if (template.type === "iconLeft") {
+                if (configuration.get('dataType').toUpperCase() === 'XML') {
 
-				if (typeof _fields.iconSrc === "string") {
-					buildMethod = function(elementValue, element) {
-						return "<img class='eac-icon' src='" + element[_fields.iconSrc] + "' />" + elementValue;
-					};					
-				} else if (typeof _fields.iconSrc === "function") {
-					buildMethod = function(elementValue, element) {
-						return "<img class='eac-icon' src='" + _fields.iconSrc(element) + "' />" + elementValue;
-					};
-				}
+                    builder = convertXmlToListBuilder();
+                } else {
 
-				return buildMethod;
-			}
+                    builder = convertDataToListBuilder();
+                }
 
-			if(template.type === "links") {
 
-				if (typeof _fields.link === "string") {
-					buildMethod = function(elementValue, element) {
-						return "<a href='" + element[_fields.link] + "' >" + elementValue + "</a>";
-					};					
-				} else if (typeof _fields.link === "function") {
-					buildMethod = function(elementValue, element) {
-						return "<a href='" + _fields.link(element) + "' >" + elementValue + "</a>";
-					};
-				}
+                if (category.header !== undefined) {
+                    builder.header = category.header;
+                }
 
-				return buildMethod;
-			}
+                if (category.maxNumberOfElements !== undefined) {
+                    builder.maxNumberOfElements = category.maxNumberOfElements;
+                }
 
+                if (configuration.get('list').maxNumberOfElements !== undefined) {
 
-			if (template.type === "custom") {
+                    builder.maxListSize = configuration.get('list').maxNumberOfElements;
+                }
 
-				return template.method;
-			}
+                if (category.getValue !== undefined) {
 
-			return genericTemplates.basic.method;
+                    if (typeof category.getValue === 'string') {
+                        var defaultsGetValue = category.getValue;
+                        builder.getValue = function (element) {
+                            return element[defaultsGetValue];
+                        };
+                    } else if (typeof category.getValue === 'function') {
+                        builder.getValue = category.getValue;
+                    }
 
-		},
+                } else {
+                    builder.getValue = configuration.get('getValue');
+                }
 
 
-		prepareBuildMethod = function(options) {
-			if (!options || !options.type) {
+                return builder;
 
-				return genericTemplates.basic.method;
-			}
 
-			if (options.type && genericTemplates[options.type]) {
+                function convertXmlToListBuilder() {
 
-				return convertTemplateToMethod(options);
-			} else {
+                    var builder = {},
+                            listLocation;
 
-				return genericTemplates.basic.method;
-			}
+                    if (category.xmlElementName !== undefined) {
+                        builder.xmlElementName = category.xmlElementName;
+                    }
 
-		},
+                    if (category.listLocation !== undefined) {
 
-		templateClass = function(options) {
-			var emptyStringFunction = function() {return "";};
+                        listLocation = category.listLocation;
+                    } else if (configuration.get('listLocation') !== undefined) {
 
-			if (!options || !options.type) {
+                        listLocation = configuration.get('listLocation');
+                    }
 
-				return emptyStringFunction;
-			}
+                    if (listLocation !== undefined) {
+                        if (typeof listLocation === 'string') {
+                            builder.data = $(data).find(listLocation);
+                        } else if (typeof listLocation === 'function') {
 
-			if (options.type && genericTemplates[options.type]) {
-				return (function () { 
-					var _cssClass = genericTemplates[options.type].cssClass;
-					return function() { return _cssClass;};
-				})();
-			} else {
-				return emptyStringFunction;
-			}
-		};
+                            builder.data = listLocation(data);
+                        }
+                    } else {
 
+                        builder.data = data;
+                    }
 
-		this.getTemplateClass = templateClass(options);
+                    return builder;
+                }
 
-		this.build = prepareBuildMethod(options);
 
+                function convertDataToListBuilder() {
 
-	};
+                    var builder = {};
 
-	return scope;
+                    if (category.listLocation !== undefined) {
 
-})(EasyAutocomplete || {});
+                        if (typeof category.listLocation === 'string') {
+                            builder.data = data[category.listLocation];
+                        } else if (typeof category.listLocation === 'function') {
+                            builder.data = category.listLocation(data);
+                        }
+                    } else {
+                        builder.data = data;
+                    }
 
+                    return builder;
+                }
+            }
 
-/*
- * EasyAutocomplete - jQuery plugin for autocompletion
- *
- */
-var EasyAutocomplete = (function(scope) {
+            function convertXmlToList(builder) {
+                var simpleList = [];
 
-	
-	scope.main = function Core($input, options) {
-				
-		var module = {
-				name: "EasyAutocomplete",
-				shortcut: "eac"
-			};
+                if (builder.xmlElementName === undefined) {
+                    builder.xmlElementName = configuration.get('xmlElementName');
+                }
 
-		var consts = new scope.Constans(),
-			config = new scope.Configuration(options),
-			logger = new scope.Logger(),
-			template = new scope.Template(options.template),
-			listBuilderService = new scope.ListBuilderService(config, scope.proccess),
-			checkParam = config.equals,
 
-			$field = $input, 
-			$container = "",
-			elementsList = [],
-			selectedElement = -1,
-			requestDelayTimeoutId;
+                $(builder.data).find(builder.xmlElementName).each(function () {
+                    simpleList.push(this);
+                });
 
-		scope.consts = consts;
+                return simpleList;
+            }
 
-		this.getConstants = function() {
-			return consts;
-		};
+        };
 
-		this.getConfiguration = function() {
-			return config;
-		};
+        return scope;
 
-		this.getContainer = function() {
-			return $container;
-		};
+    })(EasyAutocomplete || {});
 
-		this.getSelectedItemIndex = function() {
-			return selectedElement;
-		};
 
-		this.getItemData = function(index) {
+    /*
+     * EasyAutocomplete - Data proccess module
+     *
+     * Process list to display:
+     * - sort 
+     * - decrease number to specific number
+     * - show only matching list
+     *
+     */
+    var EasyAutocomplete = (function (scope) {
 
-			if (elementsList.length < index || elementsList[index] === undefined) {
-				return -1;
-			} else {
-				return elementsList[index];
-			}
-		};
+        scope.proccess = function DataProcessor(config, listBuilder, phrase) {
 
-		this.getSelectedItemData = function() {
-			return this.getItemData(selectedElement);
-		};
+            scope.proccess.match = match;
 
-		this.build = function() {
-			prepareField();
-		};
+            var list = listBuilder.data,
+                    inputPhrase = phrase; // TODO REFACTOR
 
-		this.init = function() {
-			init();
-		};
-		function init() {
+            list = findMatch(list, inputPhrase);
+            list = reduceElementsInList(list);
+            list = sort(list);
 
-			if ($field.length === 0) {
-				logger.error("Input field doesn't exist.");
-				return;
-			}
+            return list;
 
-			if (!config.checkDataUrlProperties()) {
-				logger.error("One of options variables 'data' or 'url' must be defined.");
-				return;
-			}
+            function findMatch(list, phrase) {
+                var preparedList = [],
+                        value = '';
 
-			if (!config.checkRequiredProperties()) {
-				logger.error("Will not work without mentioned properties.");
-				return;
-			}
+                if (config.get('list').match.enabled) {
 
+                    for (var i = 0, length = list.length; i < length; i += 1) {
 
-			prepareField();
-			bindEvents();	
+                        value = config.get('getValue')(list[i]);
 
-		}
-		function prepareField() {
+                        if (match(value, phrase)) {
+                            preparedList.push(list[i]);
+                        }
 
-				
-			if ($field.parent().hasClass(consts.getValue("WRAPPER_CSS_CLASS"))) {
-				removeContainer();
-				removeWrapper();
-			} 
-			
-			createWrapper();
-			createContainer();	
+                    }
 
-			$container = $("#" + getContainerId());
-			if (config.get("placeholder")) {
-				$field.attr("placeholder", config.get("placeholder"));
-			}
+                } else {
+                    preparedList = list;
+                }
 
+                return preparedList;
+            }
 
-			function createWrapper() {
-				var $wrapper = $("<div>"),
-					classes = consts.getValue("WRAPPER_CSS_CLASS");
+            function match(value, phrase) {
 
-			
-				if (config.get("theme") && config.get("theme") !== "") {
-					classes += " eac-" + config.get("theme");
-				}
+                if (!config.get('list').match.caseSensitive) {
 
-				if (config.get("cssClasses") && config.get("cssClasses") !== "") {
-					classes += " " + config.get("cssClasses");
-				}
+                    if (typeof value === 'string') {
+                        value = value.toLowerCase();
+                    }
 
-				if (template.getTemplateClass() !== "") {
-					classes += " " + template.getTemplateClass();
-				}
-				
+                    phrase = phrase.toLowerCase();
+                }
 
-				$wrapper
-					.addClass(classes);
-				$field.wrap($wrapper);
+                return (config.get('list').match.method(value, phrase));
+            }
 
+            function reduceElementsInList(list) {
+                if (listBuilder.maxNumberOfElements !== undefined && list.length > listBuilder.maxNumberOfElements) {
+                    list = list.slice(0, listBuilder.maxNumberOfElements);
+                }
 
-				if (config.get("adjustWidth") === true) {
-					adjustWrapperWidth();	
-				}
-				
+                return list;
+            }
 
-			}
+            function sort(list) {
+                if (config.get('list').sort.enabled) {
+                    list.sort(config.get('list').sort.method);
+                }
 
-			function adjustWrapperWidth() {
-				var fieldWidth = $field.outerWidth();
+                return list;
+            }
 
-				$field.parent().css("width", fieldWidth);				
-			}
+        };
 
-			function removeWrapper() {
-				$field.unwrap();
-			}
 
-			function createContainer() {
-				var $elements_container = $("<div>").addClass(consts.getValue("CONTAINER_CLASS"));
+        return scope;
 
-				$elements_container
-						.attr("id", getContainerId())
-						.prepend($("<ul>"));
 
+    })(EasyAutocomplete || {});
 
-				(function() {
 
-					$elements_container
-						/* List show animation */
-						.on("show.eac", function() {
+    /*
+     * EasyAutocomplete - Template 
+     *
+     * 
+     *
+     */
+    var EasyAutocomplete = (function (scope) {
 
-							switch(config.get("list").showAnimation.type) {
+        scope.Template = function Template(options) {
 
-								case "slide":
-									var animationTime = config.get("list").showAnimation.time,
-										callback = config.get("list").showAnimation.callback;
+            var genericTemplates = {
+                basic: {
+                    type: 'basic',
+                    method: function (element) {
+                        return element;
+                    },
+                    cssClass: ''
+                },
+                description: {
+                    type: 'description',
+                    fields: {
+                        description: 'description'
+                    },
+                    method: function (element) {
+                        return element + ' - description';
+                    },
+                    cssClass: 'eac-description'
+                },
+                iconLeft: {
+                    type: 'iconLeft',
+                    fields: {
+                        icon: ''
+                    },
+                    method: function (element) {
+                        return element;
+                    },
+                    cssClass: 'eac-icon-left'
+                },
+                iconRight: {
+                    type: 'iconRight',
+                    fields: {
+                        iconSrc: ''
+                    },
+                    method: function (element) {
+                        return element;
+                    },
+                    cssClass: 'eac-icon-right'
+                },
+                links: {
+                    type: 'links',
+                    fields: {
+                        link: ''
+                    },
+                    method: function (element) {
+                        return element;
+                    },
+                    cssClass: ''
+                },
+                custom: {
+                    type: 'custom',
+                    method: function () {
+                    },
+                    cssClass: ''
+                }
+            },
+                    /*
+                     * Converts method with {{text}} to function
+                     */
+                    convertTemplateToMethod = function (template) {
 
-									$elements_container.find("ul").slideDown(animationTime, callback);
-								break;
 
-								case "fade":
-									var animationTime = config.get("list").showAnimation.time,
-										callback = config.get("list").showAnimation.callback;
+                        var _fields = template.fields,
+                                buildMethod;
 
-									$elements_container.find("ul").fadeIn(animationTime), callback;
-								break;
+                        if (template.type === 'description') {
 
-								default:
-									$elements_container.find("ul").show();
-								break;
-							}
+                            buildMethod = genericTemplates.description.method;
 
-							config.get("list").onShowListEvent();
-							
-						})
-						/* List hide animation */
-						.on("hide.eac", function() {
+                            if (typeof _fields.description === 'string') {
+                                buildMethod = function (elementValue, element) {
+                                    return elementValue + ' - <span>' + element[_fields.description] + '</span>';
+                                };
+                            } else if (typeof _fields.description === 'function') {
+                                buildMethod = function (elementValue, element) {
+                                    return elementValue + ' - <span>' + _fields.description(element) + '</span>';
+                                };
+                            }
 
-							switch(config.get("list").hideAnimation.type) {
+                            return buildMethod;
+                        }
 
-								case "slide":
-									var animationTime = config.get("list").hideAnimation.time,
-										callback = config.get("list").hideAnimation.callback;
+                        if (template.type === 'iconRight') {
 
-									$elements_container.find("ul").slideUp(animationTime, callback);
-								break;
+                            if (typeof _fields.iconSrc === 'string') {
+                                buildMethod = function (elementValue, element) {
+                                    return elementValue + '<img class=\'eac-icon\' src=\'' + element[_fields.iconSrc] + '\' />';
+                                };
+                            } else if (typeof _fields.iconSrc === 'function') {
+                                buildMethod = function (elementValue, element) {
+                                    return elementValue + '<img class=\'eac-icon\' src=\'' + _fields.iconSrc(element) + '\' />';
+                                };
+                            }
 
-								case "fade":
-									var animationTime = config.get("list").hideAnimation.time,
-										callback = config.get("list").hideAnimation.callback;
+                            return buildMethod;
+                        }
 
-									$elements_container.find("ul").fadeOut(animationTime, callback);
-								break;
 
-								default:
-									$elements_container.find("ul").hide();
-								break;
-							}
+                        if (template.type === 'iconLeft') {
 
-							config.get("list").onHideListEvent();
+                            if (typeof _fields.iconSrc === 'string') {
+                                buildMethod = function (elementValue, element) {
+                                    return '<img class=\'eac-icon\' src=\'' + element[_fields.iconSrc] + '\' />' + elementValue;
+                                };
+                            } else if (typeof _fields.iconSrc === 'function') {
+                                buildMethod = function (elementValue, element) {
+                                    return '<img class=\'eac-icon\' src=\'' + _fields.iconSrc(element) + '\' />' + elementValue;
+                                };
+                            }
 
-						})
-						.on("selectElement.eac", function() {
-							$elements_container.find("ul li").removeClass("selected");
-							$elements_container.find("ul li").eq(selectedElement).addClass("selected");
+                            return buildMethod;
+                        }
 
-							config.get("list").onSelectItemEvent();
-						})
-						.on("loadElements.eac", function(event, listBuilders, phrase) {
-			
+                        if (template.type === 'links') {
 
-							var $item = "",
-								$listContainer = $elements_container.find("ul");
+                            if (typeof _fields.link === 'string') {
+                                buildMethod = function (elementValue, element) {
+                                    return '<a href=\'' + element[_fields.link] + '\' >' + elementValue + '</a>';
+                                };
+                            } else if (typeof _fields.link === 'function') {
+                                buildMethod = function (elementValue, element) {
+                                    return '<a href=\'' + _fields.link(element) + '\' >' + elementValue + '</a>';
+                                };
+                            }
 
-							$listContainer
-								.empty()
-								.detach();
+                            return buildMethod;
+                        }
 
-							elementsList = [];
-							var counter = 0;
-							for(var builderIndex = 0, listBuildersLength = listBuilders.length; builderIndex < listBuildersLength; builderIndex += 1) {
 
-								var listData = listBuilders[builderIndex].data;
+                        if (template.type === 'custom') {
 
-								if (listData.length === 0) {
-									continue;
-								}
+                            return template.method;
+                        }
 
-								if (listBuilders[builderIndex].header !== undefined && listBuilders[builderIndex].header.length > 0) {
-									$listContainer.append("<div class='eac-category' >" + listBuilders[builderIndex].header + "</div>");
-								}
+                        return genericTemplates.basic.method;
 
-								for(var i = 0, listDataLength = listData.length; i < listDataLength && counter < listBuilders[builderIndex].maxListSize; i += 1) {
-									$item = $("<li><div class='eac-item'></div></li>");
-									
+                    },
+                    prepareBuildMethod = function (options) {
+                        if (!options || !options.type) {
 
-									(function() {
-										var j = i,
-											itemCounter = counter,
-											elementsValue = listBuilders[builderIndex].getValue(listData[j]);
+                            return genericTemplates.basic.method;
+                        }
 
-										$item.find(" > div")
-											.on("click", function() {
+                        if (options.type && genericTemplates[options.type]) {
 
-												$field.val(elementsValue).trigger("change");
+                            return convertTemplateToMethod(options);
+                        } else {
 
-												selectedElement = itemCounter;
-												selectElement(itemCounter);
+                            return genericTemplates.basic.method;
+                        }
 
-												config.get("list").onClickEvent();
-												config.get("list").onChooseEvent();
-											})
-											.mouseover(function() {
+                    },
+                    templateClass = function (options) {
+                        var emptyStringFunction = function () {
+                            return '';
+                        };
 
-												selectedElement = itemCounter;
-												selectElement(itemCounter);	
+                        if (!options || !options.type) {
 
-												config.get("list").onMouseOverEvent();
-											})
-											.mouseout(function() {
-												config.get("list").onMouseOutEvent();
-											})
-											.html(template.build(highlight(elementsValue, phrase), listData[j]));
-									})();
+                            return emptyStringFunction;
+                        }
 
-									$listContainer.append($item);
-									elementsList.push(listData[i]);
-									counter += 1;
-								}
-							}
+                        if (options.type && genericTemplates[options.type]) {
+                            return (function () {
+                                var _cssClass = genericTemplates[options.type].cssClass;
+                                return function () {
+                                    return _cssClass;
+                                };
+                            })();
+                        } else {
+                            return emptyStringFunction;
+                        }
+                    };
 
-							$elements_container.append($listContainer);
+            this.getTemplateClass = templateClass(options);
 
-							config.get("list").onLoadEvent();
-						});
+            this.build = prepareBuildMethod(options);
 
-				})();
+        };
 
-				$field.after($elements_container);
-			}
+        return scope;
 
-			function removeContainer() {
-				$field.next("." + consts.getValue("CONTAINER_CLASS")).remove();
-			}
+    })(EasyAutocomplete || {});
 
-			function highlight(string, phrase) {
+    /*
+     * EasyAutocomplete - jQuery plugin for autocompletion
+     *
+     */
+    var EasyAutocomplete = (function (scope) {
 
-				if(config.get("highlightPhrase") && phrase !== "") {
-					return highlightPhrase(string, phrase);	
-				} else {
-					return string;
-				}
-					
-			}
+        scope.main = function Core($input, options) {
 
-			function escapeRegExp(str) {
-				return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
- 			}
+            var module = {
+                name: 'EasyAutocomplete',
+                shortcut: 'eac'
+            };
 
-			function highlightPhrase(string, phrase) {
-				var escapedPhrase = escapeRegExp(phrase);
-				return (string + "").replace(new RegExp("(" + escapedPhrase + ")", "gi") , "<b>$1</b>");
-			}
+            var consts = new scope.Constants(),
+                    config = new scope.Configuration(options),
+                    logger = new scope.Logger(),
+                    template = new scope.Template(options.template),
+                    listBuilderService = new scope.ListBuilderService(config, scope.proccess),
+                    checkParam = config.equals,
+                    $field = $input,
+                    $container = '',
+                    elementsList = [],
+                    selectedElement = -1,
+                    requestDelayTimeoutId;
 
+            scope.consts = consts;
 
+            this.getConstants = function () {
+                return consts;
+            };
 
-		}
-		function getContainerId() {
-			
-			var elementId = $field.attr("id");
+            this.getConfiguration = function () {
+                return config;
+            };
 
-			elementId = consts.getValue("CONTAINER_ID") + elementId;
+            this.getContainer = function () {
+                return $container;
+            };
 
-			return elementId;
-		}
-		function bindEvents() {
+            this.getSelectedItemIndex = function () {
+                return selectedElement;
+            };
 
-			bindAllEvents();
-			
+            this.getItems = function () {
+                return elementsList;
+            };
 
-			function bindAllEvents() {
-				if (checkParam("autocompleteOff", true)) {
-					removeAutocomplete();
-				}
+            this.getItemData = function (index) {
 
-				bindKeyup();
-				bindKeydown();
-				bindKeypress();
-				bindFocus();
-				bindBlur();
-			}
+                if (elementsList.length < index || elementsList[index] === undefined) {
+                    return -1;
+                } else {
+                    return elementsList[index];
+                }
+            };
 
-			function bindKeyup() {
-				$field
-				.off("keyup")
-				.keyup(function(event) {
+            this.getSelectedItemData = function () {
+                return this.getItemData(selectedElement);
+            };
 
-					switch(event.keyCode) {
+            this.build = function () {
+                prepareField();
+            };
 
-						case 27:
+            this.init = function () {
+                init();
+            };
+            function init() {
 
-							hideContainer();
-							loseFieldFocus();
-						break;
+                if ($field.length === 0) {
+                    logger.error('Input field doesn\'t exist.');
+                    return;
+                }
 
-						case 38:
+                if (!config.checkDataUrlProperties()) {
+                    logger.error('One of options variables \'data\' or \'url\' must be defined.');
+                    return;
+                }
 
-							event.preventDefault();
+                if (!config.checkRequiredProperties()) {
+                    logger.error('Will not work without mentioned properties.');
+                    return;
+                }
 
-							if(elementsList.length > 0 && selectedElement > 0) {
 
-								selectedElement -= 1;
+                prepareField();
+                bindEvents();
 
-								$field.val(config.get("getValue")(elementsList[selectedElement]));
+            }
+            function prepareField() {
 
-								selectElement(selectedElement);
 
-							}						
-						break;
+                if ($field.parent().hasClass(consts.getValue('WRAPPER_CSS_CLASS'))) {
+                    removeContainer();
+                    removeWrapper();
+                }
 
-						case 40:
+                createWrapper();
+                createContainer();
 
-							event.preventDefault();
+                $container = $('#' + getContainerId());
+                if (config.get('placeholder')) {
+                    $field.attr('placeholder', config.get('placeholder'));
+                }
 
-							if(elementsList.length > 0 && selectedElement < elementsList.length - 1) {
 
-								selectedElement += 1;
+                function createWrapper() {
+                    var $wrapper = $('<div>'),
+                            classes = consts.getValue('WRAPPER_CSS_CLASS');
 
-								$field.val(config.get("getValue")(elementsList[selectedElement]));
 
-								selectElement(selectedElement);
-								
-							}
+                    if (config.get('theme') && config.get('theme') !== '') {
+                        classes += ' eac-' + config.get('theme');
+                    }
 
-						break;
+                    if (config.get('cssClasses') && config.get('cssClasses') !== '') {
+                        classes += ' ' + config.get('cssClasses');
+                    }
 
-						default:
+                    if (template.getTemplateClass() !== '') {
+                        classes += ' ' + template.getTemplateClass();
+                    }
 
-							if (event.keyCode > 40 || event.keyCode === 8) {
 
-								var inputPhrase = $field.val();
+                    $wrapper
+                            .addClass(classes);
+                    $field.wrap($wrapper);
 
-								if (!(config.get("list").hideOnEmptyPhrase === true && event.keyCode === 8 && inputPhrase === "")) {
 
-									if (config.get("requestDelay") > 0) {
-										if (requestDelayTimeoutId !== undefined) {
-											clearTimeout(requestDelayTimeoutId);
-										}
+                    if (config.get('adjustWidth') === true) {
+                        adjustWrapperWidth();
+                    }
 
-										requestDelayTimeoutId = setTimeout(function () { loadData(inputPhrase);}, config.get("requestDelay"));
-									} else {
-										loadData(inputPhrase);
-									}
 
-								} else {
-									hideContainer();
-								}
-								
-							}
-							
+                }
 
-						break;
-					}
-				
+                function adjustWrapperWidth() {
+                    var fieldWidth = $field.outerWidth();
 
-					function loadData(inputPhrase) {
+                    $field.parent().css('width', fieldWidth);
+                }
 
+                function removeWrapper() {
+                    $field.unwrap();
+                }
 
-						if (inputPhrase.length < config.get("minCharNumber")) {
-							return;
-						}
+                function createContainer() {
+                    var $elements_container = $('<div>').addClass(consts.getValue('CONTAINER_CLASS'));
 
+                    $elements_container
+                            .attr('id', getContainerId())
+                            .prepend($('<ul>'));
 
-						if (config.get("data") !== "list-required") {
 
-							var data = config.get("data");
+                    (function () {
 
-							var listBuilders = listBuilderService.init(data);
+                        $elements_container
+                                /* List show animation */
+                                .on('show.eac', function () {
+                                    if (!$field.is(':focus')) {
+                                        return
+                                    }
 
-							listBuilders = listBuilderService.updateCategories(listBuilders, data);
-							
-							listBuilders = listBuilderService.processData(listBuilders, inputPhrase);
+                                    switch (config.get('list').showAnimation.type) {
 
-							loadElements(listBuilders, inputPhrase);
+                                        case 'slide':
+                                            var animationTime = config.get('list').showAnimation.time,
+                                                    callback = config.get('list').showAnimation.callback;
 
-							if ($field.parent().find("li").length > 0) {
-								showContainer();	
-							} else {
-								hideContainer();
-							}
+                                            $elements_container.find('ul').slideDown(animationTime, callback);
+                                            break;
 
-						}
+                                        case 'fade':
+                                            var animationTime = config.get('list').showAnimation.time,
+                                                    callback = config.get('list').showAnimation.callback;
 
-						var settings = createAjaxSettings();
+                                            $elements_container.find('ul').fadeIn(animationTime), callback;
+                                            break;
 
-						if (settings.url === undefined || settings.url === "") {
-							settings.url = config.get("url");
-						}
+                                        default:
+                                            $elements_container.find('ul').show();
+                                            break;
+                                    }
 
-						if (settings.dataType === undefined || settings.dataType === "") {
-							settings.dataType = config.get("dataType");
-						}
+                                    config.get('list').onShowListEvent();
 
+                                })
+                                /* List hide animation */
+                                .on('hide.eac', function () {
 
-						if (settings.url !== undefined && settings.url !== "list-required") {
+                                    switch (config.get('list').hideAnimation.type) {
 
-							settings.url = settings.url(inputPhrase);
+                                        case 'slide':
+                                            var animationTime = config.get('list').hideAnimation.time,
+                                                    callback = config.get('list').hideAnimation.callback;
 
-							settings.data = config.get("preparePostData")(settings.data, inputPhrase);
+                                            $elements_container.find('ul').slideUp(animationTime, callback);
+                                            break;
 
-							$.ajax(settings) 
-								.done(function(data) {
+                                        case 'fade':
+                                            var animationTime = config.get('list').hideAnimation.time,
+                                                    callback = config.get('list').hideAnimation.callback;
 
-									var listBuilders = listBuilderService.init(data);
+                                            $elements_container.find('ul').fadeOut(animationTime, callback);
+                                            break;
 
-									listBuilders = listBuilderService.updateCategories(listBuilders, data);
-									
-									listBuilders = listBuilderService.convertXml(listBuilders);
-									if (checkInputPhraseMatchResponse(inputPhrase, data)) {
+                                        default:
+                                            $elements_container.find('ul').hide();
+                                            break;
+                                    }
 
-										listBuilders = listBuilderService.processData(listBuilders, inputPhrase);
+                                    config.get('list').onHideListEvent();
 
-										loadElements(listBuilders, inputPhrase);	
-																				
-									}
+                                })
+                                .on('selectElement.eac', function () {
+                                    $elements_container.find('ul li').removeClass('selected');
+                                    $elements_container.find('ul li').eq(selectedElement).addClass('selected');
 
-									if (listBuilderService.checkIfDataExists(listBuilders) && $field.parent().find("li").length > 0) {
-										showContainer();	
-									} else {
-										hideContainer();
-									}
+                                    config.get('list').onSelectItemEvent();
+                                })
+                                .on('loadElements.eac', function (event, listBuilders, phrase) {
 
-									config.get("ajaxCallback")();
 
-								})
-								.fail(function() {
-									logger.warning("Fail to load response data");
-								})
-								.always(function() {
+                                    var $item = '',
+                                            $listContainer = $elements_container.find('ul');
 
-								});
-						}
+                                    $listContainer
+                                            .empty()
+                                            .detach();
 
-						
+                                    elementsList = [];
+                                    var counter = 0;
+                                    for (var builderIndex = 0, listBuildersLength = listBuilders.length; builderIndex < listBuildersLength; builderIndex += 1) {
 
-						function createAjaxSettings() {
+                                        var listData = listBuilders[builderIndex].data;
 
-							var settings = {},
-								ajaxSettings = config.get("ajaxSettings") || {};
+                                        if (listData.length === 0) {
+                                            continue;
+                                        }
 
-							for (var set in ajaxSettings) {
-								settings[set] = ajaxSettings[set];
-							}
+                                        if (listBuilders[builderIndex].header !== undefined && listBuilders[builderIndex].header.length > 0) {
+                                            $listContainer.append('<div class=\'eac-category\' >' + listBuilders[builderIndex].header + '</div>');
+                                        }
 
-							return settings;
-						}
+                                        for (var i = 0, listDataLength = listData.length; i < listDataLength && counter < listBuilders[builderIndex].maxListSize; i += 1) {
+                                            $item = $('<li><div class=\'eac-item\'></div></li>');
 
-						function checkInputPhraseMatchResponse(inputPhrase, data) {
 
-							if (config.get("matchResponseProperty") !== false) {
-								if (typeof config.get("matchResponseProperty") === "string") {
-									return (data[config.get("matchResponseProperty")] === inputPhrase);
-								}
+                                            (function () {
+                                                var j = i,
+                                                        itemCounter = counter,
+                                                        elementsValue = listBuilders[builderIndex].getValue(listData[j]);
 
-								if (typeof config.get("matchResponseProperty") === "function") {
-									return (config.get("matchResponseProperty")(data) === inputPhrase);
-								}
+                                                $item.find(' > div')
+                                                        .on('click', function () {
 
-								return true;
-							} else {
-								return true;
-							}
+                                                            $field.val(elementsValue).trigger('change');
 
-						}
+                                                            selectedElement = itemCounter;
+                                                            selectElement(itemCounter);
 
-					}
+                                                            config.get('list').onClickEvent();
+                                                            config.get('list').onChooseEvent();
+                                                        })
+                                                        .mouseover(function () {
 
+                                                            selectedElement = itemCounter;
+                                                            selectElement(itemCounter);
 
-				});
-			}
+                                                            config.get('list').onMouseOverEvent();
+                                                        })
+                                                        .mouseout(function () {
+                                                            config.get('list').onMouseOutEvent();
+                                                        })
+                                                        .html(template.build(highlight(elementsValue, phrase), listData[j]));
+                                            })();
 
-			function bindKeydown() {
-				$field
-					.on("keydown", function(evt) {
-	        		    evt = evt || window.event;
-	        		    var keyCode = evt.keyCode;
-	        		    if (keyCode === 38) {
-	        		        suppressKeypress = true; 
-	        		        return false;
-	        		    }
-		        	})
-					.keydown(function(event) {
+                                            $listContainer.append($item);
+                                            elementsList.push(listData[i]);
+                                            counter += 1;
+                                        }
+                                    }
 
-						if (event.keyCode === 13 && selectedElement > -1) {
+                                    $elements_container.append($listContainer);
 
-							$field.val(config.get("getValue")(elementsList[selectedElement]));
+                                    config.get('list').onLoadEvent();
+                                });
 
-							config.get("list").onKeyEnterEvent();
-							config.get("list").onChooseEvent();
+                    })();
 
-							selectedElement = -1;
-							hideContainer();
+                    $field.after($elements_container);
+                }
 
-							event.preventDefault();
-						}
-					});
-			}
+                function removeContainer() {
+                    $field.next('.' + consts.getValue('CONTAINER_CLASS')).remove();
+                }
 
-			function bindKeypress() {
-				$field
-				.off("keypress");
-			}
+                function highlight(string, phrase) {
 
-			function bindFocus() {
-				$field.focus(function() {
+                    if (config.get('highlightPhrase') && phrase !== '') {
+                        return highlightPhrase(string, phrase);
+                    } else {
+                        return string;
+                    }
 
-					if ($field.val() !== "" && elementsList.length > 0) {
-						
-						selectedElement = -1;
-						showContainer();	
-					}
-									
-				});
-			}
+                }
 
-			function bindBlur() {
-				$field.blur(function() {
-					setTimeout(function() { 
-						
-						selectedElement = -1;
-						hideContainer();
-					}, 250);
-				});
-			}
+                function escapeRegExp(str) {
+                    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+                }
 
-			function removeAutocomplete() {
-				$field.attr("autocomplete","off");
-			}
+                function highlightPhrase(string, phrase) {
+                    var escapedPhrase = escapeRegExp(phrase);
+                    return (string + '').replace(new RegExp('(' + escapedPhrase + ')', 'gi'), '<b>$1</b>');
+                }
 
-		}
 
-		function showContainer() {
-			$container.trigger("show.eac");
-		}
+            }
+            function getContainerId() {
 
-		function hideContainer() {
-			$container.trigger("hide.eac");
-		}
+                var elementId = $field.attr('id');
 
-		function selectElement(index) {
-			
-			$container.trigger("selectElement.eac", index);
-		}
+                elementId = consts.getValue('CONTAINER_ID') + elementId;
 
-		function loadElements(list, phrase) {
-			$container.trigger("loadElements.eac", [list, phrase]);
-		}
+                return elementId;
+            }
+            function bindEvents() {
 
-		function loseFieldFocus() {
-			$field.trigger("blur");
-		}
+                bindAllEvents();
 
 
-	};
+                function bindAllEvents() {
+                    if (checkParam('autocompleteOff', true)) {
+                        removeAutocomplete();
+                    }
 
+                    bindFocusOut();
+                    bindKeyup();
+                    bindKeydown();
+                    bindKeypress();
+                    bindFocus();
+                    bindBlur();
+                }
 
-	scope.easyAutocompleteHandles = [];
+                function bindFocusOut() {
+                    $field.focusout(function () {
 
-	scope.inputHasId = function(input) {
+                        var fieldValue = $field.val(),
+                                phrase;
 
-		if($(input).attr("id") !== undefined && $(input).attr("id").length > 0) {
-			return true;
-		} else {
-			return false;
-		}
+                        if (!config.get('list').match.caseSensitive) {
+                            fieldValue = fieldValue.toLowerCase();
+                        }
 
-	};
+                        for (var i = 0, length = elementsList.length; i < length; i += 1) {
 
-	scope.assignRandomId = function(input) {
+                            phrase = config.get('getValue')(elementsList[i]);
+                            if (!config.get('list').match.caseSensitive) {
+                                phrase = phrase.toLowerCase();
+                            }
 
-		var fieldId = "";
+                            if (phrase === fieldValue) {
+                                selectedElement = i;
+                                selectElement(selectedElement);
+                                return;
+                            }
+                        }
+                    });
+                }
 
-		do {
-			fieldId = "eac-" + Math.floor(Math.random() * 10000);		
-		} while ($("#" + fieldId).length !== 0);
-		
-		elementId = scope.consts.getValue("CONTAINER_ID") + fieldId;
+                function bindKeyup() {
+                    $field
+                            .off('keyup')
+                            .keyup(function (event) {
 
-		$(input).attr("id", fieldId);
- 
-	};
+                                switch (event.keyCode) {
 
-	return scope;
+                                    case 27:
 
-})(EasyAutocomplete || {});
+                                        hideContainer();
+                                        loseFieldFocus();
+                                        break;
 
+                                    case 38:
 
-$.fn.easyAutocomplete = function(options) {
+                                        event.preventDefault();
 
-	return this.each(function() {
-		var $this = $(this),
-			eacHandle = new EasyAutocomplete.main($this, options);
+                                        if (elementsList.length > 0 && selectedElement > 0) {
 
-		if (!EasyAutocomplete.inputHasId($this)) {
-			EasyAutocomplete.assignRandomId($this);
-		}
+                                            selectedElement -= 1;
 
-		eacHandle.init();
+                                            $field.val(config.get('getValue')(elementsList[selectedElement]));
 
-		EasyAutocomplete.easyAutocompleteHandles[$this.attr("id")] = eacHandle;
+                                            selectElement(selectedElement);
 
-	});	
-};
+                                        }
+                                        break;
 
-$.fn.getSelectedItemIndex = function() {
+                                    case 40:
 
-	var inputId = $(this).attr("id");
+                                        event.preventDefault();
 
-	if (inputId !== undefined) {
-		return EasyAutocomplete.easyAutocompleteHandles[inputId].getSelectedItemIndex();
-	}
+                                        if (elementsList.length > 0 && selectedElement < elementsList.length - 1) {
 
-	return -1;
-};
+                                            selectedElement += 1;
 
-$.fn.getItemData = function(index) {
+                                            $field.val(config.get('getValue')(elementsList[selectedElement]));
 
-	var inputId = $(this).attr("id");
+                                            selectElement(selectedElement);
 
-	if (inputId !== undefined && index > -1) {
-		return EasyAutocomplete.easyAutocompleteHandles[inputId].getItemData(index);
-	}
+                                        }
 
-	return -1;
-};
+                                        break;
 
-$.fn.getSelectedItemData = function() {
+                                    default:
 
-	var inputId = $(this).attr("id");
 
-	if (inputId !== undefined) {
-		return EasyAutocomplete.easyAutocompleteHandles[inputId].getSelectedItemData();
-	}
+                                        if (event.keyCode > 40 || event.keyCode === 8 || event.keyCode === 0) {
 
-	return -1;
-};
+                                            var inputPhrase = $field.val();
+
+                                            if (!(config.get('list').hideOnEmptyPhrase === true && event.keyCode === 8 && inputPhrase === '')) {
+
+                                                if (config.get('requestDelay') > 0) {
+                                                    if (requestDelayTimeoutId !== undefined) {
+                                                        clearTimeout(requestDelayTimeoutId);
+                                                    }
+
+                                                    requestDelayTimeoutId = setTimeout(function () {
+                                                        loadData(inputPhrase);
+                                                    }, config.get('requestDelay'));
+                                                } else {
+                                                    loadData(inputPhrase);
+                                                }
+
+                                            } else {
+                                                hideContainer();
+                                            }
+
+                                        }
+
+
+                                        break;
+                                }
+
+
+                                function loadData(inputPhrase) {
+
+
+                                    if (inputPhrase.length < config.get('minCharNumber')) {
+                                        return;
+                                    }
+
+
+                                    if (config.get('data') !== 'list-required') {
+
+                                        var data = config.get('data');
+
+                                        var listBuilders = listBuilderService.init(data);
+
+                                        listBuilders = listBuilderService.updateCategories(listBuilders, data);
+
+                                        listBuilders = listBuilderService.processData(listBuilders, inputPhrase);
+
+                                        loadElements(listBuilders, inputPhrase);
+
+                                        if ($field.parent().find('li').length > 0) {
+                                            showContainer();
+                                        } else {
+                                            hideContainer();
+                                        }
+
+                                    }
+
+                                    var settings = createAjaxSettings();
+
+                                    if (settings.url === undefined || settings.url === '') {
+                                        settings.url = config.get('url');
+                                    }
+
+                                    if (settings.dataType === undefined || settings.dataType === '') {
+                                        settings.dataType = config.get('dataType');
+                                    }
+
+
+                                    if (settings.url !== undefined && settings.url !== 'list-required') {
+
+                                        settings.url = settings.url(inputPhrase);
+
+                                        settings.data = config.get('preparePostData')(settings.data, inputPhrase);
+
+                                        $.ajax(settings)
+                                                .done(function (data) {
+
+                                                    var listBuilders = listBuilderService.init(data);
+
+                                                    listBuilders = listBuilderService.updateCategories(listBuilders, data);
+
+                                                    listBuilders = listBuilderService.convertXml(listBuilders);
+                                                    if (checkInputPhraseMatchResponse(inputPhrase, data)) {
+
+                                                        listBuilders = listBuilderService.processData(listBuilders, inputPhrase);
+
+                                                        loadElements(listBuilders, inputPhrase);
+
+                                                    }
+
+                                                    if (listBuilderService.checkIfDataExists(listBuilders) && $field.parent().find('li').length > 0) {
+                                                        showContainer();
+                                                    } else {
+                                                        hideContainer();
+                                                    }
+
+                                                    config.get('ajaxCallback')();
+
+                                                })
+                                                .fail(function () {
+                                                    logger.warning('Fail to load response data');
+                                                })
+                                                .always(function () {
+
+                                                });
+                                    }
+
+
+                                    function createAjaxSettings() {
+
+                                        var settings = {},
+                                                ajaxSettings = config.get('ajaxSettings') || {};
+
+                                        for (var set in ajaxSettings) {
+                                            settings[set] = ajaxSettings[set];
+                                        }
+
+                                        return settings;
+                                    }
+
+                                    function checkInputPhraseMatchResponse(inputPhrase, data) {
+
+                                        if (config.get('matchResponseProperty') !== false) {
+                                            if (typeof config.get('matchResponseProperty') === 'string') {
+                                                return (data[config.get('matchResponseProperty')] === inputPhrase);
+                                            }
+
+                                            if (typeof config.get('matchResponseProperty') === 'function') {
+                                                return (config.get('matchResponseProperty')(data) === inputPhrase);
+                                            }
+
+                                            return true;
+                                        } else {
+                                            return true;
+                                        }
+
+                                    }
+
+                                }
+
+
+                            });
+                }
+
+                function bindKeydown() {
+                    $field
+                            .on('keydown', function (evt) {
+                                evt = evt || window.event;
+                                var keyCode = evt.keyCode;
+                                if (keyCode === 38) {
+                                    suppressKeypress = true;
+                                    return false;
+                                }
+                            })
+                            .keydown(function (event) {
+
+                                if (event.keyCode === 13 && selectedElement > -1) {
+
+                                    $field.val(config.get('getValue')(elementsList[selectedElement]));
+
+                                    config.get('list').onKeyEnterEvent();
+                                    config.get('list').onChooseEvent();
+
+                                    selectedElement = -1;
+                                    hideContainer();
+
+                                    event.preventDefault();
+                                }
+                            });
+                }
+
+                function bindKeypress() {
+                    $field
+                            .off('keypress');
+                }
+
+                function bindFocus() {
+                    $field.focus(function () {
+
+                        if ($field.val() !== '' && elementsList.length > 0) {
+
+                            selectedElement = -1;
+                            showContainer();
+                        }
+
+                    });
+                }
+
+                function bindBlur() {
+                    $field.blur(function () {
+                        setTimeout(function () {
+
+                            selectedElement = -1;
+                            hideContainer();
+                        }, 250);
+                    });
+                }
+
+                function removeAutocomplete() {
+                    $field.attr('autocomplete', 'off');
+                }
+
+            }
+
+            function showContainer() {
+                $container.trigger('show.eac');
+            }
+
+            function hideContainer() {
+                $container.trigger('hide.eac');
+            }
+
+            function selectElement(index) {
+
+                $container.trigger('selectElement.eac', index);
+            }
+
+            function loadElements(list, phrase) {
+                $container.trigger('loadElements.eac', [list, phrase]);
+            }
+
+            function loseFieldFocus() {
+                $field.trigger('blur');
+            }
+
+
+        };
+        scope.eacHandles = [];
+
+        scope.getHandle = function (id) {
+            return scope.eacHandles[id];
+        };
+
+        scope.inputHasId = function (input) {
+
+            if ($(input).attr('id') !== undefined && $(input).attr('id').length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        };
+
+        scope.assignRandomId = function (input) {
+
+            var fieldId = '';
+
+            do {
+                fieldId = 'eac-' + Math.floor(Math.random() * 10000);
+            } while ($('#' + fieldId).length !== 0);
+
+            elementId = scope.consts.getValue('CONTAINER_ID') + fieldId;
+
+            $(input).attr('id', fieldId);
+
+        };
+
+        scope.setHandle = function (handle, id) {
+            scope.eacHandles[id] = handle;
+        };
+
+
+        return scope;
+
+    })(EasyAutocomplete || {});
+
+
+
+    $.fn.easyAutocomplete = function (options) {
+
+        return this.each(function () {
+            var $this = $(this),
+                    eacHandle = new EasyAutocomplete.main($this, options);
+
+            if (!EasyAutocomplete.inputHasId($this)) {
+                EasyAutocomplete.assignRandomId($this);
+            }
+
+            eacHandle.init();
+
+            EasyAutocomplete.setHandle(eacHandle, $this.attr('id'));
+
+        });
+    };
+
+    $.fn.getSelectedItemIndex = function () {
+
+        var inputId = $(this).attr('id');
+
+        if (inputId !== undefined) {
+            return EasyAutocomplete.getHandle(inputId).getSelectedItemIndex();
+        }
+
+        return -1;
+    };
+
+    $.fn.getItems = function () {
+
+        var inputId = $(this).attr('id');
+
+        if (inputId !== undefined) {
+            return EasyAutocomplete.getHandle(inputId).getItems();
+        }
+
+        return -1;
+    };
+
+    $.fn.getItemData = function (index) {
+
+        var inputId = $(this).attr('id');
+
+        if (inputId !== undefined && index > -1) {
+            return EasyAutocomplete.getHandle(inputId).getItemData(index);
+        }
+
+        return -1;
+    };
+
+    $.fn.getSelectedItemData = function () {
+
+        var inputId = $(this).attr('id');
+
+        if (inputId !== undefined) {
+            return EasyAutocomplete.getHandle(inputId).getSelectedItemData();
+        }
+
+        return -1;
+    };
+
+})(jQuery);

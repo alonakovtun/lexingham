@@ -1,24 +1,25 @@
 <?php
 if (!defined('ABSPATH'))
     die('No direct access allowed');
-global $WOOF;
+
 ?>
 <div class="woof_qt">
-    <div class="woof_quick_search_wraper <?php echo $class ?>">
-        
-        <input id="woof_quick_search_form" class="form-control woof_quick_search_wraper_textinput" data-text_group_logic="<?php echo $text_group_logic ?>" data-term_logic="<?php echo $term_logic ?>" data-tax_logic="<?php echo $tax_logic ?>"  data-target-link="<?php echo $target ?>" data-preload="<?php echo $preload ?>" data-extended="<?php echo $extended_filter ?>" placeholder="<?php echo $placeholder ?>" >
+    <div class="woof_quick_search_wraper <?php echo esc_attr($class) ?>">
+
+        <input id="woof_quick_search_form" class="form-control woof_quick_search_wraper_textinput" data-text_group_logic="<?php echo esc_html($text_group_logic) ?>" data-term_logic="<?php echo esc_html($term_logic) ?>" data-tax_logic="<?php echo esc_html($tax_logic) ?>"  data-target-link="<?php echo esc_html($target) ?>" data-preload="<?php echo esc_html($preload) ?>" data-extended="<?php echo esc_html($extended_filter) ?>" placeholder="<?php echo esc_html($placeholder) ?>" >
 
         <?php
         if ($extended_filter) {
             if ($price_filter == 1) {
 
-                wp_enqueue_script('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/js/ion-rangeSlider/ion.rangeSlider.min.js', array('jquery'));
-                wp_enqueue_style('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.css');
-                $ion_slider_skin = 'skinNice';
-                if (isset($this->settings['ion_slider_skin'])) {
-                    $ion_slider_skin = $this->settings['ion_slider_skin'];
+                wp_enqueue_script('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/js/ion-rangeSlider/ion.rangeSlider.min.js', array('jquery'), WOOF_VERSION);
+                wp_enqueue_style('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.css', array(), WOOF_VERSION);
+
+                $skin = 'round';
+                if (isset(woof()->settings['ion_slider_skin'])) {
+                    $skin = woof()->settings['ion_slider_skin'];
                 }
-                wp_enqueue_style('ion.range-slider-skin', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.' . $ion_slider_skin . '.css');
+                $skin = WOOF_HELPER::check_new_ion_skin($skin);
                 //***
                 $additional_taxes = "";
                 $min_price = $preset_min = WOOF_HELPER::get_min_price($additional_taxes);
@@ -44,7 +45,6 @@ global $WOOF;
                 //***
                 $slider_step = 1;
                 //***
-                //esc_attr( str_replace( array( '%1$s', '%2$s' ), array( '%s', '%v' ), get_woocommerce_price_format() ) )
                 $slider_prefix = '';
                 $slider_postfix = '';
                 if (class_exists('WOOCS')) {
@@ -89,7 +89,7 @@ global $WOOF;
                 }
                 ?>
                 <div class="woof_qt_add_filter ">
-                    <input class="woof_qt_price_slider"  data-min="<?php echo $min ?>" data-max="<?php echo $max ?>" data-min-now="<?php echo $min_price ?>" data-max-now="<?php echo $max_price ?>" data-step="<?php echo $slider_step ?>" data-slider-prefix="<?php echo $slider_prefix ?>" data-slider-postfix="<?php echo $slider_postfix ?>" value="" />
+                    <input class="woof_qt_price_slider" data-skin="<?php echo esc_attr($skin) ?>"  data-min="<?php echo esc_attr($min) ?>" data-max="<?php echo esc_attr($max) ?>" data-min-now="<?php echo esc_attr($min_price) ?>" data-max-now="<?php echo esc_attr($max_price) ?>" data-step="<?php echo esc_attr($slider_step) ?>" data-slider-prefix="<?php echo esc_attr($slider_prefix) ?>" data-slider-postfix="<?php echo esc_attr($slider_postfix) ?>" value="" />
                 </div>
                 <?php
             }
@@ -114,13 +114,12 @@ global $WOOF;
                     if (!isset($filter_struct[1])) {
                         continue;
                     }
-                    if(class_exists('WOOF_META_FILTER')){
-                        $meta_fields=$this->settings['meta_filter'];
-                        if (!empty($meta_fields))
-                        {
-                            if(in_array($filter_struct[1], array_keys ($meta_fields))){
+                    if (class_exists('WOOF_META_FILTER')) {
+                        $meta_fields = $this->settings['meta_filter'];
+                        if (!empty($meta_fields)) {
+                            if (in_array($filter_struct[1], array_keys($meta_fields))) {
                                 $title = WOOF_HELPER::wpml_translate(null, (isset($filter_custom_title[$filter_struct[1]]) ? $filter_custom_title[$filter_struct[1]] : $meta_fields[$filter_struct[1]]['title']));
-                                woof_get_meta_filter_html($meta_fields[$filter_struct[1]],$filter_struct[0],$title);
+                                woof_get_meta_filter_html($meta_fields[$filter_struct[1]], $filter_struct[0], $title);
                                 continue;
                             }
                         }
@@ -142,13 +141,15 @@ global $WOOF;
                     switch ($filter_struct[0]) {
                         case 'multi-drop-down':
                             ?>
-                            <div class="woof_qt_add_filter woof_qt_add_filter_multiselect_<?php echo $filter_struct[1] ?>">
-                                <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $taxonomy_info ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
-                                <select class="woof_qt_select tax_<?php echo $filter_struct[1] ?>" data-placeholder="<?php echo $taxonomy_info ?>"  data-tax="<?php echo $filter_struct[1] ?>" multiple="multiple" >
+                            <div class="woof_qt_add_filter woof_qt_add_filter_multiselect_<?php echo esc_attr($filter_struct[1]) ?>">
+                                <<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                                <?php esc_html_e($taxonomy_info) ?>
+                                </<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                                <select class="woof_qt_select tax_<?php echo esc_attr($filter_struct[1]) ?>" data-placeholder="<?php esc_html_e($taxonomy_info) ?>"  data-tax="<?php echo esc_attr($filter_struct[1]) ?>" multiple="multiple" >
                                     <?php
                                     foreach ($terms as $term) {
                                         ?>
-                                        <option value="<?php echo $term->term_id ?>"><?php echo $term->name ?></option>
+                                        <option value="<?php echo esc_attr($term->term_id) ?>"><?php echo esc_html($term->name) ?></option>
                                         <?php
                                     }
                                     ?>
@@ -159,14 +160,17 @@ global $WOOF;
                             break;
                         case 'drop-down':
                             ?>
-                            <div class="woof_qt_add_filter woof_qt_add_filter_select_<?php echo $filter_struct[1] ?>">
-                                <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $taxonomy_info ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
-                                <select class="woof_qt_select tax_<?php echo $filter_struct[1] ?>" data-tax="<?php echo $filter_struct[1] ?>">
-                                    <option value="-1"><?php _e('Any', 'woocommerce-products-filter') ?></option>
+
+                            <div class="woof_qt_add_filter woof_qt_add_filter_select_<?php echo esc_attr($filter_struct[1]) ?>">
+                                <<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                                <?php esc_html_e($taxonomy_info) ?>
+                                </<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                                <select class="woof_qt_select tax_<?php echo esc_attr($filter_struct[1]) ?>" data-tax="<?php echo esc_attr($filter_struct[1]) ?>">
+                                    <option value="-1"><?php esc_html_e('Any', 'woocommerce-products-filter') ?></option>
                                     <?php
                                     foreach ($terms as $term) {
                                         ?>
-                                        <option value="<?php echo $term->term_id ?>"><?php echo $term->name ?></option>
+                                        <option value="<?php echo esc_attr($term->term_id) ?>"><?php esc_html_e($term->name) ?></option>
                                         <?php
                                     }
                                     ?>
@@ -177,14 +181,16 @@ global $WOOF;
                             break;
                         case 'checkbox':
                             ?>
-                            <div class="woof_qt_add_filter woof_qt_add_filter_checkbox woof_qt_add_filter_checkbox_<?php echo $filter_struct[1] ?>">
-                                <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $taxonomy_info ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                            <div class="woof_qt_add_filter woof_qt_add_filter_checkbox woof_qt_add_filter_checkbox_<?php echo esc_attr($filter_struct[1]) ?>">
+                                <<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                                <?php esc_html_e($taxonomy_info) ?>
+                                </<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
                                 <?php
                                 foreach ($terms as $term) {
                                     ?>
                                     <div class="woof_qt_item_container">
-                                        <input type="checkbox" name="woof_qt_check_<?php echo $filter_struct[1] ?>" class="woof_qt_checkbox tax_<?php echo $filter_struct[1] ?>" data-tax="<?php echo $filter_struct[1] ?>"value="<?php echo $term->term_id ?>" >
-                                        <label class="woof_qt_checkbox_label"><?php echo $term->name ?></label>
+                                        <input type="checkbox" id="term_<?php echo esc_attr($unique_id) ?>" name="woof_qt_check_<?php echo esc_attr($filter_struct[1]) ?>" class="woof_qt_checkbox tax_<?php echo esc_attr($filter_struct[1]) ?>" data-tax="<?php echo esc_attr($filter_struct[1]) ?>"value="<?php echo esc_attr($term->term_id) ?>" >
+                                        <label class="woof_qt_checkbox_label" for="term_<?php echo esc_attr($unique_id) ?>"><?php esc_html_e($term->name) ?></label>
                                     </div>
                                     <?php
                                 }
@@ -194,16 +200,18 @@ global $WOOF;
                             break;
                         case 'radio':
                             ?>
-                            <div class="woof_qt_add_filter woof_qt_add_filter_radio woof_qt_add_filter_radio_<?php echo $filter_struct[1] ?>">
-                                <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $taxonomy_info ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                            <div class="woof_qt_add_filter woof_qt_add_filter_radio woof_qt_add_filter_radio_<?php echo esc_attr($filter_struct[1]) ?>">
+                                <<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                                <?php esc_html_e($taxonomy_info) ?>
+                                </<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
                                 <?php
                                 foreach ($terms as $term) {
-                                    $unique_id= uniqid();
+                                    $unique_id = uniqid();
                                     ?>
                                     <div class="woof_qt_item_container">
-                                        <input type="radio" id="term_<?php echo $unique_id ?>" name="woof_qt_radio_<?php echo $filter_struct[1] ?>" class="woof_qt_radio tax_<?php echo $filter_struct[1] ?>" data-tax="<?php echo $filter_struct[1] ?>" value="<?php echo $term->term_id ?>" >
-                                        <label class="woof_qt_radio_label" <!--for="term_<?php echo $unique_id ?>"-->><?php echo $term->name ?>
-                                            <span class="woof_qt_radio_reset tax_<?php echo $filter_struct[1] ?>_reset" data-tax="<?php echo $filter_struct[1] ?>" ><img src="<?php echo WOOF_LINK ?>img/delete.png" height="12" width="12" alt="" /></span>
+                                        <input type="radio" id="term_<?php echo esc_attr($unique_id) ?>" name="woof_qt_radio_<?php echo esc_attr($filter_struct[1]) ?>" class="woof_qt_radio tax_<?php echo esc_attr($filter_struct[1]) ?>" data-tax="<?php echo esc_attr($filter_struct[1]) ?>" value="<?php echo esc_attr($term->term_id) ?>" >
+                                        <label class="woof_qt_radio_label" for="term_<?php echo esc_attr($unique_id) ?>"><?php esc_html_e($term->name) ?>
+                                            <span class="woof_qt_radio_reset tax_<?php echo esc_attr($filter_struct[1]) ?>_reset" data-tax="<?php echo esc_attr($filter_struct[1]) ?>" ><img src="<?php echo esc_url($this->settings['delete_image']) ?>" height="12" width="12" alt="" /></span>
                                         </label>
                                     </div>
                                     <?php
@@ -212,8 +220,8 @@ global $WOOF;
                             </div>
                             <?php
                             break;
-                         case 'slider':
-                             ?><p class="woof_notice"><a href="#"><?php _e('Please read documents','woocommerce-products-filter');?></a></p><?php
+                        case 'slider':
+                            ?><p class="woof_notice"><a href="#"><?php esc_html_e('Please read documents', 'woocommerce-products-filter'); ?></a></p><?php
                             break;
                         default :
                             break;
@@ -223,7 +231,7 @@ global $WOOF;
             if ($reset_btn == 1) {
                 ?>
                 <div class="woof_qt_reset_filter_con">
-                    <button class="woof_qt_reset_filter_btn"><?php echo $reset_text ?></button>
+                    <button class="woof_qt_reset_filter_btn"><?php esc_html_e($reset_text) ?></button>
                 </div>
                 <?php
             }
@@ -232,134 +240,144 @@ global $WOOF;
     </div>  
 </div>       
 <?php
+if (!function_exists("woof_get_meta_filter_html")) {
 
-if(!function_exists(woof_get_meta_filter_html)){
-    function woof_get_meta_filter_html($meta_item,$type,$title=""){
-        switch ($type){
+    function woof_get_meta_filter_html($meta_item, $type, $title = "") {
+        switch ($type) {
             case'drop-down':
-                $meta_options=array();
-                if(!isset($meta_item["options"]) OR !$meta_item["options"]){
-                    ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php _e('Error! Please read documents','woocommerce-products-filter');?></a></p></div><?php
-                break;    
-                }else{
-                    $meta_options=  explode(',',$meta_item["options"]);
+                $meta_options = array();
+                if (!isset($meta_item["options"]) OR!$meta_item["options"]) {
+                    ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php esc_html_e('Error! Please read documents', 'woocommerce-products-filter'); ?></a></p></div><?php
+                    break;
+                } else {
+                    $meta_options = explode(',', $meta_item["options"]);
                 }
                 ?>
-                <div class="woof_qt_add_filter woof_qt_add_filter_select woof_qt_add_filter_select_<?php echo $meta_item['meta_key'] ?>">
-                <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $title ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>   
-                <select class="woof_qt_select meta_<?php echo $meta_item['meta_key'] ?>" data-meta="1" data-tax="<?php echo $meta_item['meta_key'] ?>">
-                 <option value="-1"><?php echo WOOF_HELPER::wpml_translate(null,$meta_item['title']) ?></option>
-                 <?php foreach ($meta_options as $key => $option) : ?>
-                     <?php
-                     $option_title=$option;
-                     $custom_title=explode('^',$option,2);
-                     if(count($custom_title)>1){
-                       $option=$custom_title[1];  
-                       $option_title=$custom_title[0]; 
-                     } ?>   
-                        <option  value="<?php echo $option ?>" >
-                            <?php echo WOOF_HELPER::wpml_translate(null,$option_title);?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+
+                <div class="woof_qt_add_filter woof_qt_add_filter_select woof_qt_add_filter_select_<?php echo esc_attr($meta_item['meta_key']) ?>">
+                    <<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                    <?php esc_html_e($title) ?>
+                    </<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>   
+                    <select class="woof_qt_select meta_<?php echo esc_attr($meta_item['meta_key']) ?>" data-meta="1" data-tax="<?php echo esc_attr($meta_item['meta_key']) ?>">
+                        <option value="-1"><?php echo esc_html(WOOF_HELPER::wpml_translate(null, $meta_item['title'])) ?></option>
+                        <?php foreach ($meta_options as $key => $option) : ?>
+                            <?php
+                            $option_title = $option;
+                            $custom_title = explode('^', $option, 2);
+                            if (count($custom_title) > 1) {
+                                $option = $custom_title[1];
+                                $option_title = $custom_title[0];
+                            }
+                            ?>   
+                            <option value="<?php echo esc_html($option) ?>" >
+                                <?php echo esc_html(WOOF_HELPER::wpml_translate(null, $option_title)); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <?php
                 break;
             case'multi-drop-down':
-                $meta_options=array();
-                if(!isset($meta_item["options"]) OR !$meta_item["options"]){
-                    ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php _e('Error! Please read documents','woocommerce-products-filter');?></a></p></div><?php
-                break;    
-                }else{
-                    $meta_options=  explode(',',$meta_item["options"]);
+                $meta_options = array();
+                if (!isset($meta_item["options"]) OR!$meta_item["options"]) {
+                    ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php esc_html_e('Error! Please read documents', 'woocommerce-products-filter'); ?></a></p></div><?php
+                    break;
+                } else {
+                    $meta_options = explode(',', $meta_item["options"]);
                 }
                 ?>
-                <div class="woof_qt_add_filter woof_qt_add_filter_select woof_qt_add_filter_select_<?php echo $meta_item['meta_key'] ?>">
-                <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $title ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>   
-                <select class="woof_qt_select meta_<?php echo $meta_item['meta_key'] ?>" data-meta="1" data-tax="<?php echo $meta_item['meta_key'] ?>"multiple="multiple" >
-                 <?php foreach ($meta_options as $key => $option) : ?>
-                     <?php
-                     $option_title=$option;
-                     $custom_title=explode('^',$option,2);
-                     if(count($custom_title)>1){
-                       $option=$custom_title[1];  
-                       $option_title=$custom_title[0]; 
-                     } ?>   
-                        <option  value="<?php echo $option ?>" >
-                            <?php echo WOOF_HELPER::wpml_translate(null,$option_title);?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+
+                <div class="woof_qt_add_filter woof_qt_add_filter_select woof_qt_add_filter_select_<?php echo esc_attr($meta_item['meta_key']) ?>">
+                    <<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                    <?php esc_html_e($title) ?>
+                    </<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>   
+                    <select class="woof_qt_select meta_<?php echo esc_attr($meta_item['meta_key']) ?>" data-meta="1" data-tax="<?php echo esc_attr($meta_item['meta_key']) ?>"multiple="multiple" >
+                        <?php foreach ($meta_options as $key => $option) : ?>
+                            <?php
+                            $option_title = $option;
+                            $custom_title = explode('^', $option, 2);
+                            if (count($custom_title) > 1) {
+                                $option = $custom_title[1];
+                                $option_title = $custom_title[0];
+                            }
+                            ?>   
+                            <option  value="<?php echo esc_html($option) ?>" >
+                                <?php echo esc_html(WOOF_HELPER::wpml_translate(null, $option_title)); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <?php            
+                <?php
                 break;
             case'checkbox':
-                global $WOOF; 
-                $value=1;
-                if($meta_item['search_view']=='checkbox'){
-                   $meta_settings=$WOOF->settings[$meta_item['meta_key']];
-                   if($meta_settings['search_option']==0){
-                      $value= $meta_settings['search_value'];
-                   }else{
-                       $value="meta_exist";
-                   }
+                
+                $value = 1;
+                if ($meta_item['search_view'] == 'checkbox') {
+                    $meta_settings = woof()->settings[$meta_item['meta_key']];
+                    if ($meta_settings['search_option'] == 0) {
+                        $value = $meta_settings['search_value'];
+                    } else {
+                        $value = "meta_exist";
+                    }
                 }
                 ?>
-                <div class="woof_qt_add_filter woof_qt_add_filter_checkbox woof_qt_add_filter_checkbox_<?php echo $meta_item['meta_key'] ?>">
-                <<?php echo apply_filters('woof_title_tag', 'h4'); ?>><?php echo $title ?></<?php echo apply_filters('woof_title_tag', 'h4'); ?>>
+                <div class="woof_qt_add_filter woof_qt_add_filter_checkbox woof_qt_add_filter_checkbox_<?php echo esc_attr($meta_item['meta_key']) ?>">
+                    <<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
+                    <?php esc_html_e($title) ?>
+                    </<?php esc_html_e(apply_filters('woof_title_tag', 'h4')); ?>>
 
                     <div class="woof_qt_item_container">
-                        <input type="checkbox" name="woof_qt_check_<?php echo $meta_item['meta_key'] ?>" class="woof_qt_checkbox meta_<?php echo $meta_item['meta_key'] ?>" data-tax="<?php echo $meta_item['meta_key'] ?>"value="<?php echo $value ?>" >
-                        <label class="woof_qt_checkbox_label"><?php echo $title ?></label>
+                        <input type="checkbox" name="woof_qt_check_<?php echo esc_attr($meta_item['meta_key']) ?>" class="woof_qt_checkbox meta_<?php echo esc_attr($meta_item['meta_key']) ?>" data-tax="<?php echo esc_attr($meta_item['meta_key']) ?>"value="<?php echo esc_html($value) ?>" >
+                        <label class="woof_qt_checkbox_label"><?php esc_html_e($title) ?></label>
                     </div>
                 </div><?php
                 break;
             case'radio':
-                    ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php _e('Error! Please read documents','woocommerce-products-filter');?></a></p></div><?php
-                break;  
+                ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php esc_html_e('Error! Please read documents', 'woocommerce-products-filter'); ?></a></p></div><?php
+                break;
             case'slider':
-                    if($meta_item['search_view']!='slider'){
-                        ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php _e('Error! Please read documents','woocommerce-products-filter');?></a></p></div><?php
-                        break;
-                    }
+                if ($meta_item['search_view'] != 'slider') {
+                    ?> <div class="woof_qt_add_filter "><p class="woof_notice"><a href="#"><?php esc_html_e('Error! Please read documents', 'woocommerce-products-filter'); ?></a></p></div><?php
+                            break;
+                        }
 
-                    global $WOOF;
-                    $meta_settings=$WOOF->settings[$meta_item['meta_key']];
-                    wp_enqueue_script('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/js/ion-rangeSlider/ion.rangeSlider.min.js', array('jquery'));
-                    wp_enqueue_style('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.css');
-                    $ion_slider_skin = 'skinNice';
-                    if (isset($WOOF->settings['ion_slider_skin'])) {
-                        $ion_slider_skin = $WOOF->settings['ion_slider_skin'];
-                    }
-                    wp_enqueue_style('ion.range-slider-skin', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.' . $ion_slider_skin . '.css');
-                    $min=0;
-                    $max=100;
-                    if(!isset($meta_settings['range'])){
-                        $meta_settings['range']="1-100";
-                    }
-                    if(!isset($meta_settings['step'])){
-                        $meta_settings['step']=1;
-                    }
-                    if(!isset($meta_settings['prefix']) OR !isset($meta_settings['postfix'])){
-                        $meta_settings['prefix']=$meta_settings['postfix']="";
-                    }
-                    if(!isset($meta_settings['step'])){
-                        $meta_settings['step']=1;
-                    }
-                    $min_max=explode("-",$meta_settings['range'],2);
-                    if(count($min_max)>1){
-                        $min= floatval($min_max[0]);
-                        $max= floatval($min_max[1]);                    
-                    }
-
-                    ?>
-                    <div class="woof_qt_add_filter ">
-                        <input class="woof_qt_meta_slider" data-tax="<?php echo$meta_item['meta_key']?>"  data-min="<?php echo $min ?>" data-max="<?php echo $max ?>" data-step="<?php echo $meta_settings['step'] ?>" data-slider-prefix="<?php echo $meta_settings['prefix'] ?>" data-slider-postfix="<?php echo $meta_settings['postfix'] ?>" value="" />
-                    </div>
-                    <?php
-                break;         
+                        
+                        $meta_settings = woof()->settings[$meta_item['meta_key']];
+                        wp_enqueue_script('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/js/ion-rangeSlider/ion.rangeSlider.min.js', array('jquery'), WOOF_VERSION);
+                        wp_enqueue_style('ion.range-slider', WOOF_LINK . 'js/ion.range-slider/css/ion.rangeSlider.css', array(), WOOF_VERSION);
+                        $skin = 'round';
+                        if (isset(woof()->settings['ion_slider_skin'])) {
+                            $skin = woof()->settings['ion_slider_skin'];
+                        }
+                        $skin = WOOF_HELPER::check_new_ion_skin($skin);
+                        $min = 0;
+                        $max = 100;
+                        if (!isset($meta_settings['range'])) {
+                            $meta_settings['range'] = "1-100";
+                        }
+                        if (!isset($meta_settings['step'])) {
+                            $meta_settings['step'] = 1;
+                        }
+                        if (!isset($meta_settings['prefix']) OR!isset($meta_settings['postfix'])) {
+                            $meta_settings['prefix'] = $meta_settings['postfix'] = "";
+                        }
+                        if (!isset($meta_settings['step'])) {
+                            $meta_settings['step'] = 1;
+                        }
+                        $min_max = explode("-", $meta_settings['range'], 2);
+                        if (count($min_max) > 1) {
+                            $min = floatval($min_max[0]);
+                            $max = floatval($min_max[1]);
+                        }
+                        ?>
+                <div class="woof_qt_add_filter ">
+                    <input class="woof_qt_meta_slider" data-skin="<?php echo esc_attr($skin) ?>" data-tax="<?php echo esc_attr($meta_item['meta_key']) ?>"  data-min="<?php echo esc_attr($min) ?>" data-max="<?php echo esc_attr($max) ?>" data-step="<?php echo esc_attr($meta_settings['step']) ?>" data-slider-prefix="<?php echo esc_html($meta_settings['prefix']) ?>" data-slider-postfix="<?php echo esc_html($meta_settings['postfix']) ?>" value="" />
+                </div>
+                <?php
+                break;
             default :
                 break;
         }
     }
+
 }

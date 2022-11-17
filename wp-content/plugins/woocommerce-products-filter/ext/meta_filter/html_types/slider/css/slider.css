@@ -1,10 +1,16 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 29.03.2018, 20:00:44
-    Author     : PAVLO
-*/
-
+.woof_metarange_slider_inputs{
+    height: 35px;
+}
+.woof_metarange_slider_inputs input{
+    padding: 2px 7px;
+    border: solid 1px #ccc;
+    background: #fff;
+    width: 75px;
+    box-shadow: none;
+}
+.woof_metarange_slider_from{
+    float: left;
+}
+.woof_metarange_slider_to{
+    float: right;
+}

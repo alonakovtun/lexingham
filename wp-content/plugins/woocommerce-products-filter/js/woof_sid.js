@@ -1,9 +1,10 @@
+"use strict";
 var woof_edit_view = false;
 var woof_current_conatiner_class = '';
 var woof_current_containers_data = {};
 
 jQuery(function () {
-    jQuery('.woof_edit_view').click(function () {
+    jQuery('.woof_edit_view').on('click',function () {
         woof_edit_view = true;
         var sid = jQuery(this).data('sid');
         var sid_tmp = sid.substring(0, sid.indexOf(' '));
@@ -30,22 +31,8 @@ jQuery(function () {
 
 function woof_init_masonry() {
     return;
-    /*
-    var $container = jQuery('.woof_sid');
-    $container.imagesLoaded(function () {
-        $container.masonry({
-            itemSelector: '.woof_container',
-            columnWidth: 300
-        });
-    });
-    */
+
 }
 
 
-/*
-function woof_change_cont_width(select) {
-    var width = parseFloat(jQuery(select).val()) * 100;
-    jQuery('.' + woof_current_conatiner_class).css('width', width + '%');
-}
-*/
 

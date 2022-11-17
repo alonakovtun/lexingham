@@ -96,7 +96,6 @@ $default-animation-iteration-count: 1 !default;
   @if $delay { @include animation-delay($delay); }
 }
 
-/*
 @mixin keyframes($name) {
   @if nth($animation-support, 2) {
     @-webkit-keyframes #{$name} { @content }
@@ -115,5 +114,3 @@ $default-animation-iteration-count: 1 !default;
   }
   @keyframes #{$name} { @content }
 }
-*/
-

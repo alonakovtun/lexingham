@@ -1,5 +1,6 @@
+"use strict";
 function woof_init_labels() {
-    jQuery('.woof_label_term').click(function () {
+    jQuery('.woof_label_term').on('click', function () {
 
         var checkbox = jQuery(this).find('input.woof_label_term').eq(0);
 

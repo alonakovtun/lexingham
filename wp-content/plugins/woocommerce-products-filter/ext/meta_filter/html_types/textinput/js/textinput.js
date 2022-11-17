@@ -1,5 +1,6 @@
+"use strict";
 var woof_text_do_submit = false;
-//woof_init_meta_text_input();
+
 function woof_init_meta_text_input() {
     jQuery('.woof_meta_filter_textinput').keyup(function (e) {
         var val = jQuery(this).val();
@@ -19,13 +20,13 @@ function woof_init_meta_text_input() {
         }
 
 
-        //if (woof_is_mobile == 1) {
+
         if (val.length > 0) {
             jQuery('.woof_textinput_go.' + uid).show(222);
         } else {
             jQuery('.woof_textinput_go.' + uid).hide();
         }
-        //}
+
 
 
     });

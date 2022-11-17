@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Plugins - WOOF &#8211; Products Filter for WooCommerce - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-03-01 16:20+0100\n"
+"PO-Revision-Date: 2021-10-29 16:57+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 3.0\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - WOOF &#8211; Products Filter for WooCommerce - Development (trunk)\n"
 "POT-Creation-Date: \n"
@@ -532,8 +532,8 @@ msgid "Products assembling period in data file for quick search."
 msgstr "Período de montaje de los productos en el archivo de datos para una búsqueda rápida."
 
 #: ext/quick_search/views/tabs_content.php:52
-msgid "External cron is more predictable with time of execution, but additional knowledge how to set it correctly is required (<i style=\"color: orange;\">External cron will be ready in the next version of the extension</i>)"
-msgstr "El cron externo es más predecible con el tiempo de ejecución, pero se requieren conocimientos adicionales sobre cómo establecerlo correctamente (<i style=\"color: naranja;\">El cron externo estará listo en la próxima versión de la extensión</i>)."
+msgid "External cron is more predictable with time of execution, but additional knowledge how to set it correctly is required"
+msgstr "El cron externo es más predecible con el tiempo de ejecución, pero se requieren conocimientos adicionales sobre cómo establecerlo correctamente"
 
 #: ext/quick_search/views/tabs_content.php:22
 msgid "How often assemble data file"
@@ -1313,10 +1313,6 @@ msgstr "Estilos y códigos que se aplican en el sitio de demostración"
 msgid "Video tutorials"
 msgstr "Tutoriales en video"
 
-#: views/plugin_options.php:1981
-msgid "Advanced info is <a href=\"%s\" target=\"_blank\">here</a>"
-msgstr "La información avanzada es <a href=\"%s\" target=\"_blank\">aquí</a>"
-
 #: views/plugin_options.php:1757
 msgid "More video"
 msgstr "Más vídeo"
@@ -1393,8 +1389,8 @@ msgid "Secret key for external cron"
 msgstr "Clave secreta para cron externo"
 
 #: ext/stat/views/tabs_content.php:495
-msgid "Use WordPress Cron if your site has a lot of traffic, and external cron if the site traffic is not big. External cron is more predictable with time of execution, but additional knowledge how to set it correctly is required (<i style=\"color: orange;\">External cron will be ready in the next version of the extension</i>)"
-msgstr "Utilice WordPress Cron si su sitio tiene mucho tráfico, y cron externo si el tráfico del sitio no es grande. El cron externo es más predecible con el tiempo de ejecución, pero se requieren conocimientos adicionales sobre cómo establecerlo correctamente (<i style=\"color: naranja;\">El cron externo estará listo en la próxima versión de la extensión</i>)."
+msgid "Use WordPress Cron if your site has a lot of traffic, and external cron if the site traffic is not big. External cron is more predictable with time of execution, but additional knowledge how to set it correctly is required"
+msgstr "Utilice WordPress Cron si su sitio tiene mucho tráfico, y cron externo si el tráfico del sitio no es grande. El cron externo es más predecible con el tiempo de ejecución, pero se requieren conocimientos adicionales sobre cómo establecerlo correctamente"
 
 #: ext/quick_search/views/tabs_content.php:30
 #: ext/stat/views/tabs_content.php:472
@@ -1770,7 +1766,7 @@ msgid "remove extension"
 msgstr "quitar la extensión"
 
 #: views/plugin_options.php:1439
-msgid "<b>Note for admin</b>: Create folder for custom extensions in wp-content folder: tab Advanced -> Options -> Custom extensions folder"
+msgid "Note for admin: Create folder for custom extensions in wp-content folder: tab Advanced -> Options -> Custom extensions folder"
 msgstr "<b>Nota para admin</b>: Crear carpeta para extensiones personalizadas en la carpeta wp-content: pestaña Advanced -> Opciones -> Carpeta de extensiones personalizadas"
 
 #: views/plugin_options.php:1417
@@ -1814,15 +1810,15 @@ msgid "Any image for closed html-items block 20x20"
 msgstr "Cualquier imagen para elementos htm cerrados bloque 20x20"
 
 #: views/plugin_options.php:717
-msgid "Image for block toggle [<i>closed</i>]"
-msgstr "Imagen para conmutación de bloque[<i>cierre</i>]"
+msgid "Image for block toggle [closed]"
+msgstr "Imagen para conmutación de bloque[cierre]"
 
 #: views/plugin_options.php:712
 msgid "Any image for opened html-items block 20x20"
 msgstr "Cualquier imagen para elementos htm abiertos bloque 20x20"
 
 #: views/plugin_options.php:699
-msgid "Image for block toggle [<i>opened</i>]"
+msgid "Image for block toggle [opened]"
 msgstr "Imagen para conmutación de bloque[<i>abierto</i>]"
 
 #: views/plugin_options.php:691
@@ -1830,15 +1826,15 @@ msgid "Toggle text for closed html-items block. Example: open. By default applie
 msgstr "Conmutación de texto para el bloque de elementos htm cerrados. Ejemplo: abierto. Por defecto se aplica el signo más \"+\"."
 
 #: views/plugin_options.php:679
-msgid "Text for block toggle [<i>closed</i>]"
-msgstr "Texto para la conmutación de bloques[<i>cierre</i>]"
+msgid "Text for block toggle [closed]"
+msgstr "Texto para la conmutación de bloques[cierre]"
 
 #: views/plugin_options.php:675
 msgid "Toggle text for opened html-items block. Example: close. By default applied sign minus \"-\""
 msgstr "Cambiar el texto para el bloque de elementos htm abiertos. Ejemplo: cerrar. Por defecto se aplica el signo menos \"-\""
 
 #: views/plugin_options.php:663
-msgid "Text for block toggle [<i>opened</i>]"
+msgid "Text for block toggle [opened]"
 msgstr "Texto para la conmutación de bloques[<i>abierto</i>]] Texto para la conmutación de bloques[<i>abierto</i>]"
 
 #: views/plugin_options.php:656
@@ -2025,8 +2021,8 @@ msgid "You should write extension info in info.dat file!"
 msgstr "Usted debe escribir la información de la extensión en el archivo info.dat!"
 
 #: views/plugin_options.php:1478 views/plugin_options.php:1552
-msgid "<i>ver.:</i> %s"
-msgstr "<i>ver.:</i> %s"
+msgid "ver.: %s"
+msgstr "ver.: %s"
 
 #: ext/stat/views/tabs_content.php:209 views/plugin_options.php:1373
 msgid "Disabled"
@@ -2053,7 +2049,7 @@ msgid "Show helper button for shortcode [woof] on the front when 'Set filter aut
 msgstr "Mostrar el botón helper para el código abreviado[woof] en la parte delantera cuando 'Set filter automatically' es Yes"
 
 #: views/plugin_options.php:1257
-msgid "Useful thing when you already set your site IN THE PRODUCTION MODE - its getting terms for filter faster without big MySQL queries! If you actively adds new terms every day or week you can set cron period for cleaning. Another way set: '<b>not clean cache automatically</b>'!"
+msgid "Useful thing when you already set your site IN THE PRODUCTION MODE - its getting terms for filter faster without big MySQL queries! If you actively adds new terms every day or week you can set cron period for cleaning. Another way set: 'not clean cache automatically'!"
 msgstr "Es útil cuando ya ha configurado su sitio EN EL MODO DE PRODUCCIÓN - sus términos para filtrar más rápido sin grandes consultas MySQL! Si agrega activamente nuevos términos cada día o semana, puede establecer un período cron para la limpieza. Otro camino establecido: No limpiar la caché automáticamente </b>'!"
 
 #: views/plugin_options.php:1225
@@ -2065,8 +2061,8 @@ msgid "Cache terms"
 msgstr "Términos de la caché"
 
 #: views/plugin_options.php:1091
-msgid "Sometimes code '<code>wp_query->is_post_type_archive = true</code>' does not necessary. Try to disable this and try woof-search on your site. If all is ok - leave its disabled. Disabled code by this option you can find in index.php by mark disable_swoof_influence."
-msgstr "A veces el código ` <code>wp_query->is_post_type_archive = true</code>' no es necesario. Intente desactivar esta opción e intente realizar una búsqueda woof en su sitio. Si todo está bien - dejarla desactivada. El código deshabilitado por esta opción se puede encontrar en index.php por la marca disable_swoof_influence."
+msgid "Sometimes code 'wp_query->is_post_type_archive = true' does not necessary. Try to disable this and try woof-search on your site. If all is ok - leave its disabled. Disabled code by this option you can find in index.php by mark disable_swoof_influence."
+msgstr "A veces el código ` wp_query->is_post_type_archive = true' no es necesario. Intente desactivar esta opción e intente realizar una búsqueda woof en su sitio. Si todo está bien - dejarla desactivada. El código deshabilitado por esta opción se puede encontrar en index.php por la marca disable_swoof_influence."
 
 #: views/plugin_options.php:1064
 msgid "Disable swoof influence"
@@ -2093,12 +2089,12 @@ msgid "Custom front css styles file link"
 msgstr "Enlace de archivo de estilos de css frontal personalizado"
 
 #: views/plugin_options.php:609
-msgid "Image for subcategories [<i>close</i>]"
-msgstr "Imagen para subcategorías[<i>close</i>]]"
+msgid "Image for subcategories [close]"
+msgstr "Imagen para subcategorías[close]]"
 
 #: views/plugin_options.php:597
-msgid "Image for subcategories [<i>open</i>]"
-msgstr "Imagen para subcategorías[<i>open</i>]]"
+msgid "Image for subcategories [open]"
+msgstr "Imagen para subcategorías[open]]"
 
 #: views/plugin_options.php:235
 msgid "Loading spokes - SVG"
@@ -2462,7 +2458,7 @@ msgid "Cache dynamic recount number for each item in filter"
 msgstr "Número de recuento dinámico de caché para cada elemento en el filtro"
 
 #: views/plugin_options.php:1017
-msgid "If you want show relevant tags on the categories pages you should activate show count, dynamic recount and <b>hide empty terms</b> in the tab Options. But if you do not want show count (number) text near each term - set Yes here."
+msgid "If you want show relevant tags on the categories pages you should activate show count, dynamic recount and hide empty terms in the tab Options. But if you do not want show count (number) text near each term - set Yes here."
 msgstr "Si desea mostrar etiquetas relevantes en las páginas de las categorías, debe activar Mostrar recuento, recuento dinámico y <b>ocultar términos vacíos</b> en la pestaña Opciones. Pero si no desea mostrar el texto de recuento (número) cerca de cada término, establezca Sí aquí."
 
 #: views/plugin_options.php:995
@@ -2478,7 +2474,7 @@ msgid "Storage type"
 msgstr "Tipo de almacenamiento"
 
 #: views/plugin_options.php:873
-msgid "If you do not like search key \"swoof\" in the search link you can replace it by your own word. But be care to avoid conflicts with any themes and plugins, + never define it as symbol \"s\".<br /> Not understood? Simply do not touch it!"
+msgid "If you do not like search key \"swoof\" in the search link you can replace it by your own word. But be care to avoid conflicts with any themes and plugins, + never define it as symbol \"s\". Not understood? Simply do not touch it!"
 msgstr "Si no le gusta la clave de búsqueda \"swoof\" en el enlace de búsqueda, puede sustituirla por su propia palabra. Pero tenga cuidado de evitar conflictos con cualquier tema y plugins, + nunca lo defina como símbolo \"s\".<br /> ¿No lo entiende? Simplemente no lo toques!"
 
 #: views/plugin_options.php:859

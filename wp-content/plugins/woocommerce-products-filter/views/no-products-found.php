@@ -2,5 +2,5 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-global $WOOF;
-echo do_shortcode(stripcslashes($WOOF->settings['override_no_products']));
+
+echo do_shortcode(stripcslashes(wp_kses_post(wp_unslash(woof()->settings['override_no_products']))));

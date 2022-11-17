@@ -1,9 +1,14 @@
+"use strict";
 function woof_init_mselects() {
-    try {
-        // jQuery("select.woof_select").chosen('destroy').trigger("liszt:updated");
-        jQuery("select.woof_mselect").chosen(/*{disable_search_threshold: 10}*/);
-    } catch (e) {
 
+    if (woof_select_type == 'chosen') {
+        jQuery('select.woof_mselect').chosen();
+    } else if (woof_select_type == 'selectwoo') {
+        try {
+            jQuery('select.woof_mselect').selectWoo();
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     jQuery('.woof_mselect').change(function (a) {
@@ -11,7 +16,7 @@ function woof_init_mselects() {
         var name = jQuery(this).attr('name');
 
         //fix for multiselect if in chosen mode remove options
-        if (is_woof_use_chosen) {
+        if (woof_select_type == 'chosen') {
             var vals = jQuery(this).chosen().val();
             jQuery('.woof_mselect[name=' + name + '] option:selected').removeAttr("selected");
             jQuery('.woof_mselect[name=' + name + '] option').each(function (i, option) {
@@ -24,6 +29,14 @@ function woof_init_mselects() {
 
         woof_mselect_direct_search(name, slug);
         return true;
+    });
+    var containers = jQuery('.woof_hide_empty_container_ms');
+    jQuery.each(containers, function (i, item) {
+        var selector = jQuery(item).val();
+        if (selector) {
+            jQuery(selector).hide();
+        }
+
     });
 }
 

@@ -1,12 +1,12 @@
 /*!
- * iCheck v1.0.2, http://git.io/arlzeA
+ * iCheck http://git.io/arlzeA
  * ===================================
  * Powerful jQuery and Zepto plugin for checkboxes and radio buttons customization
  *
- * (c) 2013 Damir Sultanov, http://fronteed.com
+ * (c) Damir Sultanov, http://fronteed.com
  * MIT Licensed
  */
-
+"use strict";
 (function($) {
 
   // Cached vars
@@ -28,7 +28,7 @@
     _callback = 'trigger',
     _label = 'label',
     _cursor = 'cursor',
-    _mobile = /ipad|iphone|ipod|android|blackberry|windows phone|opera mini|silk/i.test(navigator.userAgent);
+    _mobile = /ip(hone|od|ad)|android|blackberry|windows phone|opera mini|silk/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
   // Plugin init
   $.fn[_iCheck] = function(options, fire) {
@@ -67,7 +67,7 @@
         }
 
         // Fire method's callback
-        if ($.isFunction(fire)) {
+        if (typeof fire === "function") {
           fire();
         }
       });
@@ -503,7 +503,7 @@
         input[_callback]('ifToggled');
       }
 
-      input[_callback]('ifChanged')[_callback]('if' + capitalize(callback));
+      input[_callback]('change')[_callback]('ifChanged')[_callback]('if' + capitalize(callback));
     }
   }
 })(window.jQuery || window.Zepto);

@@ -28,10 +28,58 @@ final class WOOF_HELPER {
         }
     }
 
-    public static function escape($value) {
-        if(is_string($value)){
-            return sanitize_text_field(esc_html($value));
+    public static function escape($value, $echo = false) {
+        if (is_string($value)) {
+            if ($echo) {
+                echo sanitize_text_field(esc_html($value));
+            } else {
+                return sanitize_text_field(esc_html($value));
+            }
         }
+    }
+
+    public static function get_server_var($var) {
+        return self::escape($_SERVER[$var]);
+    }
+
+    public static function safe_parse_str($link) {
+        $query_array = [];
+        parse_str($link, $query_array);
+        return self::sanitize_array($query_array);
+    }
+
+    public static function sanitize_array($array) {
+        $is_html = array('override_no_products');
+        $is_textarea = array('init_only_on', 'custom_css_code', 'js_after_ajax_done');
+        $is_js = array();
+
+        if (is_array($array) && !empty($array)) {
+            foreach ($array as $key => $data) {
+                if (is_array($data)) {
+                    self::sanitize_array($data);
+                } else {
+                    $key = sanitize_key($key);
+                    if (in_array($key, $is_html)) {
+                        $array[$key] = wp_kses_post(wp_unslash($data));
+                    } elseif (in_array($key, $is_textarea)) {
+                        $array[$key] = sanitize_textarea_field($data);
+                    } else {
+                        $array[$key] = sanitize_text_field($data);
+                    }
+                }
+            }
+        }
+
+        return $array;
+    }
+
+    public static function sanitize_html_fields_array($fiels) {
+        $array = array();
+        foreach ($fiels as $key => $data) {
+            $key = sanitize_text_field($key);
+            $array[$key] = wp_kses($data, wp_kses_allowed_html('post'));
+        }
+        return $array;
     }
 
     public static function parse_ext_data($file_path) {
@@ -50,8 +98,6 @@ final class WOOF_HELPER {
                     }
                 }
             }
-
-            //print_r($info);
         }
         return $info;
     }
@@ -70,11 +116,11 @@ final class WOOF_HELPER {
 
     public static function get_terms($taxonomy, $hide_empty = true, $get_childs = true, $selected = 0, $category_parent = 0) {
         static $collector = array();
-        global $WOOF;
 
         $lang_key = ""; //WPML compatibility
         if (class_exists('SitePress')) {
-            $lang_key = ICL_LANGUAGE_CODE;
+            // $lang_key = ICL_LANGUAGE_CODE;
+            $lang_key = apply_filters('wpml_current_language', NULL);
         }
 
         if (isset($collector[$taxonomy])) {
@@ -82,7 +128,7 @@ final class WOOF_HELPER {
         }
 
         //***
-        if (isset($WOOF->settings['cache_terms']) AND $WOOF->settings['cache_terms'] == 1) {
+        if (isset(woof()->settings['cache_terms']) AND woof()->settings['cache_terms'] == 1) {
             $cache_key = 'woof_terms_cache_' . md5($taxonomy . '-' . (int) $hide_empty . '-' . (int) $get_childs . '-' . (int) $selected . '-' . (int) $category_parent . '-' . $lang_key);
             if (false !== ( $cats = get_transient($cache_key) )) {
                 return $cats;
@@ -91,8 +137,6 @@ final class WOOF_HELPER {
         //***    
 
         $args = array(
-            //'orderby' => $orderby,
-            //'order' => $order,
             'style' => 'list',
             'show_count' => 0,
             'hide_empty' => $hide_empty,
@@ -126,8 +170,11 @@ final class WOOF_HELPER {
 
         //WPML compatibility
         if (class_exists('SitePress')) {
-            $args['lang'] = ICL_LANGUAGE_CODE;
+            //$args['lang'] = ICL_LANGUAGE_CODE;
+            $args['lang'] = apply_filters('wpml_current_language', NULL);
         }
+
+        $args = apply_filters('woof_get_terms_args', $args);
 
         $cats_objects = get_categories($args);
 
@@ -142,7 +189,6 @@ final class WOOF_HELPER {
                     $cats[$value->term_id]['slug'] = urldecode($value->slug);
                     $cats[$value->term_id]['taxonomy'] = urldecode($value->taxonomy);
 
-
                     $cats[$value->term_id]['name'] = $value->name;
                     $cats[$value->term_id]['count'] = $value->count;
                     $cats[$value->term_id]['parent'] = $value->parent;
@@ -154,7 +200,7 @@ final class WOOF_HELPER {
         }
 
         //***
-        if (isset($WOOF->settings['cache_terms']) AND $WOOF->settings['cache_terms'] == 1) {
+        if (isset(woof()->settings['cache_terms']) AND woof()->settings['cache_terms'] == 1) {
             $period = 0;
 
             $periods = array(
@@ -170,8 +216,8 @@ final class WOOF_HELPER {
                 'days7' => 7 * DAY_IN_SECONDS
             );
 
-            if (isset($WOOF->settings['cache_terms_auto_clean'])) {
-                $period = $WOOF->settings['cache_terms_auto_clean'];
+            if (isset(woof()->settings['cache_terms_auto_clean'])) {
+                $period = woof()->settings['cache_terms_auto_clean'];
 
                 if (!$period) {
                     $period = 0;
@@ -188,7 +234,6 @@ final class WOOF_HELPER {
 
     //just for get_terms
     private static function assemble_terms_childs($cats_objects, $parent_id) {
-        global $WOOF;
         $res = array();
         foreach ($cats_objects as $value) {
             if ($value->category_parent == $parent_id) {
@@ -211,11 +256,9 @@ final class WOOF_HELPER {
     //https://wordpress.org/support/topic/translated-label-with-wpml
     //for taxonomies labels translations
     public static function wpml_translate($taxonomy_info, $string = '', $index = -1) {
-        global $WOOF;
-
         if (empty($string)) {
-            if (is_object($taxonomy_info)) {
-                $string = $WOOF->settings['custom_tax_label'][$taxonomy_info->name];
+            if (is_object($taxonomy_info) && isset(woof()->settings['custom_tax_label'])) {
+                $string = stripcslashes(woof()->settings['custom_tax_label'][$taxonomy_info->name]);
             }
         }
 
@@ -223,7 +266,7 @@ final class WOOF_HELPER {
         if (empty($string)) {
             if (is_object($taxonomy_info)) {
                 //fix for WPML
-                if (isset($taxonomy_info->labels->name) AND ! empty($taxonomy_info->labels->name)) {
+                if (isset($taxonomy_info->labels->name) AND!empty($taxonomy_info->labels->name)) {
                     $string = $taxonomy_info->labels->name;
                 } else {
                     $string = $taxonomy_info->label;
@@ -234,28 +277,24 @@ final class WOOF_HELPER {
 
         //***
         $check_for_custom_label = false;
-        if (class_exists('SitePress')) {
-            $lang = ICL_LANGUAGE_CODE;
+        if (class_exists('SitePress') OR class_exists("Polylang")) {
+            if (class_exists('SitePress')) {
+                //$lang = ICL_LANGUAGE_CODE;
+                $lang = apply_filters('wpml_current_language', NULL);
+            }
+            if (class_exists('Polylang')) {
+                $lang = get_locale();
+            }
             $woof_settings = get_option('woof_settings');
-            if (isset($woof_settings['wpml_tax_labels']) AND ! empty($woof_settings['wpml_tax_labels'])) {
+            if (isset($woof_settings['wpml_tax_labels']) AND!empty($woof_settings['wpml_tax_labels'])) {
                 $translations = $woof_settings['wpml_tax_labels'];
-                //$translations = unserialize($translations);
-                /*
-                  $translations = array(
-                  'es' => array(
-                  'Locations' => 'Ubicaciones',
-                  'Size' => 'Tamaño'
-                  ),
-                  'de' => array(
-                  'Locations' => 'Lage',
-                  'Size' => 'Größe'
-                  ),
-                  );
-                 */
 
                 if (isset($translations[$lang])) {
-                    if (isset($translations[$lang][$string])) {
-                        $string = $translations[$lang][$string];
+                    foreach ($translations[$lang] as $k => $data) {
+                        $translations[$lang][self::strtolower($k)] = $data;
+                    }
+                    if (isset($translations[$lang][self::strtolower(trim($string))])) {
+                        $string = $translations[$lang][self::strtolower(trim($string))];
                     } else {
                         $check_for_custom_label = TRUE;
                     }
@@ -287,25 +326,106 @@ final class WOOF_HELPER {
         return $string;
     }
 
-    //drawing of native woo price filter
-    public static function price_filter() {
+    public static function price_filter_e($additional_taxes = "", $min = null, $max = null) {
         global $_chosen_attributes, $wpdb, $wp, $WOOF;
-        $request = $WOOF->get_request_data();
-        /*
-          if (!is_post_type_archive('product') && !is_tax(get_object_taxonomies('product')))
-          {
-          return;
-          }
+        $request = woof()->get_request_data();
+        if (!isset($additional_taxes)) {
+            $additional_taxes = "";
+        }
+        if ($min === null && $max === null) {
+            $min = self::get_min_price($additional_taxes);
+            $max = self::get_max_price($additional_taxes);
+        }
 
-          if (sizeof(WC()->query->unfiltered_product_ids) == 0)
-          {
-          return; // None shown - return
-          }
-         */
-        $min_price = $WOOF->is_isset_in_request_data('min_price') ? esc_attr($request['min_price']) : '';
-        $max_price = $WOOF->is_isset_in_request_data('max_price') ? esc_attr($request['max_price']) : '';
+        $min_price = woof()->is_isset_in_request_data('min_price') ? esc_attr($request['min_price']) : '';
+        $max_price = woof()->is_isset_in_request_data('max_price') ? esc_attr($request['max_price']) : '';
+        if (wc_tax_enabled() && 'incl' === get_option('woocommerce_tax_display_shop') && !wc_prices_include_tax()) {
+            $tax_classes = array_merge(array(''), WC_Tax::get_tax_classes());
+            $class_max = $max;
+            $class_min = $min;
+            foreach ($tax_classes as $tax_class) {
+                if ($tax_rates = WC_Tax::get_rates($tax_class)) {
+                    $class_max = ceil($max + WC_Tax::get_tax_total(WC_Tax::calc_exclusive_tax($max, $tax_rates)));
+                    $class_min = floor($min + WC_Tax::get_tax_total(WC_Tax::calc_exclusive_tax($min, $tax_rates)));
+                }
+            }
+            $min = $class_min;
+            $max = $class_max;
+        }
 
-        //wp_enqueue_script('wc-price-slider');
+        //***
+        $min_price = ($min_price) ?: $min;
+        $max_price = ($max_price) ?: $max;
+
+        if ($min == $max) {
+            echo esc_attr("");
+            return;
+        }
+        if ('' == get_option('permalink_structure')) {
+            $form_action = remove_query_arg(array('page', 'paged'), add_query_arg($wp->query_string, '', home_url($wp->request)));
+        } else {
+            $form_action = preg_replace('%\/page/[0-9]+%', '', home_url(trailingslashit($wp->request)));
+        }
+        ?>
+
+        <form method="get" action="<?php echo esc_attr($form_action); ?>">
+            <div class="price_slider_wrapper">
+                <div class="price_slider" style="display:none;"></div>
+                <div class="price_slider_amount">
+                    <input type="text" id="min_price" name="min_price" value="<?php echo esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $min_price)) ?>" data-min="<?php echo esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $min)) ?>" placeholder="<?php esc_html_e('Min price', 'woocommerce-products-filter'); ?>" />
+                    <input type="text" id="max_price" name="max_price" value="<?php echo esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $max_price)) ?>" data-max="<?php echo esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $max)) ?>" placeholder="<?php esc_html_e('Max price', 'woocommerce-products-filter'); ?>" />
+                    <button type="submit" class="button"><?php esc_html_e('Filter', 'woocommerce-products-filter') ?></button>
+                    <div class="price_label" style="display:none;">
+                        <?php esc_html_e('Price:', 'woocommerce-products-filter') ?> <span class="from"></span> &mdash; <span class="to"></span>
+                    </div>
+                    <?php if (get_search_query()) { ?>
+                        <input type="hidden" name="s" value="<?php echo esc_attr(get_search_query()) ?>" />
+                    <?php } ?>
+                    <?php if (isset($_GET['post_type']) && !empty($_GET['post_type'])) { ?>
+                        <input type="hidden" name="post_type" value="<?php echo esc_attr(sanitize_key($_GET['post_type'])); ?>" />
+                    <?php } ?>	
+
+                    <?php if (isset($_GET['product_cat']) && !empty($_GET['product_cat'])) { ?>
+                        <input type="hidden" name="product_cat" value="<?php echo esc_attr(sanitize_key($_GET['product_cat'])); ?>" />
+                    <?php } ?>
+
+                    <?php if (isset($_GET['product_tag']) && !empty($_GET['product_tag'])) { ?>
+                        <input type="hidden" name="product_tag" value="<?php echo esc_attr(sanitize_key($_GET['product_tag'])); ?>" />
+                    <?php } ?>	
+
+                    <?php if (isset($_GET['orderby']) && !empty($_GET['orderby'])) { ?>
+                        <input type="hidden" name="orderby" value="<?php echo esc_attr(sanitize_key($_GET['orderby'])); ?>" />
+                    <?php } ?>
+                    <?php
+                    if ($_chosen_attributes) {
+                        foreach ($_chosen_attributes as $attribute => $data) {
+                            $taxonomy_filter = 'filter_' . str_replace('pa_', '', $attribute);
+                            ?>
+                            <input type="hidden" name="<?php echo esc_attr($taxonomy_filter); ?>" value="<?php echo esc_attr(implode(',', $data['terms'])); ?>" />
+                            <?php if ('or' == $data['query_type']) { ?>
+                                <input type="hidden" name="<?php echo esc_attr(str_replace('pa_', 'query_type_', $attribute)); ?>" value="or" />
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
+
+                    <div class="clear"></div>
+                </div>
+            </div>	
+        </form>	
+        <?php
+    }
+
+    //drawing of native woo price filter
+    //don't use it
+    public static function price_filter($additional_taxes = "") {
+        global $_chosen_attributes, $wpdb, $wp, $WOOF;
+        $request = woof()->get_request_data();
+
+        $min_price = woof()->is_isset_in_request_data('min_price') ? esc_attr($request['min_price']) : '';
+        $max_price = woof()->is_isset_in_request_data('max_price') ? esc_attr($request['max_price']) : '';
+
         // Remember current filters/search
         $fields = '';
 
@@ -314,41 +434,60 @@ final class WOOF_HELPER {
         }
 
         if (!empty($_GET['post_type'])) {
-            $fields .= '<input type="hidden" name="post_type" value="' . esc_attr($_GET['post_type']) . '" />';
+            $fields .= '<input type="hidden" name="post_type" value="' . esc_attr(sanitize_key($_GET['post_type'])) . '" />';
         }
 
         if (!empty($_GET['product_cat'])) {
-            $fields .= '<input type="hidden" name="product_cat" value="' . esc_attr($_GET['product_cat']) . '" />';
+            $fields .= '<input type="hidden" name="product_cat" value="' . esc_attr(sanitize_key($_GET['product_cat'])) . '" />';
         }
 
         if (!empty($_GET['product_tag'])) {
-            $fields .= '<input type="hidden" name="product_tag" value="' . esc_attr($_GET['product_tag']) . '" />';
+            $fields .= '<input type="hidden" name="product_tag" value="' . esc_attr(sanitize_key($_GET['product_tag'])) . '" />';
         }
 
         if (!empty($_GET['orderby'])) {
-            $fields .= '<input type="hidden" name="orderby" value="' . esc_attr($_GET['orderby']) . '" />';
+            $fields .= '<input type="hidden" name="orderby" value="' . esc_attr(sanitize_key($_GET['orderby'])) . '" />';
         }
 
         if ($_chosen_attributes) {
             foreach ($_chosen_attributes as $attribute => $data) {
                 $taxonomy_filter = 'filter_' . str_replace('pa_', '', $attribute);
 
-                $fields .= '<input type="hidden" name="' . esc_attr($taxonomy_filter) . '" value="' . esc_attr(implode(',', $data['terms'])) . '" />';
+                $fields .= '<input type="hidden" name="' . sanitize_text_field($taxonomy_filter) . '" value="' . sanitize_text_field(implode(',', $data['terms'])) . '" />';
 
                 if ('or' == $data['query_type']) {
-                    $fields .= '<input type="hidden" name="' . esc_attr(str_replace('pa_', 'query_type_', $attribute)) . '" value="or" />';
+                    $fields .= '<input type="hidden" name="' . sanitize_text_field(str_replace('pa_', 'query_type_', $attribute)) . '" value="or" />';
                 }
             }
         }
+        if (!isset($additional_taxes)) {
+            $additional_taxes = "";
+        }
 
         //***
-        $min = self::get_min_price();
-        $max = self::get_max_price();
+        $min = self::get_min_price($additional_taxes);
+        $max = self::get_max_price($additional_taxes);
+
+        if (wc_tax_enabled() && 'incl' === get_option('woocommerce_tax_display_shop') && !wc_prices_include_tax()) {
+            $tax_classes = array_merge(array(''), WC_Tax::get_tax_classes());
+            $class_max = $max;
+            $class_min = $min;
+            foreach ($tax_classes as $tax_class) {
+                if ($tax_rates = WC_Tax::get_rates($tax_class)) {
+                    $class_max = ceil($max + WC_Tax::get_tax_total(WC_Tax::calc_exclusive_tax($max, $tax_rates)));
+                    $class_min = floor($min + WC_Tax::get_tax_total(WC_Tax::calc_exclusive_tax($min, $tax_rates)));
+                }
+            }
+            $min = $class_min;
+            $max = $class_max;
+        }
+
         //***
         $min_price = ($min_price) ?: $min;
         $max_price = ($max_price) ?: $max;
 
         if ($min == $max) {
+            echo esc_attr("");
             return;
         }
 
@@ -359,15 +498,15 @@ final class WOOF_HELPER {
             $form_action = preg_replace('%\/page/[0-9]+%', '', home_url(trailingslashit($wp->request)));
         }
 
-        $price_slider_html = '<form method="get" action="' . esc_url($form_action) . '">
+        $price_slider_html = '<form method="get" action="' . sanitize_text_field($form_action) . '">
 			<div class="price_slider_wrapper">
 				<div class="price_slider" style="display:none;"></div>
 				<div class="price_slider_amount">
-					<input type="text" id="min_price" name="min_price" value="' . esc_attr($min_price) . '" data-min="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $min)) . '" placeholder="' . __('Min price', 'woocommerce-products-filter') . '" />
-					<input type="text" id="max_price" name="max_price" value="' . esc_attr($max_price) . '" data-max="' . esc_attr(apply_filters('woocommerce_price_filter_widget_amount', $max)) . '" placeholder="' . __('Max price', 'woocommerce-products-filter') . '" />
-					<button type="submit" class="button">' . __('Filter', 'woocommerce-products-filter') . '</button>
+					<input type="text" id="min_price" name="min_price" value="' . sanitize_text_field(apply_filters('woocommerce_price_filter_widget_amount', $min_price)) . '" data-min="' . sanitize_text_field(apply_filters('woocommerce_price_filter_widget_amount', $min)) . '" placeholder="' . esc_html__('Min price', 'woocommerce-products-filter') . '" />
+					<input type="text" id="max_price" name="max_price" value="' . sanitize_text_field(apply_filters('woocommerce_price_filter_widget_amount', $max_price)) . '" data-max="' . sanitize_text_field(apply_filters('woocommerce_price_filter_widget_amount', $max)) . '" placeholder="' . esc_html__('Max price', 'woocommerce-products-filter') . '" />
+					<button type="submit" class="button">' . esc_html__('Filter', 'woocommerce-products-filter') . '</button>
 					<div class="price_label" style="display:none;">
-						' . __('Price:', 'woocommerce-products-filter') . ' <span class="from"></span> &mdash; <span class="to"></span>
+						' . esc_html__('Price:', 'woocommerce-products-filter') . ' <span class="from"></span> &mdash; <span class="to"></span>
 					</div>
 					' . $fields . '
 					<div class="clear"></div>
@@ -376,22 +515,22 @@ final class WOOF_HELPER {
 		</form>';
 
         $price_slider_data = array(
-            'form_action' => esc_url($form_action),
-            'min_price' => esc_attr($min_price),
-            'max_price' => esc_attr($max_price),
+            'form_action' => sanitize_text_field($form_action),
+            'min_price' => sanitize_text_field($min_price),
+            'max_price' => sanitize_text_field($max_price),
             'fields' => $fields
         );
-        $price_slider_html = apply_filters('woof_price_slider_html', $price_slider_html, $price_slider_data);
-        echo $price_slider_html;
+
+        echo wp_kses_post(apply_filters('woof_price_slider_html', $price_slider_html, $price_slider_data));
     }
 
     //for drop-down price filter
     public static function get_price2_filter_data($additional_taxes = '') {
         $woof_settings = get_option('woof_settings', array());
-        if (isset($woof_settings['by_price']['ranges']) AND ! empty($woof_settings['by_price']['ranges'])) {
-            global $WOOF;
+        if (isset($woof_settings['by_price']['ranges']) AND!empty($woof_settings['by_price']['ranges'])) {
+
             $res = array();
-            $request = $WOOF->get_request_data();
+            $request = woof()->get_request_data();
             $res['selected'] = '';
             if (isset($request['min_price']) AND isset($request['max_price'])) {
                 $res['selected'] = $request['min_price'] . '-' . $request['max_price'];
@@ -409,27 +548,27 @@ final class WOOF_HELPER {
                 //+++
                 $tmp = explode('-', trim($value));
                 $wc_price_args = array();
-                /*
-                  $wc_price_args = array(
-                  'currency' => 'default'
-                  );
-                 */
-                //$_REQUEST['woof_price_filter_working'] = TRUE;
 
+                if (class_exists('WOOCS')) {
+                    $tmp[0] = apply_filters('woocs_exchange_value', $tmp[0]);
+                }
 
                 $tmp[0] = wc_price(floatval($tmp[0]), $wc_price_args);
 
                 if ($tmp[1] != 'i') {
+                    if (class_exists('WOOCS')) {
+                        $tmp[1] = apply_filters('woocs_exchange_value', $tmp[1]);
+                    }
                     $tmp[1] = wc_price(floatval($tmp[1]), $wc_price_args);
                 } else {
                     $tmp[1] = '&#8734;';
                 }
-                //$_REQUEST['woof_price_filter_working'] = FALSE;
+                //just note to avoid
                 $value = $tmp[0] . ' - ' . $tmp[1];
                 //***
                 $v = explode('-', $key);
-                $_GET['min_price'] = $v[0];
-                $_GET['max_price'] = $v[1];
+                $_GET['min_price'] = floatval($v[0]);
+                $_GET['max_price'] = floatval($v[1]);
                 //***
                 if ($v[0] >= $v[1]) {
                     continue;
@@ -437,12 +576,12 @@ final class WOOF_HELPER {
                 //***
                 $r[$key] = $value;
                 if ($show_count) {
-                    $rc[$key] = $WOOF->dynamic_count(NULL, 'none', $additional_taxes);
+                    $rc[$key] = woof()->dynamic_count(NULL, 'none', $additional_taxes);
                 } else {
                     $rc[$key] = 0;
                 }
             }
-            $_GET = $get;
+            $_GET = WOOF_HELPER::sanitize_array($get);
             $ranges['options'] = $r;
             $ranges['count'] = $rc;
             //+++
@@ -456,11 +595,10 @@ final class WOOF_HELPER {
 
     public static function set_layered_nav_product_ids() {
         //after update to woo 2.6.x this function can be removed
-        //WC()->query->layered_nav_product_ids = array(15, 37, 19, 22, 31, 34);
-        if (isset($_REQUEST['woof_wp_query_ids'])) {
-            if ((defined('DOING_AJAX') && DOING_AJAX) AND isset($_REQUEST['predict_ids_and_continue'])) {
+        if (WOOF_REQUEST::isset('woof_wp_query_ids')) {
+            if ((defined('DOING_AJAX') && DOING_AJAX) AND WOOF_REQUEST::isset('predict_ids_and_continue')) {
                 //for relevant recounting of price range on cat page in AJAX mode
-                WC()->query->layered_nav_product_ids = $_REQUEST['woof_wp_query_ids'];
+                WC()->query->layered_nav_product_ids = WOOF_REQUEST::get('woof_wp_query_ids');
             }
         }
     }
@@ -472,7 +610,7 @@ final class WOOF_HELPER {
      */
     //wp-content\plugins\woocommerce\includes\widgets\class-wc-widget-price-filter.php
     public static function get_filtered_price($additional_taxes = "") {
-        global $wpdb, $wp_the_query;
+        global $wpdb, $wp_the_query, $WOOF;
 
         $args = $wp_the_query->query_vars;
         $tax_query = isset($args['tax_query']) ? $args['tax_query'] : array();
@@ -481,26 +619,27 @@ final class WOOF_HELPER {
             $tax_query = $wp_the_query->tax_query->queries; //fix for cat page
         }
         $meta_query = isset($args['meta_query']) ? $args['meta_query'] : array();
-
-
-// Fix for price slider in ajax
-//	if (isset($_REQUEST['woof_wp_query'])AND ! empty($_REQUEST['woof_wp_query'])) {
-//	    $arg = $_REQUEST['woof_wp_query'];
-//	    $tax_query = isset($arg->query['tax_query']) ? $arg->query['tax_query'] : array();
-//	    $meta_query = isset($arg->query['meta_query']) ? $arg->query['meta_query'] : array();
-//	}
         //++++    
         // fix  for  adapt slider in shortcode 
         $tax_query = self::expand_additional_taxes_string($additional_taxes, $tax_query);
+        $current_term = woof()->get_really_current_term();
+        if (!empty($current_term)) {
+            $tax_query[] = array(
+                'taxonomy' => $current_term->taxonomy,
+                'field' => 'slug', //id
+                'terms' => $current_term->slug
+            );
+        }
 
         //  fix  if current query has more them  one taxonomy 
         $temp_arr = array();
-        if (isset($args['taxonomy']) AND isset($args[$args['taxonomy']]) AND ! empty($args[$args['taxonomy']])) {
+        if (isset($args['taxonomy']) AND isset($args[$args['taxonomy']]) AND!empty($args[$args['taxonomy']])) {
             $temp_arr = explode(',', $args[$args['taxonomy']]);
             if (!$temp_arr OR count($temp_arr) < 1) {
                 $temp_arr = array();
             }
         }
+
         if (!empty($args['taxonomy']) && !empty($args['term'])) {
             $tax_query[] = array(
                 'taxonomy' => $args['taxonomy'],
@@ -522,15 +661,36 @@ final class WOOF_HELPER {
 
         $meta_query_sql = $meta_query->get_sql('post', $wpdb->posts, 'ID');
         $tax_query_sql = $tax_query->get_sql($wpdb->posts, 'ID');
-        //CAST( price_meta.meta_value AS UNSIGNED )
+
         $sql = "SELECT min( FLOOR( price_meta.meta_value + 0.0)  ) as min_price, max( CEILING( price_meta.meta_value + 0.0)  )as max_price FROM {$wpdb->posts} ";
         $sql .= " LEFT JOIN {$wpdb->postmeta} as price_meta ON {$wpdb->posts}.ID = price_meta.post_id " . $tax_query_sql['join'] . $meta_query_sql['join'];
-        $sql .= " 	WHERE {$wpdb->posts}.post_type = 'product'
+        $sql .= " WHERE {$wpdb->posts}.post_type = 'product'
 					AND {$wpdb->posts}.post_status = 'publish'
 					AND price_meta.meta_key IN ('" . implode("','", array_map('esc_sql', apply_filters('woocommerce_price_filter_meta_keys', array('_price')))) . "')
 					AND price_meta.meta_value > '' ";
         $sql .= $tax_query_sql['where'] . $meta_query_sql['where'];
-        return $wpdb->get_row($sql);
+        $sql = apply_filters('woof_get_filtered_price_query', $sql);
+
+        if (isset(woof()->settings['price_transient']) AND woof()->settings['price_transient']) {
+            $data_key = md5($sql . 'woof');
+            $data = get_transient('woof_min_max_prices');
+
+            if (!is_array($data)) {
+                $data = array();
+            }
+
+            if (isset($data[$data_key])) {
+
+                $value = $data[$data_key];
+                return $value;
+            }
+            $prices = $wpdb->get_row($sql);
+            $data[$data_key] = $prices;
+            set_transient('woof_min_max_prices', $data, 1 * 24 * 3600); //1 day
+        }
+
+        $prices = $wpdb->get_row($sql);
+        return $prices;
     }
 
     public static function get_max_price($additional_taxes = "") {
@@ -658,18 +818,12 @@ final class WOOF_HELPER {
 
     //is customer look the site from mobile device
     public static function is_mobile_device() {
-        /*
-          if (isset($_SERVER["HTTP_USER_AGENT"]))
-          {
-          return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
-          }
-         */
         return wp_is_mobile();
     }
 
     public static function show_admin_notice($key) {
-        global $WOOF;
-        echo $WOOF->render_html(WOOF_PATH . 'views/notices/' . $key . '.php');
+
+        woof()->render_html_e(WOOF_PATH . 'views/notices/' . $key . '.php');
     }
 
     public static function add_notice($key) {
@@ -704,53 +858,60 @@ final class WOOF_HELPER {
             update_option('woof_notices', $notices);
         }
     }
-    public static function draw_tooltipe($title,$tooltip_text) {
-        if(!$tooltip_text OR empty($tooltip_text) OR $tooltip_text=='none'){
+
+    public static function draw_tooltipe($title, $tooltip_text) {
+        if (!$tooltip_text OR empty($tooltip_text) OR $tooltip_text == 'none') {
             return"";
         }
-        global $WOOF;
-        $tooltip_text=self::wpml_translate(null,stripcslashes(wp_strip_all_tags($tooltip_text)));
-        $toggle_image = ((isset($WOOF->settings['woof_tooltip_img']) AND ! empty($WOOF->settings['woof_tooltip_img'])) ? $WOOF->settings['woof_tooltip_img'] : WOOF_LINK . 'img/woof_info_icon.png');
-        $current_id=uniqid("woof_tooltip_content");
+
+        if (!isset(woof()->settings['use_tooltip'])) {
+            $show_tooltip = 1;
+        } else {
+            $show_tooltip = woof()->settings['use_tooltip'];
+        }
+        if (!$show_tooltip) {
+            return"";
+        }
+
+        $tooltip_text = self::wpml_translate(null, stripcslashes(wp_strip_all_tags($tooltip_text)));
+        $toggle_image = ((isset(woof()->settings['woof_tooltip_img']) AND!empty(woof()->settings['woof_tooltip_img'])) ? woof()->settings['woof_tooltip_img'] : WOOF_LINK . 'img/woof_info_icon.svg');
+        $current_id = uniqid("woof_tooltip_content");
         ?>
-            <img src="<?php echo $toggle_image ?>" class="woof_tooltip_header" data-tooltip-content="#<?php echo $current_id ?>">
-            <div class="woof_tooltip_templates">
-                <span id="<?php echo $current_id ?>">
-                    <span class="woof_tooltip_title"><?php echo $title ?></span>
-                    <span class="woof_tooltip_text"><?php echo $tooltip_text ?></span>
-                </span>
-            </div>          
+        <img src="<?php echo esc_url($toggle_image) ?>" class="woof_tooltip_header" data-tooltip-content="#<?php echo esc_attr($current_id) ?>" alt="<?php esc_html_e('info', 'woocommerce-products-filter'); ?>">
+        <span class="woof_tooltip_templates">
+            <span id="<?php echo esc_attr($current_id) ?>">
+                <span class="woof_tooltip_title"><?php echo wp_kses_post(wp_unslash($title)) ?></span>
+                <span class="woof_tooltip_text"><?php echo wp_kses_post(wp_unslash($tooltip_text)) ?></span>
+            </span>
+        </span>          
         <?php
-        
     }
+
     public static function draw_title_toggle($show, $block_is_closed) {
         if (!$show) {
             return "";
         }
 
-        global $WOOF;
         $condition = 'closed';
-        $toggle_type = ((isset($WOOF->settings['toggle_type']) AND ! empty($WOOF->settings['toggle_type'])) ? $WOOF->settings['toggle_type'] : 'text');
+        $toggle_type = ((isset(woof()->settings['toggle_type']) AND!empty(woof()->settings['toggle_type'])) ? woof()->settings['toggle_type'] : 'text');
 
         if ($block_is_closed) {
-            $toggle_text = ((isset($WOOF->settings['toggle_closed_text']) AND ! empty($WOOF->settings['toggle_closed_text'])) ? self::wpml_translate(null, $WOOF->settings['toggle_closed_text']) : '-');
-            $toggle_image = ((isset($WOOF->settings['toggle_closed_image']) AND ! empty($WOOF->settings['toggle_closed_image'])) ? $WOOF->settings['toggle_closed_image'] : WOOF_LINK . 'img/plus3.png');
+            $toggle_text = ((isset(woof()->settings['toggle_closed_text']) AND!empty(woof()->settings['toggle_closed_text'])) ? self::wpml_translate(null, woof()->settings['toggle_closed_text']) : '+');
+            $toggle_image = ((isset(woof()->settings['toggle_closed_image']) AND!empty(woof()->settings['toggle_closed_image'])) ? woof()->settings['toggle_closed_image'] : WOOF_LINK . 'img/plus.svg');
         } else {
-            $toggle_text = ((isset($WOOF->settings['toggle_opened_text']) AND ! empty($WOOF->settings['toggle_opened_text'])) ? self::wpml_translate(null, $WOOF->settings['toggle_opened_text']) : '+');
-            $toggle_image = ((isset($WOOF->settings['toggle_opened_image']) AND ! empty($WOOF->settings['toggle_opened_image'])) ? $WOOF->settings['toggle_opened_image'] : WOOF_LINK . 'img/minus3.png');
+            $toggle_text = ((isset(woof()->settings['toggle_opened_text']) AND!empty(woof()->settings['toggle_opened_text'])) ? self::wpml_translate(null, woof()->settings['toggle_opened_text']) : '-');
+            $toggle_image = ((isset(woof()->settings['toggle_opened_image']) AND!empty(woof()->settings['toggle_opened_image'])) ? woof()->settings['toggle_opened_image'] : WOOF_LINK . 'img/minus.svg');
             $condition = 'opened';
         }
 
-
-
         if ($toggle_type == 'text' OR empty($toggle_image)) {
             ?>
-            <a href="javascript: void(0);" title="<?php _e('toggle', 'woocommerce-products-filter') ?>" class="woof_front_toggle woof_front_toggle_<?php echo $condition ?>" data-condition="<?php echo $condition ?>"><?php echo $toggle_text ?></a>
+            <a href="javascript: void(0);" title="<?php esc_html_e('toggle', 'woocommerce-products-filter') ?>" class="woof_front_toggle woof_front_toggle_<?php echo esc_attr($condition) ?>" data-condition="<?php echo esc_attr($condition) ?>"><?php esc_html_e($toggle_text) ?></a>
             <?php
         } else {
             ?>
-            <a href="javascript: void(0);" title="<?php _e('toggle', 'woocommerce-products-filter') ?>" class="woof_front_toggle woof_front_toggle_<?php echo $condition ?>" data-condition="<?php echo $condition ?>">
-                <img src="<?php echo $toggle_image ?>" alt="<?php _e('toggle', 'woocommerce-products-filter') ?>" />
+            <a href="javascript: void(0);" title="<?php esc_html_e('toggle', 'woocommerce-products-filter') ?>" class="woof_front_toggle woof_front_toggle_<?php echo esc_attr($condition) ?>" data-condition="<?php echo esc_attr($condition) ?>">
+                <img src="<?php echo esc_url($toggle_image) ?>" alt="<?php esc_html_e('toggle', 'woocommerce-products-filter') ?>" />
             </a>
             <?php
         }
@@ -762,17 +923,17 @@ final class WOOF_HELPER {
         $args = apply_filters('woof_get_more_less_button_' . $type, array());
         if (empty($args)) {
             $args['type'] = 'text'; //image
-            $args['closed'] = __('Show more', 'woocommerce-products-filter');
-            $args['opened'] = __('Show less', 'woocommerce-products-filter');
+            $args['closed'] = esc_html__('Show more', 'woocommerce-products-filter');
+            $args['opened'] = esc_html__('Show less', 'woocommerce-products-filter');
         }
 
         if ($args['type'] == 'image') {
             ?>
-            <a href="javascript:void(0);" class="woof_open_hidden_li_btn" data-type="<?php echo $args['type'] ?>" data-state="closed" data-closed="<?php echo $args['closed'] ?>" data-opened="<?php echo $args['opened'] ?>"><img src="<?php echo $args['closed'] ?>" alt="" /></a>
+            <a href="javascript:void(0);" class="woof_open_hidden_li_btn" data-type="<?php echo esc_attr($args['type']) ?>" data-state="closed" data-closed="<?php echo esc_attr($args['closed']) ?>" data-opened="<?php echo esc_attr($args['opened']) ?>"><img src="<?php echo esc_url($args['closed']) ?>" alt="" /></a>
             <?php
         } else {
             ?>
-            <a href="javascript:void(0);" class="woof_open_hidden_li_btn" data-type="<?php echo $args['type'] ?>" data-state="closed" data-closed="<?php echo $args['closed'] ?>" data-opened="<?php echo $args['opened'] ?>"><?php echo $args['closed'] ?></a>
+            <a href="javascript:void(0);" class="woof_open_hidden_li_btn" data-type="<?php echo esc_attr($args['type']) ?>" data-state="closed" data-closed="<?php echo esc_attr($args['closed']) ?>" data-opened="<?php echo esc_attr($args['opened']) ?>"><?php esc_html_e($args['closed']) ?></a>
             <?php
         }
     }
@@ -815,7 +976,7 @@ final class WOOF_HELPER {
                     $slugs = array();
                     foreach ($tax_terms as $term_id) {
                         $term = get_term(intval($term_id), $tax_slug);
-                        if (is_object($term)) {
+                        if (is_object($term) AND!is_wp_error($term)) {
                             $slugs[] = $term->slug;
                         }
                     }
@@ -850,7 +1011,7 @@ final class WOOF_HELPER {
         }
         foreach ($args as $item) {
 
-            if (!is_array($item) OR ! isset($item['val'])) {
+            if (!is_array($item) OR!isset($item['val'])) {
                 continue;
             }
             if (!isset($item['type'])) {
@@ -890,6 +1051,30 @@ final class WOOF_HELPER {
                 }
             }
         }
+    }
+
+    public static function check_new_ion_skin($skin) {
+        $skins = array(
+            'round' => 'Round',
+            'flat' => 'skinFlat',
+            'big' => 'skinHTML5',
+            'modern' => 'skinModern',
+            // 'skinSimple' => 'skinSimple',
+            'sharp' => 'Sharp',
+            'square' => 'Square',
+        );
+
+        //comp  with old  ion slider
+        if (!isset($skins[$skin])) {
+
+            if (array_search($skin, $skins) !== false) {
+                $skin = array_search($skin, $skins);
+            } else {
+                $skin = 'round';
+            }
+        }
+
+        return $skin;
     }
 
 }

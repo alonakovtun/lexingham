@@ -1,5 +1,7 @@
+"use strict";
+
 jQuery(function ($) {
-    $(document).bind('click', function (e) {
+    $(document).on('click', function (e) {
         if (!$(e.target).parents().hasClass("woof_select_radio_check")) {
             $(".woof_select_radio_check dd ul").hide(200);
             $(".woof_select_radio_check_opened").removeClass('woof_select_radio_check_opened');
@@ -33,7 +35,7 @@ function woof_init_select_radio_check() {
     if (Object.keys(woof_current_values).length > 0) {
         jQuery.each(woof_current_values, function (index, value) {
 
-            if (!jQuery('.woof_hida_' + index).size()) {
+            if (!jQuery('.woof_hida_' + index).length) {
                 return;
             }
 
@@ -83,12 +85,11 @@ function woof_init_select_radio_check() {
                 jQuery.each(txt_results, function (i, txt) {
                     panel.find('ul').append(
                             jQuery('<li>').append(
-                            jQuery('<a>').attr('href', v_results[i]).attr('data-tax', index).append(
+                            jQuery('<a>').attr('href', "").attr('data-tax', index).attr('data-slug', v_results[i]).append(
                             jQuery('<span>').attr('class', 'woof_remove_ppi').append(txt)
                             )));
                 });
 
-                //jQuery('.woof_hida_' + index).html(txt_results.join(','));
             } else {
                 jQuery('.woof_hida_' + index).removeClass('woof_hida_small');
                 jQuery('.woof_hida_' + index).html(jQuery('.woof_hida_' + index).data('title'));
@@ -96,7 +97,6 @@ function woof_init_select_radio_check() {
 
         });
 
-        //woof_draw_products_top_panel();
     }
 
     //***

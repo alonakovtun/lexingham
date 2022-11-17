@@ -2,7 +2,6 @@
 if (!defined('ABSPATH'))
     die('No direct access allowed');
 
-//02-12-2017
 final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
 
     public $type = 'application';
@@ -20,13 +19,13 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         parent::__construct();
 
         //***
-        if (isset($this->woof_settings['woof_quick_search']['wp_cron_period']) AND ! empty($this->woof_settings['woof_quick_search']['wp_cron_period'])) {
+        if (isset($this->woof_settings['woof_quick_search']['wp_cron_period']) AND!empty($this->woof_settings['woof_quick_search']['wp_cron_period'])) {
             $this->wp_cron_period = $this->woof_settings['woof_quick_search']['wp_cron_period'];
         }
-        if (isset($this->woof_settings['woof_quick_search']['quick_search_tax_conditionals']) AND ! empty($this->woof_settings['woof_quick_search']['quick_search_tax_conditionals'])) {
+        if (isset($this->woof_settings['woof_quick_search']['quick_search_tax_conditionals']) AND!empty($this->woof_settings['woof_quick_search']['quick_search_tax_conditionals'])) {
             $this->tax_conditional = $this->woof_settings['woof_quick_search']['quick_search_tax_conditionals'];
         }
-        if (isset($this->woof_settings['woof_quick_search']['items_for_text_search']) AND ! empty($this->woof_settings['woof_quick_search']['items_for_text_search'])) {
+        if (isset($this->woof_settings['woof_quick_search']['items_for_text_search']) AND!empty($this->woof_settings['woof_quick_search']['items_for_text_search'])) {
             $this->tax_serch_data = $this->woof_settings['woof_quick_search']['items_for_text_search'];
         }
         $this->cron_system = 0;
@@ -38,7 +37,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
                 $this->woof_stat_wpcron_init(true);
                 if (isset($_GET['woof_quick_search_collection'])) {
                     $cron_secret_key = 'woof_quick_search_updating';
-                    if (isset($this->woof_settings['woof_quick_search']['cron_secret_key']) AND ! empty($this->woof_settings['woof_quick_search']['cron_secret_key'])) {
+                    if (isset($this->woof_settings['woof_quick_search']['cron_secret_key']) AND!empty($this->woof_settings['woof_quick_search']['cron_secret_key'])) {
                         $cron_secret_key = sanitize_title($this->woof_settings['woof_quick_search']['cron_secret_key']);
                     }
                     if ($_GET['woof_quick_search_collection'] === $cron_secret_key) {
@@ -59,6 +58,10 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         return plugin_dir_path(__FILE__);
     }
 
+    public function get_ext_override_path() {
+        return get_stylesheet_directory() . DIRECTORY_SEPARATOR . "woof" . DIRECTORY_SEPARATOR . "ext" . DIRECTORY_SEPARATOR . $this->folder_name . DIRECTORY_SEPARATOR;
+    }
+
     public function get_ext_link() {
         return plugin_dir_url(__FILE__);
     }
@@ -68,7 +71,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         add_shortcode('woof_quick_search_results', array($this, 'quick_search_result'));
         add_action('woof_print_applications_tabs_' . $this->folder_name, array($this, 'woof_print_applications_tabs'), 10, 1);
         add_action('woof_print_applications_tabs_content_' . $this->folder_name, array($this, 'woof_print_applications_tabs_content'), 10, 1);
-        //self::$includes['js']['woof_quick_search_html_items'] = $this->get_ext_link() . 'js/quick_search.js';
+
         self::$includes['css']['woof_' . $this->folder_name . '_html_items'] = $this->get_ext_link() . 'css/' . $this->folder_name . '.css';
         add_action('wp_footer', array($this, 'wp_footer'), 12);
         //ajax
@@ -77,11 +80,11 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
     }
 
     public function quick_search($atts) {
-        global $WOOF;
+        
         $data = (shortcode_atts(array(
                     'short_id' => '0000', /* this is needed when using several data files now it is not used */
                     'preload' => 1, /* download a file  with the page = 1    file download by click =0 */
-                    'placeholder' => __('Text search', 'woocommerce-products-filter'),
+                    'placeholder' => esc_html__('Text search', 'woocommerce-products-filter'),
                     'price_filter' => 0, /* show price filter  1 or 0 ( only for extended filter ) */
                     'extended_filter' => 0, /* use  extend filter(alaSQL) with special template  1 or 0 */
                     'target' => '_blank', /* link behavior */
@@ -92,19 +95,23 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
                     'tax_logic' => 'AND', /*  logic  beetwin taxonomies  AND or OR ( only for extended filter ) */
                     'text_group_logic' => 'AND', /* logic for a few words, all words must be found=AND   [AND | OR} ( only for extended filter ) */
                     'exclude_terms' => '', /* ids any taxonomies exclude_terms="56,5288,8,1299"  ( only for extended filter ) */
-                    'reset_text' => __('Reset', 'woocommerce-products-filter'),
+                    'reset_text' => esc_html__('Reset', 'woocommerce-products-filter'),
                     'class' => 'woof_qs_3_col',
                         ), $atts));
 
         $curr_lang = 'xxx';
         if (class_exists('SitePress')) {
-            $curr_lang = ICL_LANGUAGE_CODE;
+            //$curr_lang = ICL_LANGUAGE_CODE;
+            $curr_lang = apply_filters('wpml_current_language', NULL);
         }
-        $_REQUEST['woof_qt'] = true;
-        $_REQUEST['woof_quick_search_link'] = $this->get_ext_link() . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'data_' . $data['short_id'] . '_' . $curr_lang . '.json';
-        //$_REQUEST['woof_quick_search_preload']=$data['preload'];
-        //$_REQUEST['woof_quick_search_extended']=$data['extended_filter'];
-        return $WOOF->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search.php', $data);
+
+        WOOF_REQUEST::set('woof_qt', true);
+        WOOF_REQUEST::set('woof_quick_search_link', $this->get_ext_link() . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'data_' . $data['short_id'] . '_' . $curr_lang . '.json');
+
+        if (file_exists($this->get_ext_override_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search.php')) {
+            return woof()->render_html($this->get_ext_override_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search.php', $data);
+        }
+        return woof()->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search.php', $data);
     }
 
     public function create_data_search_files_when_init() {
@@ -112,7 +119,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
     }
 
     public function quick_search_result($atts) {
-        global $WOOF;
+        
         $data = (shortcode_atts(array(
                     'per_page' => 12,
                     'template_result' => 'list_1',
@@ -122,35 +129,38 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
                     'header_text' => "",
                         ), $atts));
         $data = apply_filters('woof_qs_shortcode_data', $data); // possibility to change a template for example for a mobile
-        $_REQUEST['woof_qt_extended'] = $data['template_result'];
+        WOOF_REQUEST::set('woof_qt_extended', $data['template_result']);
         $all_data = array();
         $all_data['data'] = $data;
-        return $WOOF->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search_results.php', $all_data);
+        if (file_exists($this->get_ext_override_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search_results.php')) {
+            return woof()->render_html($this->get_ext_override_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search_results.php', $all_data);
+        }
+        return woof()->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_quick_search_results.php', $all_data);
     }
 
     public function wp_footer() {
-        if (!isset($_REQUEST['woof_qt'])) {
+        if (!WOOF_REQUEST::isset('woof_qt')) {
             return;
         }
-        if (isset($_REQUEST['woof_qt_extended'])) {
-            wp_enqueue_script('woof_alasql', $this->get_ext_link() . "/js/alasql/alasql.js");
-            $parse_tpl = explode("/", $_REQUEST['woof_qt_extended']);
+        if (WOOF_REQUEST::isset('woof_qt_extended')) {
+            wp_enqueue_script('woof_alasql', $this->get_ext_link() . "/js/alasql/alasql.min.js", array(), WOOF_VERSION);
+            $parse_tpl = explode("/", WOOF_REQUEST::get('woof_qt_extended'));
             if (count($parse_tpl) > 1 AND $parse_tpl[0] == 'custom') {
-                wp_enqueue_style('woof_qs_style', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/css/" . $parse_tpl[1] . ".css");
-                wp_enqueue_script('woof_qs_script', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/js/" . $parse_tpl[1] . ".js");
+                wp_enqueue_style('woof_qs_style', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/css/" . $parse_tpl[1] . ".css", array(), WOOF_VERSION);
+                wp_enqueue_script('woof_qs_script', get_stylesheet_directory_uri() . "/woof_qs_templates/" . $parse_tpl[1] . "/js/" . $parse_tpl[1] . ".js", array(), WOOF_VERSION);
             } else {
-                wp_enqueue_style('woof_qs_style', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/css/" . $parse_tpl[0] . ".css");
-                wp_enqueue_script('woof_qs_script', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/js/" . $parse_tpl[0] . ".js");
+                wp_enqueue_style('woof_qs_style', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/css/" . $parse_tpl[0] . ".css", array(), WOOF_VERSION);
+                wp_enqueue_script('woof_qs_script', $this->get_ext_link() . "/views/templates/" . $parse_tpl[0] . "/js/" . $parse_tpl[0] . ".js", array(), WOOF_VERSION);
             }
         } else {
-            wp_enqueue_script('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/jquery.easy-autocomplete.min.js');
-            wp_enqueue_style('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.min.css');
-            wp_enqueue_style('easy-autocomplete-theme', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.themes.min.css');
+            wp_enqueue_script('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/jquery.easy-autocomplete.min.js', array(), WOOF_VERSION);
+            wp_enqueue_style('easy-autocomplete', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.min.css', array(), WOOF_VERSION);
+            wp_enqueue_style('easy-autocomplete-theme', WOOF_LINK . 'js/easy-autocomplete/easy-autocomplete.themes.min.css', array(), WOOF_VERSION);
         }
-        wp_enqueue_script('woof_quick_search', $this->get_ext_link() . 'js/quick_search.js');
+        wp_enqueue_script('woof_quick_search', $this->get_ext_link() . 'js/quick_search.js', array(), WOOF_VERSION);
         $link = '';
-        if (isset($_REQUEST['woof_quick_search_link'])) {
-            $link = $_REQUEST['woof_quick_search_link'];
+        if (WOOF_REQUEST::isset('woof_quick_search_link')) {
+            $link = WOOF_REQUEST::get('woof_quick_search_link');
         } else {
             $link = $this->get_ext_link() . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'data_0000_xxx.json';
         }
@@ -181,23 +191,21 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         ?>
         <li>
             <a href="#tabs-quick-text">
-                <svg viewBox="0 0 80 60" preserveAspectRatio="none"><use xlink:href="#tabshape"></use></svg>
-                <svg viewBox="0 0 80 60" preserveAspectRatio="none"><use xlink:href="#tabshape"></use></svg>
-                <span><?php _e("Quick search", 'woocommerce-products-filter') ?></span>
+                <span class="icon-flash"></span>
+                <span><?php esc_html_e("Quick search", 'woocommerce-products-filter') ?></span>
             </a>
         </li>
         <?php
     }
 
     public function woof_print_applications_tabs_content() {
-        wp_enqueue_script('woof_qs_admin_', $this->get_ext_link() . 'js/admin.js');
-        //***
-        global $WOOF;
+        wp_enqueue_script('woof_qs_admin_', $this->get_ext_link() . 'js/admin.js', array(), WOOF_VERSION);
+        wp_enqueue_style('woof_qs_admin_css', $this->get_ext_link() . 'css/admin.css', [], WOOF_VERSION);
+
+        
         $data = array();
-
         $data['woof_settings'] = $this->woof_settings;
-
-        echo $WOOF->render_html($this->get_ext_path() . 'views/tabs_content.php', $data);
+        echo woof()->render_html($this->get_ext_path() . 'views/tabs_content.php', $data);
     }
 
     public function get_woof_cron_schedules($key = '') {
@@ -217,7 +225,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
     }
 
     public function create_data_search_files() {
-        global $WOOF;
+        
         $tax_query = array();
         $start = 0;
         $step = 10;
@@ -228,18 +236,9 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
             $start = intval($_POST['qs_start']);
         }
 
-        /*
-          if(!isset($_REQUEST['woof_qt_update_file']) OR !wp_verify_nonce( $_REQUEST['woof_qt_update_file'], 'woof-qs-nonce' )){
-          $result = array( 'total' => -1);
-          echo json_encode( $result );
-          exit;
-          }
-         *
-         */
 
         if ($start == 0) {
             $this->delete_all_files();
-            ;
         }
         $tax_query = $this->_expand_additional_taxes_string($this->tax_conditional, $tax_query);
         if (version_compare(WOOCOMMERCE_VERSION, '3.0', '>=')) {
@@ -258,9 +257,10 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
             'posts_per_page' => $step,
             'fields' => 'ids',
             'cache_results' => false,
-            //'no_found_rows'=>false,
             'update_post_meta_cache' => false,
-            'update_post_term_cache' => false
+            'update_post_term_cache' => false,
+            'orderby' => 'ID',
+            'order' => 'DESC',
         );
 
         if (class_exists('SitePress')) {
@@ -290,8 +290,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
             $start = -1;
         }
         $result = array('total' => $start);
-        echo json_encode($result);
-        exit;
+        exit(json_encode($result));
     }
 
     public function push_products_data($product_ids, $id) {
@@ -313,7 +312,6 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         } else {
 
             foreach ($product_ids->posts as $post) {
-                //$posts[]=$post->ID;
                 $posts_data[] = $this->get_data_by_id($post);
             }
             $this->push_data_into_file($posts_data, $id);
@@ -321,7 +319,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
     }
 
     public function get_data_by_id($id, $lang = 'xxx') {
-        global $WOOF;
+        
         if (!$id OR $id < 1) {
             return array();
         }
@@ -333,15 +331,20 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         $data['id'] = $id;
         $data['title'] = $product->get_name();
         $data['url'] = $product->get_permalink();
+        $data['url'] = apply_filters('wpml_permalink', $data['url'], $lang);
         $img = wp_get_attachment_image_src($product->get_image_id($id), 'shop_single');
-        $data['img'] = $this->optimize_url($img[0]);
+
+        if (isset($img[0])) {
+            $data['img'] = $this->optimize_url($img[0]);
+        }
+
         $data['sku'] = $product->get_sku();
         $data['price'] = $this->get_all_prices($product);
         $data['key_words'] = "";
         $data['term_ids'] = " ";
         $data['meta_data'] = array();
         $term_ids = array();
-        $all_taxonomies = $WOOF->get_taxonomies();
+        $all_taxonomies = woof()->get_taxonomies();
         foreach ($this->tax_serch_data as $tax) {
             unset($all_taxonomies[$tax]); //not to do double work  (get all id terms)
             $terms = get_the_terms($id, $tax);
@@ -377,14 +380,14 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
                     $term_ids[] = $term->term_id;
                 }
                 if (!empty($term_ids)) {
-                    //$data['term_ids'].=" ";
+
                     $data['term_ids'] .= implode(' ', $term_ids);
                 }
                 $data['term_ids'] .= " ";
             }
         }
         $data['meta_data'] = $this->get_meta_data_by_id($id);
-        //wp_cache_flush();
+
         return $data;
     }
 
@@ -423,7 +426,7 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
                 $WOOCS->storage->set_val('woocs_current_currency', $def_currency);
             }
         }
-        //$product = wc_get_product($id);
+
         $prices = array();
         if ($product->is_type('variable')) {
             $available_variations = $product->get_children();
@@ -589,20 +592,20 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
     }
 
     public static function show_sort_html($asc = 'title-asc', $desc = 'title-desc') {
-        global $WOOF;
+        
         $data = array(
             'asc' => $asc,
             'desc' => $desc,
         );
-        return $WOOF->render_html(WOOF_EXT_PATH . 'quick_search' . DIRECTORY_SEPARATOR . 'views/sort_html.php', $data);
+        return woof()->render_html(WOOF_EXT_PATH . 'quick_search' . DIRECTORY_SEPARATOR . 'views/sort_html.php', $data);
     }
 
     public static function show_sort_select_html($args) {
         $data = array(
             'sort' => $args,
         );
-        global $WOOF;
-        return $WOOF->render_html(WOOF_EXT_PATH . 'quick_search' . DIRECTORY_SEPARATOR . 'views/sort_select_html.php', $data);
+        
+        return woof()->render_html(WOOF_EXT_PATH . 'quick_search' . DIRECTORY_SEPARATOR . 'views/sort_select_html.php', $data);
     }
 
     //+++
@@ -610,11 +613,11 @@ final class WOOF_EXT_QUICK_TEXT extends WOOF_EXT {
         $tpl_str = array(); //array('key'=>'title',title=>'Title',class=>'woof_qs_title','alias'=>'__TITLE__')
         //img,title,price,sku,key_words
         $default_titles = array(
-            'title' => __('Title', 'woocommerce-products-filter'),
+            'title' => esc_html__('Title', 'woocommerce-products-filter'),
             'img' => '',
-            'price' => __('Price', 'woocommerce-products-filter'),
-            'sku' => __('SKU', 'woocommerce-products-filter'),
-            'key_words' => __('Tags', 'woocommerce-products-filter'),
+            'price' => esc_html__('Price', 'woocommerce-products-filter'),
+            'sku' => esc_html__('SKU', 'woocommerce-products-filter'),
+            'key_words' => esc_html__('Tags', 'woocommerce-products-filter'),
         );
         $temp_arr = explode(',', $str);
         foreach ($temp_arr as $item) {

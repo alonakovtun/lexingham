@@ -1,6 +1,6 @@
 ﻿// Ion.RangeSlider
-// version 2.1.2 Build: 350
-// © Denis Ineshin, 2015
+// WOOF custom
+// © Denis Ineshin
 // https://github.com/IonDen
 //
 // Project page:    http://ionden.com/a/plugins/ion.rangeSlider/en.html
@@ -8,21 +8,17 @@
 //
 // Released under MIT licence:
 // http://ionden.com/a/plugins/licence-en.html
-// =====================================================================================================================
 
-;(function ($, document, window, navigator, undefined) {
-    "use strict";
+        "use strict";
 
-    // =================================================================================================================
-    // Service
+(function ($, document, window, navigator, undefined) {
 
     var plugin_count = 0;
 
-    // IE8 fix
     var is_old_ie = (function () {
         var n = navigator.userAgent,
-            r = /msie\s\d+/i,
-            v;
+                r = /msie\s\d+/i,
+                v;
         if (n.search(r) > 0) {
             v = r.exec(n).toString();
             v = v.split(" ")[1];
@@ -32,7 +28,7 @@
             }
         }
         return false;
-    } ());
+    }());
     if (!Function.prototype.bind) {
         Function.prototype.bind = function bind(that) {
 
@@ -44,39 +40,39 @@
             }
 
             var args = slice.call(arguments, 1),
-                bound = function () {
+                    bound = function () {
 
-                    if (this instanceof bound) {
+                        if (this instanceof bound) {
 
-                        var F = function(){};
-                        F.prototype = target.prototype;
-                        var self = new F();
+                            var F = function () {};
+                            F.prototype = target.prototype;
+                            var self = new F();
 
-                        var result = target.apply(
-                            self,
-                            args.concat(slice.call(arguments))
-                        );
-                        if (Object(result) === result) {
-                            return result;
+                            var result = target.apply(
+                                    self,
+                                    args.concat(slice.call(arguments))
+                                    );
+                            if (Object(result) === result) {
+                                return result;
+                            }
+                            return self;
+
+                        } else {
+
+                            return target.apply(
+                                    that,
+                                    args.concat(slice.call(arguments))
+                                    );
+
                         }
-                        return self;
 
-                    } else {
-
-                        return target.apply(
-                            that,
-                            args.concat(slice.call(arguments))
-                        );
-
-                    }
-
-                };
+                    };
 
             return bound;
         };
     }
     if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function(searchElement, fromIndex) {
+        Array.prototype.indexOf = function (searchElement, fromIndex) {
             var k;
             if (this == null) {
                 throw new TypeError('"this" is null or not defined');
@@ -110,27 +106,27 @@
     // Template
 
     var base_html =
-        '<span class="irs">' +
-        '<span class="irs-line" tabindex="-1"><span class="irs-line-left"></span><span class="irs-line-mid"></span><span class="irs-line-right"></span></span>' +
-        '<span class="irs-min">0</span><span class="irs-max">1</span>' +
-        '<span class="irs-from">0</span><span class="irs-to">0</span><span class="irs-single">0</span>' +
-        '</span>' +
-        '<span class="irs-grid"></span>' +
-        '<span class="irs-bar"></span>';
+            '<span class="irs">' +
+            '<span class="irs-line" tabindex="-1"><span class="irs-line-left"></span><span class="irs-line-mid"></span><span class="irs-line-right"></span></span>' +
+            '<span class="irs-min">0</span><span class="irs-max">1</span>' +
+            '<span class="irs-from">0</span><span class="irs-to">0</span><span class="irs-single">0</span>' +
+            '</span>' +
+            '<span class="irs-grid"></span>' +
+            '<span class="irs-bar"></span>';
 
     var single_html =
-        '<span class="irs-bar-edge"></span>' +
-        '<span class="irs-shadow shadow-single"></span>' +
-        '<span class="irs-slider single"></span>';
+            '<span class="irs-bar-edge"></span>' +
+            '<span class="irs-shadow shadow-single"></span>' +
+            '<span class="irs-slider single"></span>';
 
     var double_html =
-        '<span class="irs-shadow shadow-from"></span>' +
-        '<span class="irs-shadow shadow-to"></span>' +
-        '<span class="irs-slider from"></span>' +
-        '<span class="irs-slider to"></span>';
+            '<span class="irs-shadow shadow-from"></span>' +
+            '<span class="irs-shadow shadow-to"></span>' +
+            '<span class="irs-slider from"></span>' +
+            '<span class="irs-slider to"></span>';
 
     var disable_html =
-        '<span class="irs-disable-mask"></span>';
+            '<span class="irs-disable-mask"></span>';
 
 
 
@@ -254,8 +250,8 @@
          * get and validate config
          */
         var $inp = this.$cache.input,
-            val = $inp.prop("value"),
-            config, config_from_data, prop;
+                val = $inp.prop("value"),
+                config, config_from_data, prop;
 
         // default config
         config = {
@@ -314,7 +310,8 @@
             onStart: null,
             onChange: null,
             onFinish: null,
-            onUpdate: null
+            onUpdate: null,
+            onRedraw: null
         };
 
 
@@ -542,9 +539,9 @@
          */
         setTopHandler: function () {
             var min = this.options.min,
-                max = this.options.max,
-                from = this.options.from,
-                to = this.options.to;
+                    max = this.options.max,
+                    from = this.options.from,
+                    to = this.options.to;
 
             if (from > min && to === max) {
                 this.$cache.s_from.addClass("type_last");
@@ -632,6 +629,7 @@
                 return;
             }
 
+            //https://www.smashingmagazine.com/2014/01/understanding-javascript-function-prototype-bind/
             this.$cache.body.on("touchmove.irs_" + this.plugin_count, this.pointerMove.bind(this));
             this.$cache.body.on("mousemove.irs_" + this.plugin_count, this.pointerMove.bind(this));
 
@@ -737,7 +735,7 @@
                 this.is_finish = true;
                 this.callOnFinish();
             }
-            
+
             this.dragging = false;
         },
 
@@ -915,8 +913,6 @@
             }
         },
 
-
-
         // =============================================================================================================
         // Calculations
 
@@ -960,8 +956,8 @@
             switch (this.target) {
                 case "base":
                     var w = (this.options.max - this.options.min) / 100,
-                        f = (this.result.from - this.options.min) / w,
-                        t = (this.result.to - this.options.min) / w;
+                            f = (this.result.from - this.options.min) / w,
+                            t = (this.result.to - this.options.min) / w;
 
                     this.coords.p_single_real = this.toFixed(f);
                     this.coords.p_from_real = this.toFixed(f);
@@ -1055,12 +1051,12 @@
                     }
 
                     var real_x = this.convertToRealPercent(handle_x),
-                        from = this.result.from_percent,
-                        to = this.result.to_percent,
-                        full = to - from,
-                        half = full / 2,
-                        new_from = real_x - half,
-                        new_to = real_x + half;
+                            from = this.result.from_percent,
+                            to = this.result.to_percent,
+                            full = to - from,
+                            half = full / 2,
+                            new_from = real_x - half,
+                            new_to = real_x + half;
 
                     if (new_from < 0) {
                         new_from = 0;
@@ -1112,7 +1108,6 @@
             this.calcLabels();
         },
 
-
         /**
          * calculates pointer X in percent
          */
@@ -1122,7 +1117,7 @@
                 return;
             }
 
-            if (this.coords.x_pointer < 0 || isNaN(this.coords.x_pointer)  ) {
+            if (this.coords.x_pointer < 0 || isNaN(this.coords.x_pointer)) {
                 this.coords.x_pointer = 0;
             } else if (this.coords.x_pointer > this.coords.w_rs) {
                 this.coords.x_pointer = this.coords.w_rs;
@@ -1143,7 +1138,7 @@
 
         getHandleX: function () {
             var max = 100 - this.coords.p_handle,
-                x = this.toFixed(this.coords.p_pointer - this.coords.p_gap);
+                    x = this.toFixed(this.coords.p_pointer - this.coords.p_gap);
 
             if (x < 0) {
                 x = 0;
@@ -1233,8 +1228,6 @@
             }
         },
 
-
-
         // =============================================================================================================
         // Drawings
 
@@ -1277,6 +1270,8 @@
             if (this.coords.w_rs !== this.coords.w_rs_old) {
                 this.target = "base";
                 this.is_resize = true;
+
+
             }
 
             if (this.coords.w_rs !== this.coords.w_rs_old || this.force_redraw) {
@@ -1351,6 +1346,9 @@
                 if (!this.is_resize && !this.is_update && !this.is_start && !this.is_finish) {
                     this.callOnChange();
                 }
+                if (this.is_resize) {
+                    this.callOnRedraw();
+                }
                 if (this.is_key || this.is_click) {
                     this.is_key = false;
                     this.is_click = false;
@@ -1379,10 +1377,10 @@
             }
 
             var values_num = this.options.values.length,
-                p_values = this.options.p_values,
-                text_single,
-                text_from,
-                text_to;
+                    p_values = this.options.p_values,
+                    text_single,
+                    text_from,
+                    text_to;
 
             if (this.options.hide_from_to) {
                 return;
@@ -1451,9 +1449,9 @@
                 this.calcLabels();
 
                 var min = Math.min(this.labels.p_single_left, this.labels.p_from_left),
-                    single_left = this.labels.p_single_left + this.labels.p_single_fake,
-                    to_left = this.labels.p_to_left + this.labels.p_to_fake,
-                    max = Math.max(single_left, to_left);
+                        single_left = this.labels.p_single_left + this.labels.p_single_fake,
+                        to_left = this.labels.p_to_left + this.labels.p_to_fake,
+                        max = Math.max(single_left, to_left);
 
                 if (this.labels.p_from_left + this.labels.p_from_fake >= this.labels.p_to_left) {
                     this.$cache.from[0].style.visibility = "hidden";
@@ -1500,17 +1498,15 @@
          */
         drawShadow: function () {
             var o = this.options,
-                c = this.$cache,
-
-                is_from_min = typeof o.from_min === "number" && !isNaN(o.from_min),
-                is_from_max = typeof o.from_max === "number" && !isNaN(o.from_max),
-                is_to_min = typeof o.to_min === "number" && !isNaN(o.to_min),
-                is_to_max = typeof o.to_max === "number" && !isNaN(o.to_max),
-
-                from_min,
-                from_max,
-                to_min,
-                to_max;
+                    c = this.$cache,
+                    is_from_min = typeof o.from_min === "number" && !isNaN(o.from_min),
+                    is_from_max = typeof o.from_max === "number" && !isNaN(o.from_max),
+                    is_to_min = typeof o.to_min === "number" && !isNaN(o.to_min),
+                    is_to_max = typeof o.to_max === "number" && !isNaN(o.to_max),
+                    from_min,
+                    from_max,
+                    to_min,
+                    to_max;
 
             if (o.type === "single") {
                 if (o.from_shadow && (is_from_min || is_from_max)) {
@@ -1557,8 +1553,6 @@
             }
         },
 
-
-
         // =============================================================================================================
         // Callbacks
 
@@ -1582,8 +1576,11 @@
                 this.options.onUpdate(this.result);
             }
         },
-
-
+        callOnRedraw: function () {
+            if (this.options.onRedraw && typeof this.options.onRedraw === "function") {
+                this.options.onRedraw(this.result);
+            }
+        },
 
         // =============================================================================================================
         // Service methods
@@ -1601,8 +1598,8 @@
          */
         convertToPercent: function (value, no_min) {
             var diapason = this.options.max - this.options.min,
-                one_percent = diapason / 100,
-                val, percent;
+                    one_percent = diapason / 100,
+                    val, percent;
 
             if (!diapason) {
                 this.no_diapason = true;
@@ -1628,12 +1625,12 @@
          */
         convertToValue: function (percent) {
             var min = this.options.min,
-                max = this.options.max,
-                min_decimals = min.toString().split(".")[1],
-                max_decimals = max.toString().split(".")[1],
-                min_length, max_length,
-                avg_decimals = 0,
-                abs = 0;
+                    max = this.options.max,
+                    min_decimals = min.toString().split(".")[1],
+                    max_decimals = max.toString().split(".")[1],
+                    min_length, max_length,
+                    avg_decimals = 0,
+                    abs = 0;
 
             if (percent === 0) {
                 return this.options.min;
@@ -1662,8 +1659,8 @@
             }
 
             var number = ((max - min) / 100 * percent) + min,
-                string = this.options.step.toString().split(".")[1],
-                result;
+                    string = this.options.step.toString().split(".")[1],
+                    result;
 
             if (string) {
                 number = +number.toFixed(string.length);
@@ -1714,8 +1711,8 @@
 
         checkMinInterval: function (p_current, p_next, type) {
             var o = this.options,
-                current,
-                next;
+                    current,
+                    next;
 
             if (!o.min_interval) {
                 return p_current;
@@ -1743,8 +1740,8 @@
 
         checkMaxInterval: function (p_current, p_next, type) {
             var o = this.options,
-                current,
-                next;
+                    current,
+                    next;
 
             if (!o.max_interval) {
                 return p_current;
@@ -1772,7 +1769,7 @@
 
         checkDiapason: function (p_num, min, max) {
             var num = this.convertToValue(p_num),
-                o = this.options;
+                    o = this.options;
 
             if (typeof min !== "number") {
                 min = o.min;
@@ -1831,25 +1828,36 @@
 
         validate: function () {
             var o = this.options,
-                r = this.result,
-                v = o.values,
-                vl = v.length,
-                value,
-                i;
+                    r = this.result,
+                    v = o.values,
+                    vl = v.length,
+                    value,
+                    i;
 
-            if (typeof o.min === "string") o.min = +o.min;
-            if (typeof o.max === "string") o.max = +o.max;
-            if (typeof o.from === "string") o.from = +o.from;
-            if (typeof o.to === "string") o.to = +o.to;
-            if (typeof o.step === "string") o.step = +o.step;
+            if (typeof o.min === "string")
+                o.min = +o.min;
+            if (typeof o.max === "string")
+                o.max = +o.max;
+            if (typeof o.from === "string")
+                o.from = +o.from;
+            if (typeof o.to === "string")
+                o.to = +o.to;
+            if (typeof o.step === "string")
+                o.step = +o.step;
 
-            if (typeof o.from_min === "string") o.from_min = +o.from_min;
-            if (typeof o.from_max === "string") o.from_max = +o.from_max;
-            if (typeof o.to_min === "string") o.to_min = +o.to_min;
-            if (typeof o.to_max === "string") o.to_max = +o.to_max;
+            if (typeof o.from_min === "string")
+                o.from_min = +o.from_min;
+            if (typeof o.from_max === "string")
+                o.from_max = +o.from_max;
+            if (typeof o.to_min === "string")
+                o.to_min = +o.to_min;
+            if (typeof o.to_max === "string")
+                o.to_max = +o.to_max;
 
-            if (typeof o.keyboard_step === "string") o.keyboard_step = +o.keyboard_step;
-            if (typeof o.grid_num === "string") o.grid_num = +o.grid_num;
+            if (typeof o.keyboard_step === "string")
+                o.keyboard_step = +o.keyboard_step;
+            if (typeof o.grid_num === "string")
+                o.grid_num = +o.grid_num;
 
             if (o.max < o.min) {
                 o.max = o.min;
@@ -1971,7 +1979,7 @@
 
         decorate: function (num, original) {
             var decorated = "",
-                o = this.options;
+                    o = this.options;
 
             if (o.prefix) {
                 decorated += o.prefix;
@@ -2023,7 +2031,6 @@
             this.updateTo();
         },
 
-
         // =============================================================================================================
         // Grid
 
@@ -2033,20 +2040,17 @@
             }
 
             var o = this.options,
-                i, z,
-
-                total = o.max - o.min,
-                big_num = o.grid_num,
-                big_p = 0,
-                big_w = 0,
-
-                small_max = 4,
-                local_small_max,
-                small_p,
-                small_w = 0,
-
-                result,
-                html = '';
+                    i, z,
+                    total = o.max - o.min,
+                    big_num = o.grid_num,
+                    big_p = 0,
+                    big_w = 0,
+                    small_max = 4,
+                    local_small_max,
+                    small_p,
+                    small_w = 0,
+                    result,
+                    html = '';
 
 
 
@@ -2121,7 +2125,7 @@
 
         cacheGridLabels: function () {
             var $label, i,
-                num = this.coords.big_num;
+                    num = this.coords.big_num;
 
             for (i = 0; i < num; i++) {
                 $label = this.$cache.grid.find(".js-grid-text-" + i);
@@ -2133,7 +2137,7 @@
 
         calcGridLabels: function () {
             var i, label, start = [], finish = [],
-                num = this.coords.big_num;
+                    num = this.coords.big_num;
 
             for (i = 0; i < num; i++) {
                 this.coords.big_w[i] = this.$cache.grid_labels[i].outerWidth(false);
@@ -2173,7 +2177,7 @@
         // TODO: Refactor then have plenty of time
         calcGridCollision: function (step, start, finish) {
             var i, next_i, label,
-                num = this.coords.big_num;
+                    num = this.coords.big_num;
 
             for (i = 0; i < num; i += step) {
                 next_i = i + (step / 2);
@@ -2206,14 +2210,12 @@
             } else {
                 this.coords.w_handle = this.$cache.s_from.outerWidth(false);
             }
-            this.coords.p_handle = this.toFixed(this.coords.w_handle  / this.coords.w_rs * 100);
+            this.coords.p_handle = this.toFixed(this.coords.w_handle / this.coords.w_rs * 100);
             this.coords.grid_gap = this.toFixed((this.coords.p_handle / 2) - 0.1);
 
             this.$cache.grid[0].style.width = this.toFixed(100 - this.coords.p_handle) + "%";
             this.$cache.grid[0].style.left = this.coords.grid_gap + "%";
         },
-
-
 
         // =============================================================================================================
         // Public methods
@@ -2262,7 +2264,7 @@
     };
 
     $.fn.ionRangeSlider = function (options) {
-        return this.each(function() {
+        return this.each(function () {
             if (!$.data(this, "ionRangeSlider")) {
                 $.data(this, "ionRangeSlider", new IonRangeSlider(this, options, plugin_count++));
             }
@@ -2271,37 +2273,36 @@
 
 
 
-    // =================================================================================================================
-    // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-    // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 
     // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
 
     // MIT license
 
-    (function() {
+    (function () {
         var lastTime = 0;
         var vendors = ['ms', 'moz', 'webkit', 'o'];
-        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
-                || window[vendors[x]+'CancelRequestAnimationFrame'];
+        for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+            window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
+                    || window[vendors[x] + 'CancelRequestAnimationFrame'];
         }
 
         if (!window.requestAnimationFrame)
-            window.requestAnimationFrame = function(callback, element) {
+            window.requestAnimationFrame = function (callback, element) {
                 var currTime = new Date().getTime();
                 var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-                    timeToCall);
+                var id = window.setTimeout(function () {
+                    callback(currTime + timeToCall);
+                },
+                        timeToCall);
                 lastTime = currTime + timeToCall;
                 return id;
             };
 
         if (!window.cancelAnimationFrame)
-            window.cancelAnimationFrame = function(id) {
+            window.cancelAnimationFrame = function (id) {
                 clearTimeout(id);
             };
     }());
 
-} (jQuery, document, window, navigator));
+}(jQuery, document, window, navigator));

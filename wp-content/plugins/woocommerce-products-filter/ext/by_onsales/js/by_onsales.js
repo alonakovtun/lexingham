@@ -1,10 +1,10 @@
+"use strict";
 function woof_init_onsales() {
 
     if (icheck_skin != 'none') {
 
         jQuery('.woof_checkbox_sales').iCheck({
             checkboxClass: 'icheckbox_' + icheck_skin.skin + '-' + icheck_skin.color,
-            //checkboxClass: 'icheckbox_square-green'
         });
 
         jQuery('.woof_checkbox_sales').on('ifChecked', function (event) {

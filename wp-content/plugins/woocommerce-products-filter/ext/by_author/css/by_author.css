@@ -8,8 +8,7 @@
     width: 20px;
     height: 20px;
     margin-left: 3px;
-    background: url("../img/eye-icon2.png");
-    /*margin: -25px 83%;*/
+    background: url("../img/magnifying-glass2.svg");
     display: none;
     border: none !important;
     text-decoration: none !important;
@@ -29,9 +28,11 @@ table.woof_sku_table{
 
 .woof_authors li{
     margin-top:5px;
-    list-style-type: none; 
+    list-style-type: none;
 }
 
 ul.woof_authors{
     margin: 0 !important;
+    padding: 0;
 }
+

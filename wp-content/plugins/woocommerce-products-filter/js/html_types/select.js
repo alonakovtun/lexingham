@@ -1,11 +1,10 @@
+"use strict";
 function woof_init_selects() {
-    if (is_woof_use_chosen) {
-        try {
-            // jQuery("select.woof_select").chosen('destroy').trigger("liszt:updated");
-            jQuery("select.woof_select, select.woof_price_filter_dropdown").chosen(/*{disable_search_threshold: 10}*/);
-        } catch (e) {
-
-        }
+    
+    if (woof_select_type == 'chosen') {
+	jQuery("select.woof_select, select.woof_price_filter_dropdown").chosen();
+    } else if (woof_select_type == 'selectwoo') {
+	jQuery("select.woof_select, select.woof_price_filter_dropdown").selectWoo();
     }
 
     jQuery('.woof_select').change(function () {
@@ -13,6 +12,16 @@ function woof_init_selects() {
         var name = jQuery(this).attr('name');
         woof_select_direct_search(this, name, slug);
     });
+
+    var containers = jQuery('.woof_hide_empty_container');
+    jQuery.each(containers, function(i, item){
+	var selector= jQuery(item).val();
+	if(selector){
+	    jQuery(selector).hide();
+	}
+	
+    });
+    
 }
 
 function woof_select_direct_search(_this, name, slug) {

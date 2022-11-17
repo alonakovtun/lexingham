@@ -1,16 +1,19 @@
+"use strict";
 function woof_init_meta_mselects(){
-    try {
-        // jQuery("select.woof_select").chosen('destroy').trigger("liszt:updated");
-        jQuery("select.woof_meta_mselect").chosen(/*{disable_search_threshold: 10}*/);
-    } catch (e) {
 
-    }
+    if (woof_select_type == 'chosen') {
+	jQuery("select.woof_meta_mselect").chosen();
+    } else if (woof_select_type == 'selectwoo') {
+	jQuery("select.woof_meta_mselect").selectWoo();
+    }  
+    
+    
     jQuery('.woof_meta_mselect').change(function (a) {
         var slug = jQuery(this).val();
         var name = jQuery(this).attr('name');
 
         //fix for multiselect if in chosen mode remove options
-        if (is_woof_use_chosen) {
+        if (woof_select_type == 'chosen') {
             var vals = jQuery(this).chosen().val();
             jQuery('.woof_meta_mselect[name=' + name + '] option:selected').removeAttr("selected");
             jQuery('.woof_meta_mselect[name=' + name + '] option').each(function (i, option) {
@@ -29,18 +32,18 @@ function woof_init_meta_mselects(){
 function woof_meta_mselect_direct_search(name, slug) {
     //mode with Filter button
     var values = [];
-
+    var separator = ',';
     jQuery('.woof_meta_mselect[name=' + name + '] option:selected').each(function (i, v) {
         values.push(jQuery(this).val());
     });
-
+    separator = jQuery('.woof_meta_mselect[name=' + name + ']').data('options_separator');
     //duplicates removing
     //http://stackoverflow.com/questions/9229645/remove-duplicates-from-javascript-array
     values = values.filter(function (item, pos) {
         return values.indexOf(item) == pos;
     });
-
-    values = values.join(',');
+    
+    values = values.join(separator);
     if (values.length) {
         woof_current_values[name] = values;
     } else {

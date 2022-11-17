@@ -1,3 +1,4 @@
+"use strict";
 jQuery(function ($) {
     //stat collection
     if (woof_current_values.hasOwnProperty(swoof_search_slug)) {

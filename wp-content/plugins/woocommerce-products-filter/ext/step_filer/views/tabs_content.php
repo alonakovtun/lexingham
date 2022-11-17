@@ -10,7 +10,8 @@ if (!defined('ABSPATH'))
             <ul>
                 <li>
                     <a href="#woof-step-filter-1">
-                        <span><?php _e("Step by step filter", 'woocommerce-products-filter') ?></span>
+                        <span class="icon-cog-outline"></span>
+                        <span><?php esc_html_e("Step by step filter", 'woocommerce-products-filter') ?></span>
                     </a>
                 </li>
 
@@ -22,22 +23,22 @@ if (!defined('ABSPATH'))
                 <div class="woof-control-section">
                     <div class="woof-control-container">
                         <p class="description">
-                            
+
                         </p>
                     </div>
                 </div><!--/ .woof-control-section-->
 
                 <div class="woof-control-section">
 
-                    <h4 style="margin-bottom: 7px;"><?php _e('Statistical parameters:', 'woocommerce-products-filter') ?></h4>
+                    <h4 class="woof_fix5"><?php esc_html_e('Statistical parameters:', 'woocommerce-products-filter') ?></h4>
 
                     <div class="woof-control-container">
 
-                        <div class="woof-control woof-upload-style-wrap">
+                        <div class="woof-control">
                         </div>
                         <div class="woof-description">
                             <p class="description">
-                                <?php _e('Select taxonomy, taxonomies combinations OR leave this field empty to see general data for all the most requested taxonomies', 'woocommerce-products-filter') ?>
+                                <?php esc_html_e('Select taxonomy, taxonomies combinations OR leave this field empty to see general data for all the most requested taxonomies', 'woocommerce-products-filter') ?>
                             </p>
                         </div>
                     </div>

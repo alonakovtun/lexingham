@@ -2,7 +2,6 @@
 if (!defined('ABSPATH'))
     die('No direct access allowed');
 
-//18-04-2016
 final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 
     public $type = 'by_html_type';
@@ -10,7 +9,7 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
     public $index = '';
     public $html_type_dynamic_recount_behavior = 'none';
     protected $user_meta_key = 'woof_user_messenger';
-    //public $unsubscribe_lang="";  //not use now
+
     public $subscribe_lang = "";
     public $date_expire = "";
     public $count_message = -1;
@@ -27,9 +26,9 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
     public function __construct() {
 	parent::__construct();
 	//lang variables
-	$this->header_email = __("New Products by your request", 'woocommerce-products-filter');
-	$this->subject_email = __("New products", 'woocommerce-products-filter');
-	$this->text_email = __("Dear [DISPLAY_NAME], we increased the range of our products. Number of new products: [PRODUCT_COUNT]", 'woocommerce-products-filter');
+	$this->header_email = esc_html__("New Products by your request", 'woocommerce-products-filter');
+	$this->subject_email = esc_html__("New products", 'woocommerce-products-filter');
+	$this->text_email = esc_html__("Dear [DISPLAY_NAME], we increased the range of our products. Number of new products: [PRODUCT_COUNT]", 'woocommerce-products-filter');
 
 	//***
 
@@ -58,8 +57,8 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 	    $this->priority_limit = $this->woof_settings["products_messenger"]['priority_limit'];
 	}
 
-	$this->subscribe_lang = __('Subscription', 'woocommerce-products-filter');
-	//$this->unsubscribe_lang =__('Unsubscribe','woocommerce-products-filter');  // not used
+	$this->subscribe_lang = esc_html__('Subscription', 'woocommerce-products-filter');
+
 	add_action('woof_products_messenger', array($this, 'woof_products_messenger'), 10);
 	$this->cron = new PN_WP_CRON_WOOF('woof_messenger_wpcron');
 	$this->wp_cron_period = (int) $this->get_woof_cron_schedules($this->subscr_period_option);
@@ -70,7 +69,10 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
     public function get_ext_path() {
 	return plugin_dir_path(__FILE__);
     }
-
+    public function get_ext_override_path()
+    {
+        return get_stylesheet_directory(). DIRECTORY_SEPARATOR ."woof". DIRECTORY_SEPARATOR ."ext". DIRECTORY_SEPARATOR .$this->html_type. DIRECTORY_SEPARATOR;
+    }
     public function get_ext_link() {
 	return plugin_dir_url(__FILE__);
     }
@@ -84,7 +86,7 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 	add_filter('woof_add_items_keys', array($this, 'woof_add_items_keys'));
 	add_action('woof_print_html_type_options_' . $this->html_type, array($this, 'woof_print_html_type_options'), 10, 1);
 	add_action('woof_print_html_type_' . $this->html_type, array($this, 'print_html_type'), 10, 1);
-	add_action('wp_head', array($this, 'wp_head'), 999);
+	add_action('wp_enqueue_scripts', array($this, 'wp_head'), 9);
 	// Ajax  action
 	add_action('wp_ajax_woof_messenger_add_subscr', array($this, 'woof_add_subscr'));
 	add_action('wp_ajax_nopriv_woof_messenger_add_subscr', array($this, 'woof_add_subscr'));
@@ -96,15 +98,15 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
         // add shortcode
         add_shortcode('woof_products_messenger',array($this,'woof_products_messenger_shortcode'));
    
-	//add_action('init', array($this, 'woof_external_cron_init'));
        
 	self::$includes['js']['woof_' . $this->html_type . '_html_items'] = $this->get_ext_link() . 'js/' . $this->html_type . '.js';
 	self::$includes['css']['woof_' . $this->html_type . '_html_items'] = $this->get_ext_link() . 'css/' . $this->html_type . '.css';
 	self::$includes['js_init_functions'][$this->html_type] = 'woof_init_products_messenger';
+	
     }
 
     public function woof_unsubscr() {
-	global $WOOF;
+	
 	$this->woof_external_cron_init();
 	if (!isset($_GET['id_user']) OR ! isset($_GET['key']) OR ! isset($_GET['woof_skey'])) {
 	    return;
@@ -116,36 +118,31 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 	if ($subscr[$sanit_get['key']]['secret_key'] == $sanit_get['woof_skey']) {
 	    unset($subscr[$sanit_get['key']]);
 	    update_user_meta($sanit_get['id_user'], $this->user_meta_key, $subscr);
-	    // $text=__('You unsubscribed from the newsletter.','woocommerce-products-filter'); 
-	} else {
-	    // $text=__('This link does not work.','woocommerce-products-filter'); // if you want use another message
-	}
-	$data['text'] = __('You are unsubscribed from the future products newsletters.', 'woocommerce-products-filter');
-	echo $WOOF->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'unsubscr_template.php', $data);
+
+	} 
+	$data['text'] = esc_html__('You are unsubscribed from the future products newsletters.', 'woocommerce-products-filter');
+	woof()->render_html_e($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'unsubscr_template.php', $data);
 	die();
     }
 
     public function woof_external_cron_init() {
-
-	global $WOOF;
-         
 	//check secret key  ( min  16 symbol )  
 	if (!isset($_GET['woof_pm_cron_key']) OR empty($_GET['woof_pm_cron_key']) OR strlen($_GET['woof_pm_cron_key']) < 16) {
 	    return false;
 	}
 
-	$sanitazed_key = WOOF_HELPER::escape($_GET['woof_pm_cron_key']);
-	if ($sanitazed_key AND isset($WOOF->settings['products_messenger']['use_external_cron']) AND $WOOF->settings['products_messenger']['use_external_cron'] === $sanitazed_key) {
+	$sanitazed_key = esc_attr(sanitize_key($_GET['woof_pm_cron_key']));
+	if ($sanitazed_key AND isset(woof()->settings['products_messenger']['use_external_cron']) AND woof()->settings['products_messenger']['use_external_cron'] === $sanitazed_key) {
 	    $this->woof_do_mesenger_action();
 	} else {
 	    return false;
 	}
     }
 
-    public function woof_do_mesenger_action() { //return;
+    public function woof_do_mesenger_action() { 
 	global $wpdb;
 	// get all users
-	$users = get_users(array('count_total' => false, 'fields' => array('ID', 'display_name', 'user_login', 'user_nicename', ' user_email'),));
+	$users = get_users(array('count_total' => false, 'fields' => array('ID', 'display_name', 'user_login', 'user_nicename', 'user_email'),));
         
 	foreach ($users as $user) {
 	    $data_user = get_user_meta($user->ID, $this->user_meta_key, true); // get subscribtion of user 
@@ -160,7 +157,6 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 		    if (!in_array($p->ID, $data_subscr['product_ids'])) {
 			$data_email['products'][] = $p->ID;
 		    }
-		  // $diff=array_diff($products,$data_subscr[product_ids]);
 		}
                
 		if (count($data_email['products']) > 0) {
@@ -183,14 +179,7 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 		    $data_email['text_email'] = $this->text_email;
 		    $data_email['subscr'] = $data_subscr;
 		    $data_email['last_email'] = $last_email;
-		   /* $data_email['test']=array(    //just for test logic
-		      'by_date'=>$by_date,
-		      'by_count'=>$by_count,
-		      'count'=>$data_user[$key]['count'],
-                      'time'=>date('D, d M Y H:i:s',$data_user[$key]['date']),
-                      'realtime'=>date('D, d M Y H:i:s',time()),
-		      'products'=>$products,
-		      ); */
+
                
 		    if ($last_email) {
 			unset($data_user[$key]);
@@ -203,21 +192,21 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
                     if($successful_sending){
                         update_user_meta($user->ID, $this->user_meta_key, $data_user);
                     }
-		    //$this->create_new_email($data_email);
+
 		}
 	    }
 	}
     }
 
     public function create_new_email($data) {
-	global $WOOF;
+	
 	$mailer = $GLOBALS['woocommerce']->mailer();
 	// get the preview email subject
 	$email_heading = $this->header_email;
 	$subject = $this->subject_email;
 	// get the preview email content
 
-	$message = $WOOF->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'email_template.php', $data);
+	$message = woof()->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'email_template.php', $data);
 
 
 	// create a new email
@@ -248,8 +237,8 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 
     //settings page hook
     public function woof_print_html_type_options() {
-	global $WOOF;
-	echo $WOOF->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'options.php', array(
+	
+	woof()->render_html_e($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'options.php', array(
 	    'key' => $this->html_type,
 	    "woof_settings" => get_option('woof_settings', array())
 		)
@@ -277,10 +266,10 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 	$data['secret_key'] = bin2hex(random_bytes(9)); //Key for check link from email
         
 	$data['user_id'] = $sanit_user_id;
-	$data['link'] = esc_url($_POST['link']);
+	$data['link'] = sanitize_text_field($_POST['link']);
 	$data['get'] =$this->woof_get_html_terms($this->sanitaz_array_r($_POST['get_var']));
 	$subscr = get_user_meta($data['user_id'], $this->user_meta_key, true);
-        $data['request'] =$this->sanitazed_sql_query(base64_decode($WOOF->storage->get_val("woof_pm_request_".$data['user_id'])));
+        $data['request'] =$this->sanitazed_sql_query(base64_decode(woof()->storage->get_val("woof_pm_request_".$data['user_id'])));
         // If the request has banned operators or is empty
         if(!$data['request'] OR empty($data['request'])){
              die();
@@ -291,12 +280,15 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
         if($pos){
             $data['request']=substr($data['request'],0,$pos);
         }
+        if(!is_array($subscr)){
+            $subscr=array();
+        }
 	if (count($subscr) >= $this->subscr_count) {
-	    die('count is max'); // Check limit count on backend
+	     die('<li class="woof_pm_max_count" >'.__('Сount is max', 'woocommerce-products-filter').'</li>'); // Check limit count on backend
 	}
         //+++
 	$data['subscr_lang'] = apply_filters('woof_subscribe_lang', $this->subscribe_lang); //Text of  the subscriptions
-	// $data['unsubscr_lang']=apply_filters('woof_subscribe_lang',$this->unsubscribe_lang); // not use now
+
         
 	$data['count'] = ((int) $this->count_message != -1) ? (int) $this->count_message : PHP_INT_MAX; // not limit* million times
 	$data['date'] = time();
@@ -315,8 +307,7 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 	$subscr[$key] = $data;
 	update_user_meta($data['user_id'], $this->user_meta_key, $subscr);
 	//for Ajax redraw
-	$cont = $WOOF->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'item_list_subscr.php', $data);
-	//die(json_encode($data));
+	$cont = woof()->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'item_list_subscr.php', $data);
 	die($cont);
     }
 
@@ -337,9 +328,7 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
     public function make_send_emails($reset = false) {
 	if ($this->subscr_period_option != 'no' AND ! empty($this->subscr_period_option)) {
 	    if ($this->wp_cron_period) {
-		if ($reset) {
-		    // $this->cron->reset($this->cron_hook, $this->wp_cron_period); // not used in this case 
-		}
+
 
 		$this->woocs_wpcron_init();
 	    }
@@ -431,9 +420,9 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
 
 	}
 	if (empty($html)) {
-	   $html = __('None', 'woocommerce-products-filter');
+	   $html = esc_html__('None', 'woocommerce-products-filter');
 	}
-        //var_dump($html);
+
 	return $html;
     }
 
@@ -447,18 +436,24 @@ final class WOOF_EXT_PRODS_MESSENGER extends WOOF_EXT {
     }
 
     public function wp_head() {
-	?>
-	<script type="text/javascript">
-	    var woof_confirm_lang = "<?php _e('Are you sure?', 'woocommerce-products-filter') ?>";
-	</script>
-	<?php
+		$txt_js = "";
+		ob_start();
+		?>
+			var woof_confirm_lang = "<?php esc_html_e('Are you sure?', 'woocommerce-products-filter') ?>";
+		<?php
+		$txt_js = ob_get_clean();
+		self::$includes['js_code_custom'][$this->html_type] = $txt_js;
+
     }
     public function  woof_products_messenger_shortcode($args){
         $data=shortcode_atts(array(
 	    'in_filter' => 0
 			), $args);
-        global $WOOF;
-        return $WOOF->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes'. DIRECTORY_SEPARATOR.'woof_products_messenger.php',$data);
+        
+        if(file_exists($this->get_ext_override_path(). 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_products_messenger.php')){
+            return woof()->render_html($this->get_ext_override_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes' . DIRECTORY_SEPARATOR . 'woof_products_messenger.php', $data);
+        }
+        return woof()->render_html($this->get_ext_path() . 'views' . DIRECTORY_SEPARATOR . 'shortcodes'. DIRECTORY_SEPARATOR.'woof_products_messenger.php',$data);
     }
 
     public function  sanitazed_sql_query($sql){

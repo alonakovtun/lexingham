@@ -1,12 +1,12 @@
+"use strict";
 function woof_init_meta_selects() {
-    if (is_woof_use_chosen) {
-        try {
-            // jQuery("select.woof_select").chosen('destroy').trigger("liszt:updated");
-            jQuery("select.woof_meta_select").chosen(/*{disable_search_threshold: 10}*/);
-        } catch (e) {
-
-        }
-    }
+    
+    if (woof_select_type == 'chosen') {
+	jQuery("select.woof_meta_select").chosen();
+    } else if (woof_select_type == 'selectwoo') {
+	jQuery("select.woof_meta_select").selectWoo();
+    }    
+    
 
     jQuery('.woof_meta_select').change(function () {
         var slug = jQuery(this).val();

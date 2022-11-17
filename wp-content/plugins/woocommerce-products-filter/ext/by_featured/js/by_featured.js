@@ -1,15 +1,16 @@
+"use strict";
+
 function woof_init_featured() {
-   
+
     if (icheck_skin != 'none') {
-        
+
         jQuery('.woof_checkbox_featured').iCheck({
             checkboxClass: 'icheckbox_' + icheck_skin.skin + '-' + icheck_skin.color,
-            //checkboxClass: 'icheckbox_square-green'
         });
-        
+
         jQuery('.woof_checkbox_featured').on('ifChecked', function (event) {
             jQuery(this).attr("checked", true);
-            woof_current_values.product_visibility= 'featured';
+            woof_current_values.product_visibility = 'featured';
             woof_ajax_page_num = 1;
             if (woof_autosubmit) {
                 woof_submit_link(woof_get_submit_link());
