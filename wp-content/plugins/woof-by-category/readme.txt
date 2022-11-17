@@ -3,9 +3,9 @@ Contributors: kaggdesign
 Donate link: https://www.paypal.me/kagg
 Tags: woocommerce, filter, woocommerce products filter, filter category
 Requires at least: 4.4
-Tested up to: 5.2
-Stable tag: 2.2.1
-Requires PHP: 5.2
+Tested up to: 6.0
+Requires PHP: 5.6
+Stable tag: 2.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,14 +23,14 @@ It is possible to set up any number of category->filters pairs.
 
 = Minimum Requirements =
 
-* PHP version 5.2.4 or greater (PHP 5.6 or greater is recommended)
+* PHP version 5.6 or greater (PHP 8.0 or greater is recommended)
 * MySQL version 5.0 or greater (MySQL 5.6 or greater is recommended)
 * WooCommerce 3.0 or greater
 * WooCommerce Product Filter (WOOF) plugin
 
 = Automatic installation =
 
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of WOOF by Category, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
+Automatic installation is the easiest option as WordPress handles the file transfers itself, and you don’t need to leave your web browser. To do an automatic install of WOOF by Category, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
 
 In the search field type “WOOF by Category” and click Search Plugins. Once you’ve found our plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking “Install Now”.
 
@@ -44,6 +44,20 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Frequently Asked Questions ==
 
+= How to use additional product taxonomies, not only product_cat?
+
+Add this code to your theme's `functions.php` file:
+
+`
+function wbc_product_categories_filter( $categories ) {
+	return array_merge( $categories, [ 'tax-1', 'tax-2' ] );
+}
+
+add_filter( 'wbc_product_categories', 'wbc_product_categories_filter' );
+`
+
+where `tax-1`, `tax-2`, are additional product taxonomies to use with the plugin.
+
 = Where can I get support or talk to other users? =
 
 If you get stuck, you can ask for help in the [WOOF by Category Plugin Forum](https://wordpress.org/support/plugin/woof-by-category).
@@ -51,10 +65,73 @@ If you get stuck, you can ask for help in the [WOOF by Category Plugin Forum](ht
 == Screenshots ==
 
 1. The WOOF by Category settings panel.
-2. Plugins filters (Color and Material) on an "Assumenda" category page.
-3. Plugins filters (Size and Weight) on a "Quisquam" category page.
+2. Plugin filters (Color and Material) on an "Assumenda" category page.
+3. Plugin filters (Size and Weight) on a "Quisquam" category page.
 
 == Changelog ==
+
+= 2.16 =
+* Tested with WordPress 6.0
+* Tested with WooCommerce 6.5
+
+* = 2.15 =
+* Tested with WordPress 5.8
+* Tested with WooCommerce 5.5
+
+= 2.14 =
+* Tested with WordPress 5.7
+
+= 2.13 =
+* Tested with WooCommerce 5.0
+
+= 2.12 =
+* Added default filters.
+* Tested with WooCommerce 4.9
+
+= 2.11 =
+* Tested with WordPress 5.6
+* Tests added for PHP 8.0
+
+= 2.10 =
+* Tested with WooCommerce 4.7
+
+= 2.9.2 =
+* Fixed bug with auto_shortcode and additional taxonomies in woof widget.
+
+= 2.9.1 =
+* Fixed bug with distinguishing of widget and shortcode on the page
+
+= 2.9 =
+* Tested with WooCommerce 4.5
+* Added ability to work with WOOF shortcodes
+
+= 2.8 =
+* Tested with WordPress 5.5 and WooCommerce 4.4
+
+= 2.7 =
+* Fixed the bug with not showing filters on single product page.
+
+= 2.6.1 =
+* Fixed the bug with disappearing filters on shop page with ajax.
+
+= 2.6 =
+* Added filter to use additional product taxonomies, not product_cat only
+
+= 2.5.1 =
+* Fixed php warning in woof_sort_terms_before_out_filter().
+
+= 2.5 =
+* Added filtering of unused terms to improve performance
+
+= 2.4 =
+* Added compatibility with WOOF v2.2.3
+
+= 2.3 =
+* Added Polylang support
+* Fixed bugs in ajax filter
+* Tested with WordPress 5.3
+* Tested with WooCommerce 3.8
+* Required minimal PHP version set to 5.6
 
 = 2.2.1 =
 * Fixed php warning in class-woof-by-category.php on line 371
