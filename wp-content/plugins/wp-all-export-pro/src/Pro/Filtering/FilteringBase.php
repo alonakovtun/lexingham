@@ -222,10 +222,11 @@ abstract class FilteringBase implements FilteringInterface
                 $q = "NOT LIKE '%". addslashes($value) ."%'";
                 break;
             case 'is_empty':
-                $q = " = '' OR " . $rule->element . " IS NULL";
+                $q = " = ''";
+                if ($table_alias) $q .= " OR $table_alias.meta_value IS NULL";
                 break;
             case 'is_not_empty':
-                $q = "IS NOT NULL";
+                $q = "IS NOT NULL ";
                 if ($table_alias) $q .= " AND $table_alias.meta_value <> '' ";
                 break;
             default:
@@ -276,7 +277,11 @@ abstract class FilteringBase implements FilteringInterface
      */
     public function getExportId(){
         $input  = new \PMXE_Input();
-        $export_id = $input->get('id', 0);
+		// Don't use the GET value if it's a real time export as it is probably wrong.
+	    if( ! (isset(\XmlExportEngine::$exportOptions['do_not_generate_file_on_new_records']) && ! \XmlExportEngine::$exportOptions['do_not_generate_file_on_new_records']) ){
+		    $export_id = $input->get('id', 0);
+	    }
+
         if (empty($export_id))
         {
             $export_id = $input->get('export_id', 0);
@@ -295,7 +300,7 @@ abstract class FilteringBase implements FilteringInterface
         $export = new \PMXE_Export_Record();
         $export->getById($this->exportId);
 
-        if(!empty($export)) {
+	    if(!empty($export)) {
 
             //If re-run, this export will only include records that have not been previously exported.
             if ($this->isExportNewStuff()) {

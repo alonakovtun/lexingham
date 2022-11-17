@@ -3,7 +3,9 @@
 if (!class_exists('XmlExportTaxonomy')) {
     final class XmlExportTaxonomy
     {
-        private $init_fields = array(
+        private static $engine = false;
+
+    	private $init_fields = array(
             array(
                 'label' => 'term_id',
                 'name' => 'Term ID',
@@ -26,6 +28,11 @@ if (!class_exists('XmlExportTaxonomy')) {
                 'label' => 'term_id',
                 'name' => 'Term ID',
                 'type' => 'term_id'
+            ),
+            array(
+                'label' => 'term_permalink',
+                'name' => 'Term Permalink',
+                'type' => 'term_permalink'
             ),
             array(
                 'label' => 'term_name',
@@ -170,7 +177,7 @@ if (!class_exists('XmlExportTaxonomy')) {
             }
         }
 
-        public static function prepare_data($term, $exportOptions, $xmlWriter = false, &$acfs, $implode_delimiter, $preview)
+        public static function prepare_data($term, $exportOptions, $xmlWriter, &$acfs, $implode_delimiter, $preview)
         {
             $article = array();
 
@@ -235,10 +242,16 @@ if (!class_exists('XmlExportTaxonomy')) {
                     $snippetParser = new \Wpae\App\Service\SnippetParser();
                     $snippets = $snippetParser->parseSnippets($combineMultipleFieldsValue);
 
-                    $engine = new XmlExportEngine(XmlExportEngine::$exportOptions);
-                    $engine->init_available_data();
-                    $engine->init_additional_data();
-                    $snippets = $engine->get_fields_options($snippets);
+	                // Re-use the engine object if we've already initialized it as it's costly.
+	                if(!is_object(self::$engine)){
+
+		                self::$engine = new XmlExportEngine(XmlExportEngine::$exportOptions);
+		                self::$engine->init_available_data();
+		                self::$engine->init_additional_data();
+
+	                }
+
+                    $snippets = self::$engine->get_fields_options($snippets);
 
                     $articleData = self::prepare_data($term, $snippets, $xmlWriter = false, $acfs, $implode_delimiter, $preview);
 
@@ -258,6 +271,9 @@ if (!class_exists('XmlExportTaxonomy')) {
                             break;
                         case 'term_name':
                             wp_all_export_write_article($article, $element_name, apply_filters('pmxe_term_name', pmxe_filter($term->name, $fieldSnipped), $term->term_id));
+                            break;
+                        case 'term_permalink':
+                            wp_all_export_write_article($article, $element_name, apply_filters('pmxe_term_permalink', pmxe_filter(get_term_link($term->term_id), $fieldSnipped, $term->term_id ) ) );
                             break;
                         case 'term_slug':
                             wp_all_export_write_article($article, $element_name, apply_filters('pmxe_term_slug', pmxe_filter($term->slug, $fieldSnipped), $term->term_id));

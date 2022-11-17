@@ -13,9 +13,9 @@ function pmxe_prepend($string, $orig_filename) {
 	rename($temp_filename, $orig_filename);
 }
 
-function pmxe_pmxe_after_export($export_id, $export)
+function pmxe_pmxe_after_export($export_id, $export, $file = false)
 {
-	if ( ! empty(PMXE_Plugin::$session) and PMXE_Plugin::$session->has_session() )
+    if ( ! empty(PMXE_Plugin::$session) and PMXE_Plugin::$session->has_session() )
 	{
 		PMXE_Plugin::$session->set('file', '');
 		PMXE_Plugin::$session->save_data();
@@ -52,7 +52,6 @@ function pmxe_pmxe_after_export($export_id, $export)
 			$filepath = wp_all_export_get_absolute_path($export->options['filepath']);
 		}
 
-		//TODO: Look into what is happening with this variable and what it is used for
 		$is_export_csv_headers = apply_filters('wp_all_export_is_csv_headers_enabled', true, $export->id);
 
         if ( isset($export->options['include_header_row']) ) {
@@ -220,7 +219,7 @@ function pmxe_pmxe_after_export($export_id, $export)
 						    $rowCount++;
 						}
 						fclose($in);	
-						fclose($out);	
+						fclose($out);
 
 						// convert splitted files into XLS format
 						if ( ! empty($exportOptions['split_files_list']) && ! empty($export->options['export_to_sheet']) and $export->options['export_to_sheet'] != 'csv' )
@@ -266,13 +265,12 @@ function pmxe_pmxe_after_export($export_id, $export)
 
 				$export->set(array('options' => $exportOptions))->save();
 			}	
-		}	
+		}
 
 		// convert CSV to XLS
 		if ( @file_exists($filepath) and $export->options['export_to'] == 'csv' && ! empty($export->options['export_to_sheet']) and $export->options['export_to_sheet'] != 'csv')
 		{			
-			
-			require_once PMXE_Plugin::ROOT_DIR . '/classes/PHPExcel/IOFactory.php';
+            require_once PMXE_Plugin::ROOT_DIR . '/classes/PHPExcel/IOFactory.php';
 
 			$objReader = PHPExcel_IOFactory::createReader('CSV');
 			// If the files uses a delimiter other than a comma (e.g. a tab), then tell the reader
@@ -363,7 +361,6 @@ function pmxe_pmxe_after_export($export_id, $export)
 			}
 		}
 
-
 		// send exported data to zapier.com
 		$subscriptions = get_option('zapier_subscribe', array());		
 		if ( ! empty($subscriptions) and empty($export->parent_id))
@@ -379,7 +376,7 @@ function pmxe_pmxe_after_export($export_id, $export)
 				'export_name' => $export->friendly_name,
 				'file_name' => basename($filepath),
 				'file_type' => wp_all_export_get_export_format($export->options),
-				'post_types_exported' => empty($export->options['cpt']) ? $export->options['wp_query'] : implode($export->options['cpt'], ','),
+				'post_types_exported' => empty($export->options['cpt']) ? $export->options['wp_query'] : implode(',', $export->options['cpt']),
 				'export_created_date' => $export->registered_on,
 				'export_last_run_date' => date('Y-m-d H:i:s'),
 				'export_trigger_type' => empty($_GET['export_key']) ? 'manual' : 'cron',
