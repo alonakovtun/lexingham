@@ -1,15 +1,15 @@
-# Translation of Plugins - User Role Editor by Members – Best User, Role and Capability Management Plugin for WordPress - Stable (latest release) in Portuguese (Portugal)
-# This file is distributed under the same license as the Plugins - User Role Editor by Members – Best User, Role and Capability Management Plugin for WordPress - Stable (latest release) package.
+# Translation of Plugins - Members &#8211; Membership &amp; User Role Editor Plugin - Stable (latest release) in Portuguese (Portugal)
+# This file is distributed under the same license as the Plugins - Members &#8211; Membership &amp; User Role Editor Plugin - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-03-11 09:50:34+0000\n"
+"PO-Revision-Date: 2021-07-09 09:36:53+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/4.0.0-alpha.3\n"
 "Language: pt\n"
-"Project-Id-Version: Plugins - User Role Editor by Members – Best User, Role and Capability Management Plugin for WordPress - Stable (latest release)\n"
+"Project-Id-Version: Plugins - Members &#8211; Membership &amp; User Role Editor Plugin - Stable (latest release)\n"
 
 #. Author URI of the plugin
 msgid "https://memberpress.com"
@@ -28,34 +28,6 @@ msgid "%s User"
 msgid_plural "%s Users"
 msgstr[0] "%s utilizador"
 msgstr[1] "%s utilizadores"
-
-#: admin/views/class-view-addons.php:71
-msgid "Upgrade To Pro"
-msgstr "Actualize para a versão Pro"
-
-#: admin/views/class-view-addons.php:68
-msgid "Take your membership site to the next level with add-ons. Pro users also enjoy live chat support and support forum access."
-msgstr "Aumente as capacidades do seu site de membros com as nossas extensões. Os utilizadores da versão Pro têm também acesso ao chat de suporte e ao fórum de suporte."
-
-#: admin/views/class-view-addons.php:65
-msgid "Go Pro With Members Add-ons"
-msgstr "Obtenha a versão Pro com as extensões do Members"
-
-#: admin/views/class-view-donate.php:65
-msgid "Learn More"
-msgstr "Saiba mais"
-
-#: admin/views/class-view-donate.php:62
-msgid "Donate Via PayPal"
-msgstr "Donativo via PayPal"
-
-#: admin/functions-settings.php:57
-msgid "Help Fund Version 3.0"
-msgstr "Ajude a criar a versão 3.0"
-
-#: admin/views/class-view-donate.php:54
-msgid "The Members plugin needs funding to cover development costs toward version 3.0."
-msgstr "O plugin Members necessita de financiamento para cobrir os custos do desenvolvimento da versão 3.0."
 
 #: admin/class-manage-users.php:326 admin/class-manage-users.php:330
 msgid "Add role&hellip;"
@@ -79,7 +51,7 @@ msgstr "Adicionar novo"
 msgid "Add-Ons"
 msgstr "Extensões"
 
-#: admin/views/class-view-addons.php:179
+#: admin/views/class-view-addons.php:195
 msgid "Download"
 msgstr "Descarregar"
 
@@ -187,11 +159,11 @@ msgstr "Eliminar categorias"
 msgid "One of the selected users is not a member of this site."
 msgstr "Um dos utilizadores seleccionados não é membro deste site."
 
-#: admin/views/class-view-addons.php:188
+#: admin/views/class-view-addons.php:204
 msgid "Purchase"
 msgstr "Comprar"
 
-#: admin/views/class-view-general.php:84
+#: admin/views/class-view-general.php:80
 msgid "REST API"
 msgstr "REST API"
 
@@ -347,10 +319,6 @@ msgstr "Papel adicionado aos utilizadores seleccionados."
 msgid "Role removed from selected users."
 msgstr "Papel removido dos utilizadores seleccionados."
 
-#: admin/class-manage-users.php:106
-msgid "The current user&#8217;s role must have user editing capabilities."
-msgstr "O utilizador actual tem de ter um papel com capacidade de edição de utilizadores."
-
 #: admin/class-manage-users.php:107
 msgid "Role removed from other selected users."
 msgstr "Papel removido de outros utilizadores seleccionados."
@@ -363,7 +331,7 @@ msgstr "Remover papel&hellip;"
 msgid "Remove"
 msgstr "Remover"
 
-#: admin/views/class-view-addons.php:96
+#: admin/views/class-view-addons.php:79
 msgid "There are currently no add-ons to show. Please try again later."
 msgstr "De momento não há extensões para mostrar. Por favor tente mais tarde."
 
@@ -375,27 +343,27 @@ msgstr "O papel %s é tipicamente o papel mais importante do site. Por favor ten
 msgid "Visit the %s page in the WordPress Codex to see a complete list of roles, capabilities, and their definitions."
 msgstr "Visite a página %s do Codex do WordPress para consultar uma lista completa de papéis, capacidades e as respectivas definições."
 
-#: admin/views/class-view-addons.php:207
+#: admin/views/class-view-addons.php:223
 msgid "The Add-Ons screen allows you to view available add-ons for the Members plugin. You can download some plugins directly. Others may be available to purchase."
 msgstr "O ecrã das extensões permite-lhe ver as extensões disponíveis para o plugin Members. Pode descarregar alguns plugins directamente. Outros poderão estar disponíveis para compra."
 
-#: admin/views/class-view-addons.php:221
+#: admin/views/class-view-addons.php:237
 msgid "Some plugins may be available for direct download. In such cases, you can click the download button to get a ZIP file of the plugin."
 msgstr "Alguns plugins poderão estar disponíveis para descarregar directamente. Nestes casos, pode clicar no borão descarregar para obter um ficheiro ZIP do plugin."
 
-#: admin/views/class-view-addons.php:235
+#: admin/views/class-view-addons.php:251
 msgid "Some add-ons may require purchase before downloading them. Clicking the purchase button will take you off-site to view the add-on in more detail."
 msgstr "Algumas extensões poderão requerer compra antes de poder descarregar. Ao clicar no botão comprar, sairá do seu site para ver mais detalhes da extensão."
 
-#: admin/views/class-view-general.php:169
+#: admin/views/class-view-general.php:168
 msgid "Show human-readable capabilities when possible."
 msgstr "Sempre que possível mostrar um nome legível das capacidades."
 
-#: admin/views/class-view-general.php:282
+#: admin/views/class-view-general.php:251
 msgid "Require authentication for access to the REST API."
 msgstr "Requerer autenticação para aceder à REST API."
 
-#: admin/views/class-view-general.php:412
+#: admin/views/class-view-general.php:398
 msgid "Tick the checkbox to show human-readable capabilities when possible. Note that custom capabilities and capabilities from third-party plugins will show the machine-readable capability name unless they are registered."
 msgstr "Seleccione a opção para mostrar o nome legível das capacidades sempre que possível. Atenção que as capacidades personalizadas e de plugins de terceiros serão mostradas com o seu nome simples, excepto se estiverem registadas."
 
@@ -411,47 +379,51 @@ msgstr "De momento não tem acesso ao site \"%s\". Se considerar que deveria ter
 msgid "If you reached this page by accident and meant to visit one of your own sites, try one of the following links."
 msgstr "Se chegou a esta página por acidente e pretende visitar um dos seus sites, tente uma destas ligações."
 
-#: members.php:323
+#: members.php:351
 msgid "Members requires PHP version %1$s. You are running version %2$s. Please upgrade and try again."
 msgstr "O plugin Members requer o PHP na versão %1$s. Está a executar a versão %2$s. Por favor actualize e tente de novo."
 
-#: inc/class-widget-users.php:253
+#: admin/class-manage-users.php:106
+msgid "The current user&#8217;s role must have user editing capabilities."
+msgstr "O papel do utilizador actual tem de ter capacidades de edição de utilizadores."
+
+#: inc/class-widget-users.php:260
 msgid "Exclude:"
 msgstr "Excluir:"
 
-#: inc/class-widget-users.php:197
+#: inc/class-widget-users.php:204
 msgid "Login"
 msgstr "Iniciar sessão"
 
-#: inc/class-widget-users.php:194
+#: inc/class-widget-users.php:201
 msgid "Post Count"
 msgstr "Contagem de artigos"
 
-#: inc/class-widget-users.php:195
+#: inc/class-widget-users.php:202
 msgid "Registered"
 msgstr "Registado"
 
-#: inc/class-widget-users.php:220
+#: inc/class-widget-users.php:227
 msgid "Order:"
 msgstr "Ordem:"
 
-#: inc/class-widget-users.php:237
+#: inc/class-widget-users.php:244
 msgid "Limit:"
 msgstr "Limite:"
 
-#: inc/class-widget-users.php:249
+#: inc/class-widget-users.php:256
 msgid "Include:"
 msgstr "Incluir:"
 
-#: inc/class-widget-users.php:257
+#: inc/class-widget-users.php:264
 msgid "Search:"
 msgstr "Procurar:"
 
-#: inc/class-widget-users.php:261
+#: inc/class-widget-users.php:268
 msgid "Meta Key:"
 msgstr "Chave meta:"
 
-#: inc/class-widget-users.php:269
+#: inc/class-widget-users.php:276
 msgid "Meta Value:"
 msgstr "Valor meta:"
 
@@ -459,19 +431,19 @@ msgstr "Valor meta:"
 msgid "Method does not exist."
 msgstr "O método não existe."
 
-#: inc/class-widget-users.php:196
+#: inc/class-widget-users.php:203
 msgid "URL"
 msgstr "URL"
 
-#: inc/class-widget-users.php:212
+#: inc/class-widget-users.php:219
 msgid "Order By:"
 msgstr "Ordenar por:"
 
-#: inc/functions-options.php:134
+#: inc/functions-options.php:132
 msgid "Sorry, but you do not have permission to view this content."
 msgstr "Não tem permissão para ver este conteúdo."
 
-#: inc/functions-options.php:135
+#: inc/functions-options.php:133
 msgid "You must be logged into the site to view this content."
 msgstr "Tem que iniciar a sessão no site para ver este conteúdo."
 
@@ -479,7 +451,7 @@ msgstr "Tem que iniciar a sessão no site para ver este conteúdo."
 msgid "A user and role management plugin that puts you in full control of your site's permissions. This plugin allows you to edit your roles and their capabilities, clone existing roles, assign multiple roles per user, block post content, or even make your site completely private."
 msgstr "Um plugin de gestão de utilizadores e respectivos papéis que lhe permite um controlo total das permissões do seu site. Este plugin permite editar os seus papéis e respectivas capacidades, clonar papéis existentes, atribuír múltiplos papéis por utilizador, bloquear conteúdos, ou mesmo tornar o seu site completamente privado."
 
-#: inc/class-widget-users.php:241
+#: inc/class-widget-users.php:248
 msgid "Offset:"
 msgstr "Deslocamento:"
 
@@ -487,7 +459,7 @@ msgstr "Deslocamento:"
 msgid "Members"
 msgstr "Members"
 
-#: inc/class-widget-users.php:191
+#: inc/class-widget-users.php:198
 msgid "Email"
 msgstr "Email"
 
@@ -511,8 +483,8 @@ msgstr "Nome de utilizador"
 msgid "Password"
 msgstr "Senha"
 
-#: admin/functions-admin.php:46 admin/class-role-list-table.php:355
-#: admin/class-role-new.php:335
+#: admin/class-role-list-table.php:355 admin/class-role-new.php:352
+#: admin/functions-admin.php:46
 msgid "Edit"
 msgstr "Editar"
 
@@ -536,12 +508,12 @@ msgstr "Actualizar"
 msgid "Bulk Actions"
 msgstr "Acções por lotes"
 
-#: admin/class-roles.php:69 admin/class-role-list-table.php:378
+#: admin/class-role-list-table.php:378 admin/class-roles.php:69
 #: inc/class-widget-users.php:59 inc/functions-cap-groups.php:121
 msgid "Users"
 msgstr "Utilizadores"
 
-#: inc/class-widget-users.php:208 inc/class-widget-login.php:209
+#: inc/class-widget-login.php:209 inc/class-widget-users.php:215
 msgid "Title:"
 msgstr "Título:"
 
@@ -553,7 +525,10 @@ msgstr "Clonar"
 msgid "Taxonomies"
 msgstr "Taxonomias"
 
-#: admin/class-meta-box-content-permissions.php:180
+#: addons/members-block-permissions/src/Editor.php:103
+#: admin/class-meta-box-content-permissions.php:203
+#: admin/class-meta-box-content-permissions.php:322
+#: admin/class-meta-box-content-permissions.php:371
 #: admin/views/class-view-general.php:76
 msgid "Error Message"
 msgstr "Mensagem de erro"
@@ -566,39 +541,30 @@ msgstr "Activar permissões"
 msgid "Capabilities"
 msgstr "Capacidades"
 
-#: admin/views/class-view-general.php:65 admin/views/class-view-general.php:381
+#: admin/views/class-view-general.php:64 admin/views/class-view-general.php:367
 msgid "Private Site"
 msgstr "Site privado"
 
-#: admin/views/class-view-general.php:64 admin/views/class-view-general.php:372
+#: admin/views/class-view-general.php:358
 msgid "Sidebar Widgets"
 msgstr "Widgets da barra lateral"
 
-#: admin/class-settings.php:175 admin/class-settings.php:176
-#: admin/class-settings.php:276
+#: admin/class-settings.php:330
 msgctxt "admin screen"
 msgid "Members"
 msgstr "Membros"
 
-#: admin/views/class-view-general.php:83
+#: admin/views/class-view-general.php:79
 msgid "Enable Private Site"
 msgstr "Activar privacidade do site"
 
-#: admin/views/class-view-general.php:85
+#: admin/views/class-view-general.php:81
 msgid "Disable Feed"
 msgstr "Desactivar feed"
 
-#: admin/views/class-view-general.php:86
+#: admin/views/class-view-general.php:82
 msgid "Feed Error Message"
 msgstr "Mensagem de erro do feed"
-
-#: admin/views/class-view-general.php:237
-msgid "Enable the login form widget."
-msgstr "Activar o widget de início de sessão."
-
-#: admin/views/class-view-general.php:252
-msgid "Enable the users widget."
-msgstr "Activar o widget de utilizadores."
 
 #: admin/functions-help.php:24
 msgid "Support Forums"
@@ -620,6 +586,8 @@ msgstr "Editar capacidades"
 msgid "WordPress"
 msgstr "WordPress"
 
+#: addons/members-block-permissions/src/Editor.php:90
+#: addons/members-block-permissions/src/Editor.php:116
 #: admin/tmpl/cap-section.php:19 admin/tmpl/cap-section.php:27
 msgid "Capability"
 msgstr "Capacidade"
@@ -672,23 +640,23 @@ msgstr "Texto com a sessão iniciada:"
 msgid "Members: Users"
 msgstr "Membros: Utilizadores"
 
-#: inc/class-widget-users.php:185
+#: inc/class-widget-users.php:192
 msgid "Ascending"
 msgstr "Ascendente"
 
-#: inc/class-widget-users.php:186
+#: inc/class-widget-users.php:193
 msgid "Descending"
 msgstr "Descendente"
 
-#: inc/class-widget-users.php:192
+#: inc/class-widget-users.php:199
 msgid "ID"
 msgstr "ID"
 
-#: inc/class-widget-users.php:193
+#: inc/class-widget-users.php:200
 msgid "Nice Name"
 msgstr "Nome"
 
-#: admin/functions-admin.php:49 admin/class-cap-control.php:119
+#: admin/class-cap-control.php:119 admin/functions-admin.php:49
 msgid "Deny %s capability"
 msgstr "Negar a capacidade %s"
 
@@ -696,7 +664,7 @@ msgstr "Negar a capacidade %s"
 msgid "Edit Capabilities: %s"
 msgstr "Editar capacidades: %s"
 
-#: admin/functions-help.php:94 admin/class-meta-box-custom-cap.php:73
+#: admin/class-meta-box-custom-cap.php:73 admin/functions-help.php:94
 msgid "Custom Capability"
 msgstr "Capacidade personalizada"
 
@@ -704,8 +672,8 @@ msgstr "Capacidade personalizada"
 msgid "Users:"
 msgstr "Utilizadores:"
 
-#: admin/functions-help.php:46 admin/views/class-view-addons.php:170
-#: admin/class-roles.php:210
+#: admin/class-roles.php:210 admin/functions-help.php:46
+#: admin/views/class-view-addons.php:186
 msgid "Overview"
 msgstr "Visão geral"
 
@@ -729,11 +697,12 @@ msgstr "Papéis e capacidades"
 msgid "Multiple User Roles"
 msgstr "Papéis múltiplos de utilizador"
 
-#: admin/views/class-view-general.php:144
+#: admin/views/class-view-general.php:143
 msgid "Enable the role manager."
 msgstr "Activar o gestor de papéis."
 
-#: admin/class-user-new.php:109 admin/class-user-edit.php:97
+#: addons/members-block-permissions/src/Editor.php:108
+#: admin/class-user-edit.php:98 admin/class-user-new.php:109
 msgid "User Roles"
 msgstr "Papéis de utilizador"
 
@@ -745,13 +714,16 @@ msgstr "Legenda do campo de senha:"
 msgid "Log In Label:"
 msgstr "Legenda do campo de início de sessão:"
 
-#: admin/class-role-edit.php:298 admin/class-manage-roles.php:89
+#: admin/class-manage-roles.php:90 admin/class-role-edit.php:298
 msgid "Edit Role"
 msgstr "Editar papel"
 
-#: admin/class-meta-box-content-permissions.php:174 admin/class-roles.php:170
-#: admin/class-user-edit.php:92 admin/class-manage-roles.php:86
-#: admin/class-manage-roles.php:92 admin/class-manage-users.php:360
+#: admin/class-manage-roles.php:87 admin/class-manage-roles.php:93
+#: admin/class-manage-users.php:360
+#: admin/class-meta-box-content-permissions.php:189
+#: admin/class-meta-box-content-permissions.php:308
+#: admin/class-meta-box-content-permissions.php:330 admin/class-roles.php:170
+#: admin/class-user-edit.php:93
 msgid "Roles"
 msgstr "Papéis"
 
@@ -773,17 +745,17 @@ msgstr "Adicionar papel"
 msgid "The requested role to edit does not exist."
 msgstr "O papel solicitado não existe."
 
-#: admin/class-role-edit.php:238 admin/class-role-new.php:226
+#: admin/class-role-edit.php:238 admin/class-role-new.php:243
 msgid "The %s role has been created."
 msgstr "O papel %s foi criado."
 
-#: admin/functions-help.php:62 admin/class-role-edit.php:320
-#: admin/class-roles.php:67 admin/class-role-new.php:327
+#: admin/class-role-edit.php:320 admin/class-role-new.php:344
+#: admin/class-roles.php:67 admin/functions-help.php:62
 msgid "Role Name"
 msgstr "Nome do papel"
 
-#: admin/class-role-edit.php:326 admin/class-role-new.php:333
-#: inc/class-widget-users.php:228
+#: admin/class-role-edit.php:326 admin/class-role-new.php:350
+#: inc/class-widget-users.php:235
 msgid "Role:"
 msgstr "Papel:"
 
@@ -799,23 +771,23 @@ msgstr "O seu papel"
 msgid "Delete"
 msgstr "Eliminar"
 
-#: admin/class-role-new.php:109 admin/class-role-new.php:310
+#: admin/class-role-new.php:327
 msgid "Add New Role"
 msgstr "Adicionar novo papel"
 
-#: admin/class-role-new.php:235
+#: admin/class-role-new.php:252
 msgid "You must enter a valid role."
 msgstr "Deve indicar um papel válido."
 
-#: admin/class-role-new.php:239
+#: admin/class-role-new.php:256
 msgid "The %s role already exists."
 msgstr "O papel %s já existe."
 
-#: admin/class-role-new.php:310
+#: admin/class-role-new.php:327
 msgid "Clone Role"
 msgstr "Clonar papel"
 
-#: admin/class-role-new.php:328
+#: admin/class-role-new.php:345
 msgid "Enter role name"
 msgstr "Introduza o nome do papel"
 
@@ -831,7 +803,7 @@ msgstr "Papel %s eliminado."
 msgid "Hovering over a row in the roles list will display action links that allow you to manage your role. You can perform the following actions:"
 msgstr "Ao passar o rato sobre uma linha na lista de papéis irá mostrar ligações de acção que lhe permitem gerir o seu papel. Pode realizar as seguintes acções:"
 
-#: admin/views/class-view-general.php:354
+#: admin/views/class-view-general.php:340
 msgid "Role and Capabilities"
 msgstr "Papéis e capacidades"
 
@@ -851,12 +823,12 @@ msgstr "Permite listar os utilizadores deste site."
 msgid "Username Label:"
 msgstr "Legenda do campo de nome de utilizador:"
 
-#: admin/functions-admin.php:48 admin/class-cap-control.php:118
+#: admin/class-cap-control.php:118 admin/functions-admin.php:48
 msgid "Grant %s capability"
 msgstr "Conceder a capacidade %s"
 
 #: admin/class-meta-box-content-permissions.php:115
-#: admin/views/class-view-general.php:63 admin/views/class-view-general.php:363
+#: admin/views/class-view-general.php:63 admin/views/class-view-general.php:349
 msgid "Content Permissions"
 msgstr "Permissões de conteúdo"
 
@@ -868,8 +840,8 @@ msgstr "Concedidas:"
 msgid "Denied:"
 msgstr "Negadas:"
 
-#: admin/class-role-edit.php:92 admin/class-manage-users.php:161
-#: admin/class-manage-users.php:236 members.php:129 members.php:140
+#: admin/class-manage-users.php:161 admin/class-manage-users.php:236
+#: admin/class-role-edit.php:92 members.php:129 members.php:140
 msgid "Whoah, partner!"
 msgstr "Não tem permissão para executar esta acção!"
 
@@ -881,7 +853,7 @@ msgstr "O papel %s não é editável. Provavelmente foi adicionado através de o
 msgid "Change Default"
 msgstr "Alterar papel por omissão"
 
-#: admin/class-role-new.php:243
+#: admin/class-role-new.php:260
 msgid "You must enter a valid role name."
 msgstr "Tem que inserir um nome de papel válido."
 
@@ -913,51 +885,52 @@ msgstr "<strong>Eliminar</strong> remove o papel da lista e elimina-o permanente
 msgid "You can permanently delete multiple roles at once. Select the roles you want to act on using the checkboxes, then select the action you want to take from the Bulk Actions menu and click Apply."
 msgstr "Pode eliminar permanentemente múltiplos papéis de uma vez. Seleccione os papéis que quer alterar através das caixas de selecção, depois seleccione a acção que pretende executar no menu Acções por lotes e clice em Aplicar."
 
-#: admin/views/class-view-general.php:129
+#: admin/views/class-view-general.php:128
 msgid "Your roles and capabilities will not revert back to their previous settings after deactivating or uninstalling this plugin, so use this feature wisely."
 msgstr "Ao desactivar ou desinstalar o plugin, os seus papéis e capacidades não serão revertidos às opções anteriores. Use esta funcionalidade com cuidado."
 
-#: admin/views/class-view-general.php:162
+#: admin/views/class-view-general.php:161
 msgid "Denied capabilities should always overrule granted capabilities."
 msgstr "As capacidades negadas sobrepõem-se sempre às capacidades concedidas."
 
-#: admin/views/class-view-general.php:187
+#: admin/views/class-view-general.php:186
 msgid "Allow users to be assigned more than a single role."
 msgstr "Permitir mais do que um papel por utilizador."
 
-#: admin/views/class-view-general.php:202
+#: admin/views/class-view-general.php:201
 msgid "Enable the content permissions feature."
 msgstr "Activar as permissões de conteúdo."
 
-#: admin/views/class-view-general.php:267
+#: admin/views/class-view-general.php:236
 msgid "Redirect all logged-out users to the login page before allowing them to view the site."
 msgstr "Redireccionar todos os utilizadores sem sessão iniciada para a página de inicio de sessão, antes de lhes permitir ver o site."
 
-#: admin/views/class-view-general.php:297
+#: admin/views/class-view-general.php:266
 msgid "Show error message for feed items."
 msgstr "Mostrar mensagem de erro nos itens do feed."
 
-#: admin/views/class-view-general.php:333
+#: addons/members-admin-access/app/class-view-settings.php:189
+#: admin/views/class-view-general.php:319
 msgid "Update Settings"
 msgstr "Guardar alterações"
 
-#: admin/views/class-view-general.php:400
+#: admin/views/class-view-general.php:386
 msgid "The role manager allows you to manage roles on your site by giving you the ability to create, edit, and delete any role. Note that changes to roles do not change settings for the Members plugin. You are literally changing data in your WordPress database. This plugin feature merely provides an interface for you to make these changes."
 msgstr "O gestor de papéis permite-lhe gerir os papéis do seu site, através de criar, editar ou eliminar qualquer papel. As alterações aos papéis não alteram as definições do plugin Members, alteram literalmente os dados da base de dados do WordPress. Este plugin apenas lhe oferece uma interface para fazer estas alterações."
 
-#: admin/views/class-view-general.php:404
+#: admin/views/class-view-general.php:390
 msgid "The multiple user roles feature allows you to assign more than one role to each user from the edit user screen."
 msgstr "A funcionalidade de múltiplos papéis por utilizador permite-lhe atribuir mais do que um papel a cada utilizador no ecrã de edição do utilizador."
 
-#: admin/views/class-view-general.php:426
+#: admin/views/class-view-general.php:412
 msgid "The content permissions features adds a meta box to the edit post screen that allows you to grant permissions for who can read the post content based on the user's role. Only users of roles with the %s capability will be able to use this component."
 msgstr "A funcionalidade de permissões de conteúdo adiciona uma metabox ao ecrã de edição que lhe permite conceder permissão a quem poderá ler o conteúdo, com base no respectivo papel. Apenas os utilizadores com papéis com a capacidade %s poderão usar este componente."
 
-#: admin/views/class-view-general.php:440
+#: admin/views/class-view-general.php:426
 msgid "The sidebar widgets feature adds additional widgets for use in your theme's sidebars."
 msgstr "A funcionalidade de widgets de barra lateral adiciona alguns widgets para utilizar nas barras laterais do sem tema."
 
-#: admin/views/class-view-general.php:454
+#: admin/views/class-view-general.php:440
 msgid "The private site feature redirects all users who are not logged into the site to the login page, creating an entirely private site. You may also replace your feed content with a custom error message."
 msgstr "A funcionalidade de site privado redirecciona todos os utilizadores sem sessão iniciada para a página de início de sessão, criando um site completamente privado. Pode substituir o conteúdo do seu feed por uma mensagem de erro personalizada."
 
@@ -1077,7 +1050,7 @@ msgid_plural "Editable %s"
 msgstr[0] "%s editável"
 msgstr[1] "%s editáveis"
 
-#: inc/class-widget-users.php:190
+#: inc/class-widget-users.php:197
 msgid "Display Name"
 msgstr "Nome a mostrar"
 
@@ -1085,19 +1058,13 @@ msgstr "Nome a mostrar"
 msgid "A widget that allows users to log into your site."
 msgstr "Um widget que permite aos utilizadores iniciar a sessão no seu site."
 
-#: admin/views/class-view-general.php:79
-msgid "Login Widget"
-msgstr "Widget de início de sessão"
-
-#: admin/views/class-view-general.php:80
-msgid "Users Widget"
-msgstr "Widget de utilizadores"
-
-#: admin/class-meta-box-content-permissions.php:190
+#: admin/class-meta-box-content-permissions.php:213
+#: admin/class-meta-box-content-permissions.php:333
 msgid "Limit access to the content to users of the selected roles."
 msgstr "Limitar o acesso ao conteúdo aos utilizadores dos papéis seleccionados."
 
-#: admin/class-meta-box-content-permissions.php:210
+#: admin/class-meta-box-content-permissions.php:233
+#: admin/class-meta-box-content-permissions.php:353
 msgid "If no roles are selected, everyone can view the content. The author, any users who can edit the content, and users with the %s capability can view the content regardless of role."
 msgstr "Se não seleccionar nenhum papel, todos poderão ver o conteúdo. O autor, qualquer utilizador que possa editar o conteúdo e utilizadores com a capacidade %s podem ver o conteúdo, independentemente do seu papel."
 
@@ -1105,11 +1072,11 @@ msgstr "Se não seleccionar nenhum papel, todos poderão ver o conteúdo. O auto
 msgid "The role name field allows you to enter a human-readable name for your role."
 msgstr "O campo nome do papel premite-lhe inserir um nome legível para o seu papel."
 
-#: admin/views/class-view-general.php:408
+#: admin/views/class-view-general.php:394
 msgid "Tick the checkbox for denied capabilities to always take precedence over granted capabilities when there is a conflict. This is only relevant when using multiple roles per user."
 msgstr "Seleccione a opção sobre as capacidades negadas para que, em caso de conflito, tenham sempre prioridade sobre as capacidades concedidas. Isto apenas é relevante quando utiliza múltiplos papéis por utilizador."
 
-#: admin/class-role-new.php:328
+#: admin/class-role-new.php:345
 msgid "%s Clone"
 msgstr "Clone de %s"
 
