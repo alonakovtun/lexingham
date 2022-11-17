@@ -12,7 +12,7 @@
  *
  * @see 	    https://docs.woocommerce.com/document/template-structure/
  * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @version     3.9.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 $__product = new WC_Product( get_the_ID() );
-$upsells = $__product->get_upsells();
+$upsells = $__product->get_upsell_ids();
 
 if ( $related_products && empty( $upsells ) ) : ?>
 
