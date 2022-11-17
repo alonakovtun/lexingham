@@ -1,13 +1,17 @@
 <div class="panel woocommerce_options_panel" id="add_on_options" style="display:none;">
-    <?php if (class_exists('PMWI_Plugin') && PMWI_EDITION == 'free'): ?>
-    <div class="woo-add-on-free-edition-notice upgrade_template">
-        <a href="https://www.wpallimport.com/checkout/?edd_action=add_to_cart&download_id=2707227&edd_options%5Bprice_id%5D=1&utm_source=free-plugin&utm_medium=in-plugin&utm_campaign=woocommerce" target="_blank" class="upgrade_woo_link"><?php _e('Upgrade to the Pro edition of WP All Import and the WooCommerce Add-On to Import to Variable, Affiliate, and Grouped Products', PMWI_Plugin::TEXT_DOMAIN);?></a>
-        <p><?php _e('If you already own it, remove the free edition and install the Pro edition.', 'wp_all_import_plugin'); ?></p>
-    </div>
-    <?php endif; ?>
+	<?php if (class_exists('PMWI_Plugin') && PMWI_EDITION == 'free'): ?>
+        <div class="woo-add-on-free-edition-notice upgrade_template">
+			<?php if(class_exists('PMXI_Plugin') && PMXI_EDITION == 'paid'):?>
+                <a href="https://www.wpallimport.com/portal/discounts/?utm_source=import-plugin-pro&utm_medium=upgrade-notice&utm_campaign=import-woo" target="_blank" class="upgrade_woo_link"><?php _e('Upgrade to the Pro edition of the WooCommerce Add-On to Import to Variable, Affiliate, and Grouped Products', PMWI_Plugin::TEXT_DOMAIN);?></a>
+			<?php else: ?>
+                <a href="https://www.wpallimport.com/checkout/?edd_action=add_to_cart&download_id=2707227&edd_options%5Bprice_id%5D=1" target="_blank" class="upgrade_woo_link"><?php _e('Upgrade to the WooCommerce Import Package to Import to Variable, Affiliate, and Grouped Products', PMWI_Plugin::TEXT_DOMAIN);?></a>
+			<?php endif; ?>
+            <p><?php _e('If you already own it, remove the free edition and install the Pro edition.', 'wp_all_import_plugin'); ?></p>
+        </div>
+	<?php endif; ?>
     <p class="form-field"><?php _e('Import options',PMWI_Plugin::TEXT_DOMAIN);?></p>
 
-    <?php if ( "new" == $post['wizard_type']): ?>
+    <?php if ( "new" == $post['wizard_type'] && version_compare(PMXI_VERSION, '4.7.1-beta-1.2') < 0): ?>
     <div class="options_group hide_if_external">
         <p class="form-field wpallimport-radio-field">
             <input type="hidden" name="missing_records_stock_status" value="0" />
