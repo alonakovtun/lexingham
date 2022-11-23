@@ -15,14 +15,14 @@ class WPSEO_Sitemaps_Admin {
 	 *
 	 * @var array
 	 */
-	private $importing_post_types = array();
+	private $importing_post_types = [];
 
 	/**
 	 * Class constructor.
 	 */
 	public function __construct() {
-		add_action( 'transition_post_status', array( $this, 'status_transition' ), 10, 3 );
-		add_action( 'admin_footer', array( $this, 'status_transition_bulk_finished' ) );
+		add_action( 'transition_post_status', [ $this, 'status_transition' ], 10, 3 );
+		add_action( 'admin_footer', [ $this, 'status_transition_bulk_finished' ] );
 
 		WPSEO_Sitemaps_Cache::register_clear_on_option_update( 'wpseo_titles', '' );
 		WPSEO_Sitemaps_Cache::register_clear_on_option_update( 'wpseo', '' );
@@ -53,12 +53,28 @@ class WPSEO_Sitemaps_Admin {
 		wp_cache_delete( 'lastpostmodified:gmt:' . $post_type, 'timeinfo' ); // #17455.
 
 		// Not something we're interested in.
-		if ( 'nav_menu_item' === $post_type ) {
+		if ( $post_type === 'nav_menu_item' ) {
 			return;
 		}
 
 		// If the post type is excluded in options, we can stop.
 		if ( WPSEO_Options::get( 'noindex-' . $post_type, false ) ) {
+			return;
+		}
+
+		if ( wp_get_environment_type() !== 'production' ) {
+			return;
+		}
+
+		$this->ping_search_engines();
+	}
+
+	/**
+	 * Notify Google of the updated sitemap.
+	 */
+	public function ping_search_engines() {
+
+		if ( get_option( 'blog_public' ) === '0' ) { // Don't ping if blog is not public.
 			return;
 		}
 
@@ -71,11 +87,13 @@ class WPSEO_Sitemaps_Admin {
 			return;
 		}
 
-		if ( defined( 'YOAST_SEO_PING_IMMEDIATELY' ) && YOAST_SEO_PING_IMMEDIATELY ) {
-			WPSEO_Sitemaps::ping_search_engines();
-		}
-		elseif ( ! wp_next_scheduled( 'wpseo_ping_search_engines' ) ) {
-			wp_schedule_single_event( ( time() + 300 ), 'wpseo_ping_search_engines' );
+		$url = rawurlencode( WPSEO_Sitemaps_Router::get_base_url( 'sitemap_index.xml' ) );
+
+		// Ping Google about our sitemap change.
+		wp_remote_get( 'https://www.google.com/ping?sitemap=' . $url, [ 'blocking' => false ] );
+
+		if ( ! defined( 'WPSEO_PREMIUM_FILE' ) || WPSEO_Options::get( 'enable_index_now' ) === false ) {
+			wp_remote_get( 'https://www.bing.com/ping?sitemap=' . $url, [ 'blocking' => false ] );
 		}
 	}
 
@@ -112,7 +130,7 @@ class WPSEO_Sitemaps_Admin {
 			wp_cache_delete( 'lastpostmodified:gmt:' . $post_type, 'timeinfo' ); // #17455.
 
 			// Just have the cache deleted for nav_menu_item.
-			if ( 'nav_menu_item' === $post_type ) {
+			if ( $post_type === 'nav_menu_item' ) {
 				continue;
 			}
 
@@ -122,7 +140,7 @@ class WPSEO_Sitemaps_Admin {
 		}
 
 		// Nothing to do.
-		if ( false === $ping_search_engines ) {
+		if ( $ping_search_engines === false ) {
 			return;
 		}
 
@@ -130,28 +148,6 @@ class WPSEO_Sitemaps_Admin {
 			do_action( 'wpseo_hit_sitemap_index' );
 		}
 
-		WPSEO_Sitemaps::ping_search_engines();
+		$this->ping_search_engines();
 	}
-
-	/* ********************* DEPRECATED METHODS ********************* */
-
-	/**
-	 * Find sitemaps residing on disk as they will block our rewrite.
-	 *
-	 * @deprecated 7.0
-	 * @codeCoverageIgnore
-	 */
-	public function delete_sitemaps() {
-		_deprecated_function( 'WPSEO_Sitemaps_Admin::delete_sitemaps', '7.0' );
-	}
-
-	/**
-	 * Find sitemaps residing on disk as they will block our rewrite.
-	 *
-	 * @deprecated 7.0
-	 * @codeCoverageIgnore
-	 */
-	public function detect_blocking_filesystem_sitemaps() {
-		_deprecated_function( 'WPSEO_Sitemaps_Admin::delete_sitemaps', '7.0' );
-	}
-} /* End of class */
+}

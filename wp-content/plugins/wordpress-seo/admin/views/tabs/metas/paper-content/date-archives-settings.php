@@ -9,15 +9,16 @@
 
 $yform->toggle_switch(
 	'disable-date',
-	array(
-		'off' => __( 'Enabled', 'wordpress-seo' ),
-		'on'  => __( 'Disabled', 'wordpress-seo' ),
-	),
+	[
+		'off' => __( 'On', 'wordpress-seo' ),
+		'on'  => __( 'Off', 'wordpress-seo' ),
+	],
 	__( 'Date archives', 'wordpress-seo' )
 );
 
 ?>
 <div id='date-archives-titles-metas-content' class='archives-titles-metas-content'>
+<div class="yoast-settings-section">
 	<?php
 	$date_archives_help = new WPSEO_Admin_Help_Panel(
 		'noindex-archive-wpseo',
@@ -37,19 +38,47 @@ $yform->toggle_switch(
 		$date_archives_help->get_button_html() . $date_archives_help->get_panel_html()
 	);
 
+	echo '</div>';
+	echo '<div class="yoast-settings-section">';
+
 	$recommended_replace_vars     = new WPSEO_Admin_Recommended_Replace_Vars();
 	$editor_specific_replace_vars = new WPSEO_Admin_Editor_Specific_Replace_Vars();
 
 	$editor = new WPSEO_Replacevar_Editor(
 		$yform,
-		array(
+		[
 			'title'                 => 'title-archive-wpseo',
 			'description'           => 'metadesc-archive-wpseo',
 			'page_type_recommended' => $recommended_replace_vars->determine_for_archive( 'date' ),
 			'page_type_specific'    => $editor_specific_replace_vars->determine_for_archive( 'date' ),
 			'paper_style'           => false,
-		)
+		]
 	);
+
 	$editor->render();
+
+	echo '</div>';
+
+	/**
+	 * WARNING: This hook is intended for internal use only.
+	 * Don't use it in your code as it will be removed shortly.
+	 */
+	// phpcs:ignore Yoast.NamingConventions.ValidHookName.MaxExceeded -- Added _internal suffix for clarity.
+	do_action( 'Yoast\WP\SEO\admin_date_archives_meta_internal', $yform );
+
+	/**
+	 * Allow adding custom fields to the admin meta page - Date archives panel in the Archives tab.
+	 *
+	 * @deprecated 19.10 No replacement available.
+	 *
+	 * @param Yoast_Form $yform The Yoast_Form object.
+	 */
+	do_action_deprecated(
+		'Yoast\WP\SEO\admin_date_archives_meta',
+		[ $yform ],
+		'19.10',
+		'',
+		'This action is going away with no replacement. If you want to add settings that interact with Yoast SEO, please create your own settings page.'
+	);
 	?>
 </div>

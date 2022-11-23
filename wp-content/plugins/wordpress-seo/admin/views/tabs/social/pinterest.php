@@ -17,7 +17,7 @@ echo '<h2>' . esc_html__( 'Pinterest settings', 'wordpress-seo' ) . '</h2>';
 
 printf(
 	'<p>%s</p>',
-	esc_html__( 'Pinterest uses Open Graph metadata just like Facebook, so be sure to keep the Open Graph checkbox on the Facebook tab checked if you want to optimize your site for Pinterest.', 'wordpress-seo' )
+	esc_html__( 'Pinterest uses Open Graph metadata just like Facebook, so be sure to keep the "Add Open Graph meta data" setting on the Facebook tab enabled if you want to optimize your site for Pinterest.', 'wordpress-seo' )
 );
 printf(
 	'<p>%s</p>',
@@ -35,4 +35,21 @@ echo '</p>';
 
 $yform->textinput( 'pinterestverify', __( 'Pinterest confirmation', 'wordpress-seo' ) );
 
-do_action( 'wpseo_admin_pinterest_section' );
+/**
+ * WARNING: This hook is intended for internal use only.
+ * Don't use it in your code as it will be removed shortly.
+ */
+do_action( 'wpseo_admin_pinterest_section_internal' );
+
+/**
+ * Admin Pinterest section hook.
+ *
+ * @deprecated 19.10 No replacement available.
+ */
+do_action_deprecated(
+	'wpseo_admin_pinterest_section',
+	[],
+	'19.10',
+	'',
+	'This action is going away with no replacement. If you want to add settings that interact with Yoast SEO, please create your own settings page.'
+);
