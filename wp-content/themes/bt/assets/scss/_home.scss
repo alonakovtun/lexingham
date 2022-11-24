@@ -7,7 +7,7 @@
     .swiper-slide {
         position: relative;
         transition: all .5s;
-        height: calc(100vh - 109px);
+        height: 100vh;
 
         @include media-breakpoint-down(md) {
             height: calc(100vh + 79px);
@@ -22,6 +22,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            margin-top: 109px;
         }
 
         .home-slider-text {
@@ -305,9 +306,9 @@
             color: #f8f8f8;
             transition: all 0.5s ease-in-out;
 
-                &:hover {
-                    color: #e62930
-                }
+            &:hover {
+                color: #e62930
+            }
         }
     }
 

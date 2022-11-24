@@ -1,0 +1,84 @@
+@import "vars";
+
+.footer-content{
+    display: flex;
+    justify-content: space-between;
+
+    .main-site-footer{
+        transform: translateY(-4px);
+
+        a{
+            transition: all 0.5s ease-in-out;
+        }
+
+        
+    }
+
+    .col{
+        &:first-child{
+            .site-blue-link{
+                color: #000;
+                transition: all 0.5s ease-in-out;
+
+
+                &:hover{
+                    color: #447dd7
+                }
+            }
+        }
+
+        &:nth-child(2){
+            .site-blue-link{
+                color: #394578;
+                transition: all 0.5s ease-in-out;
+
+
+                &:hover{
+                    color: #e62930
+                }
+            }
+        }
+    }
+
+    
+}
+
+.copyright-wrapper{
+    display: flex;
+    justify-content: space-between;
+
+    .col{
+        width: 25%;
+    }
+
+    .copyright-wrapper-right{
+        display: flex;
+        justify-content: space-between;
+
+        .wpml-ls-legacy-list-horizontal{
+            padding: 0;
+        }
+
+        .wpml-ls-legacy-list-horizontal a{
+            padding: 0 15px 0 0;
+        }
+
+        .wpml-ls-legacy-list-horizontal.wpml-ls-statics-footer{
+            margin-bottom: 0;
+        }
+
+        .wpml-ls-statics-footer a:hover, .wpml-ls-statics-footer a:focus{
+            background-color: #fff;
+        }
+
+        .created-by{
+            margin: 0;
+
+            transition: all 0.5s ease-in-out;
+
+            &:hover {
+                color: #e62930
+            }
+        }
+    }
+}

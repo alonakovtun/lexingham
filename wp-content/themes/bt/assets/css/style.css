@@ -1244,22 +1244,11 @@ img.search-custom-icon {
 
 .main-site-footer a:hover {
 	color: #164996;
-	font-family: CoreSansM55Medium;
 }
 .main-site-footer .col {
-	width:25%;	
+	width: 25%;	
 }
 
-.main-site-footer .col:first-child{width:10%;     margin-right: 3%;}
-
-.main-site-footer .col:nth-child(2)  {
-	padding:0 9% 0 0;
-}
-
-.main-site-footer .col:last-child {
-	float:right;
-	padding-right:5%;
-}
 
 /*
 .main-site-footer .col:not(:last-child) {
@@ -1276,7 +1265,7 @@ img.search-custom-icon {
 	left: 0;
 } */
 
-.main-site-footer .links-wrapper .link {
+.main-site-footer .links-wrapper .link:first-child {
 	display: inline-block;
 	margin-right: 50px;
 }

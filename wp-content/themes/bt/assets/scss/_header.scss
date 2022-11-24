@@ -1,0 +1,10 @@
+@import "vars";
+
+.main-site-header{
+    position: fixed;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 99;
+    transition: all 0.5s ease-in-out;
+}
