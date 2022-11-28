@@ -887,10 +887,12 @@ body.mobile-nav-open {
 
 .main-site-header nav {
 	width: 40%;
+	background: #fff;
 }
 
 .main-site-header .site-logo {
 	width: 20%;
+	background: #fff;
 }
 
 .main-site-header .site-logo a {
@@ -930,19 +932,20 @@ width:50%;}
 
 .main-site-header nav ul.sub-menu {
 	position: absolute;
-	top: 100%;
-	left: 0;
-	width: 100%;
-	background-color: #fff;
-	z-index: 10;
-	border-top: 1px solid #f3f3f3;
-	border-bottom: 1px solid #f3f3f3;
-	display: none;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: -9;
+    border-top: 1px solid #f3f3f3;
+    border-bottom: 1px solid #f3f3f3;
+    transform: translateY(-60px);
+    transition: all 0.5s ease-in-out;
 }
 
 .main-site-header nav li a:hover + .sub-menu,
 .main-site-header nav ul.sub-menu:hover {
-	display: block;
+	transform: translateY(0);
 }
 
 .main-site-header nav ul.sub-menu li {
