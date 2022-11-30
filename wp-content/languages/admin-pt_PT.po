@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.1.x - Development - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-11-14 23:01:16+0000\n"
+"PO-Revision-Date: 2022-11-22 14:04:59+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -111,6 +111,10 @@ msgstr "Encontre temas de blocos mais rapidamente"
 msgid "A new default theme powered by 10 distinct style variations"
 msgstr "Um novo tema por omissão com 10 novas variações de estilos diferentes."
 
+#: wp-admin/users.php:64
+msgid "<strong>Send password reset</strong> sends the user an email with a link to set a new password."
+msgstr "<strong>Enviar reposição de senha</strong> envia um email ao utilizador com uma ligação para definir uma nova senha."
+
 #: wp-admin/user-edit.php:819
 msgid "https://developer.wordpress.org/apis/wp-config-php/#wp-environment-type"
 msgstr "https://developer.wordpress.org/apis/wp-config-php/#wp-environment-type"
@@ -118,6 +122,10 @@ msgstr "https://developer.wordpress.org/apis/wp-config-php/#wp-environment-type"
 #: wp-admin/upload.php:247
 msgid "<strong>Copy URL to clipboard</strong> copies the URL for the media file to your clipboard."
 msgstr "<strong>Copiar URL para a área de transferência</strong> copia o URL do ficheiro multimédia para a sua área de transferência."
+
+#: wp-admin/upload.php:245
+msgid "<strong>Delete Permanently</strong> will delete the file from the media library (as well as from any posts to which it is currently attached)."
+msgstr "<strong>Eliminar permanentemente</strong> vai eliminar o ficheiro da biblioteca multimédia (bem como de quaisquer artigos aos quais esteja actualmente anexado)."
 
 #: wp-admin/theme-install.php:204
 msgctxt "themes"

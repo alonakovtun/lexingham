@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.1.x - Development - Administration - Network Admin package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-11-15 02:57:28+0000\n"
+"PO-Revision-Date: 2022-11-21 14:13:36+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1170,7 +1170,7 @@ msgstr "As configurações de registo podem desactivar/activar inscrições púb
 
 #: wp-admin/network/settings.php:51
 msgid "This screen sets and changes options for the network as a whole. The first site is the main site in the network and network options are pulled from that original site&#8217;s options."
-msgstr "Esta página activa e muda as opções para a rede como um todo. O primeiro site é o site principal na rede e as opções de rede são puxadas das opções desse site original. "
+msgstr "Esta página activa e muda as opções para a rede como um todo. O primeiro site é o site principal na rede e as opções de rede são obtidas das opções desse site original."
 
 #. translators: %s: Reserved names list.
 #: wp-admin/network/site-new.php:59

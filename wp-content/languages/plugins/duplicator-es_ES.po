@@ -2,44 +2,52 @@
 # This file is distributed under the same license as the Plugins - Duplicator &#8211; WordPress Migration Plugin - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-08-29 01:17:06+0000\n"
+"PO-Revision-Date: 2022-11-17 16:31:29+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/4.0.0-alpha.1\n"
+"X-Generator: GlotPress/4.0.0-alpha.3\n"
 "Language: es\n"
 "Project-Id-Version: Plugins - Duplicator &#8211; WordPress Migration Plugin - Stable (latest release)\n"
+
+#: views/packages/details/detail.php:477
+msgid "Password Protection Disabled"
+msgstr "Protección por contraseña desactivada"
+
+#: views/packages/details/detail.php:475
+msgid "Password Protection Enabled"
+msgstr "Protección por contraseña activada"
 
 #: views/tools/diagnostics/inc.settings.php:223
 msgid "Unable to calculate space on this server."
 msgstr "No se ha podido calcular el espacio en este servidor."
 
-#: views/settings/packages.php:371
+#: views/settings/packages.php:372
 msgid "Tip: Each row on the packages screen includes a copy button to copy the installer name to the clipboard.  Paste the installer name from the clipboard into the URL being used to install the destination site.  This feature is handy when using the secure installer name."
 msgstr "Consejo: Cada fila de la pantalla de paquetes incluye un botón de copia para copiar el nombre del instalador en el portapapeles.  Pega el nombre del instalador desde el portapapeles en la URL que se está utilizando para instalar el sitio de destino.  Esta función es muy útil cuando se utiliza el nombre del instalador protegido."
 
-#: views/settings/packages.php:363
+#: views/settings/packages.php:364
 msgid "Do not to leave any installer files on the destination server, after installing the migrated/restored site.  Logon as a WordPress administrator and follow the prompts to remove the installer files or remove them manually."
 msgstr "No dejes ningún archivo de instalación en el servidor de destino después de instalar el sitio migrado/restaurado.  Accede como administrador de WordPress y sigue las indicaciones para eliminar los archivos del instalador o elimínalos manualmente."
 
-#: views/settings/packages.php:352
+#: views/settings/packages.php:353
 msgid "This setting specifies the name of the installer used at download-time.  Independent of the value of this setting, you can change the name of the installer in the \"Save as\" file dialog at download-time.  If you choose to use a custom name, use a file name that is known only to you. Installer filenames must end in \"php\".  Changes to the archive file should not be made."
 msgstr "Este ajuste especifica el nombre del instalador utilizado en el momento de la descarga.  Independientemente del valor de este ajuste, puedes cambiar el nombre del instalador en el cuadro de diálogo \"Guardar como\" en el momento de la descarga.  Si eliges un nombre personalizado, utiliza un nombre de archivo que sólo conozcas tú. Los nombres de archivo del instalador deben terminar en \"php\".  No se deben realizar cambios en el archivo."
 
-#: views/settings/packages.php:348
+#: views/settings/packages.php:349
 msgid "Example"
 msgstr "Ejemplo"
 
-#: views/settings/packages.php:347
+#: views/settings/packages.php:348
 msgid "Using a 'Secure' file helps prevent unauthorized access to the installer file."
 msgstr "El uso de un archivo 'protegido' ayuda a evitar el acceso no autorizado al archivo de instalación."
 
-#: views/settings/packages.php:338
+#: views/settings/packages.php:339
 msgid "Secure"
 msgstr "Proteger"
 
-#: views/settings/packages.php:321
+#: views/settings/packages.php:322
 msgid "File Name"
 msgstr "Nombre del archivo"
 
@@ -382,7 +390,7 @@ msgstr "Recomendamos actualizar a "
 msgid "Duplicator Lite does not officially support WordPress multisite."
 msgstr "Duplicator Lite no es compatible oficialmente con multisitios de WordPress."
 
-#: views/packages/details/detail.php:420 views/packages/main/s1.setup2.php:408
+#: views/packages/details/detail.php:421 views/packages/main/s1.setup2.php:408
 #: views/settings/packages.php:92
 msgid "SQL Mode"
 msgstr "Modo SQL"
@@ -744,15 +752,15 @@ msgstr "El usuario de la base de datos de este sitio WordPress tiene suficientes
 msgid "The function mysqli_real_escape_string is not working properly. Please consult host support and ask them to switch to a different PHP version or configuration."
 msgstr "La función mysql_real_escape_string no está funcionando correctamente. Por favor, consulta al soporte del servidor y pídeles que cambien a una versión o configuración diferente de PHP."
 
-#: views/settings/packages.php:343
+#: views/settings/packages.php:344
 msgid "read this section"
 msgstr "lee esta sección"
 
-#: views/settings/packages.php:342
+#: views/settings/packages.php:343
 msgid "To understand the importance and usage of the installer name, please"
 msgstr "Para entender la importancia y el uso del nombre del instalador, por favor"
 
-#: views/settings/packages.php:323
+#: views/settings/packages.php:324
 msgid "Default 'Save as' name:"
 msgstr "Nombre para «Guardar como» por defecto:"
 
@@ -840,7 +848,7 @@ msgstr "Petición no válida."
 msgid "Invalid request"
 msgstr "Petición no válida"
 
-#: views/packages/details/detail.php:531
+#: views/packages/details/detail.php:544
 msgid "ARCHIVE"
 msgstr "ARCHIVO"
 
@@ -970,7 +978,7 @@ msgstr "Esta característica solo está disponible en "
 msgid "Create the database and database user at install time without leaving the installer!"
 msgstr "¡Crea la base de datos y el usuario de la base de datos en el momento de la instalación sin salir del instalador!"
 
-#: views/packages/main/s1.setup2.php:542 views/settings/packages.php:329
+#: views/packages/main/s1.setup2.php:542 views/settings/packages.php:330
 msgid "Basic"
 msgstr "Básico"
 
@@ -990,7 +998,7 @@ msgstr "Seguridad:"
 msgid "Enable Password Protection"
 msgstr "Activar protección de contraseña"
 
-#: views/packages/main/s1.setup2.php:509
+#: views/packages/details/detail.php:470 views/packages/main/s1.setup2.php:509
 msgid "Security"
 msgstr "Seguridad"
 
@@ -1358,17 +1366,9 @@ msgstr "Se necesitan versiones de PHP 5.2.9+ o superiores."
 msgid "Set up a one-time storage location and automatically push the package to your destination."
 msgstr "Establece la ubicación de almacenamiento una vez y sube el paquete automáticamente a tu destino."
 
-#: views/packages/details/detail.php:477 views/packages/main/s1.setup2.php:525
+#: views/packages/details/detail.php:488 views/packages/main/s1.setup2.php:525
 msgid "Show/Hide Password"
 msgstr "Mostrar/Ocultar contraseña"
-
-#: views/packages/details/detail.php:467
-msgid "Password Protection"
-msgstr "Protección de contraseña"
-
-#: views/packages/details/detail.php:463
-msgid " Security"
-msgstr "Seguridad"
 
 #: views/packages/details/detail.php:328 views/packages/main/s1.setup2.php:176
 msgid "Duplicator Pro allows you to create a package and store it at a custom location on this server or to a remote cloud location such as Google Drive, Amazon, Dropbox and many more."
@@ -1430,7 +1430,7 @@ msgstr "con una valoración de 5 estrellas!"
 msgid "Duplicator can streamline your workflow and quickly clone/migrate a WordPress site. The plugin helps admins, designers and developers speed up the migration process of moving a WordPress site. Please help us continue development by giving the plugin a 5 star and consider purchasing our Pro product."
 msgstr "Duplicator te ayuda a optimizar tu flujo de trabajo y clonar/migrar rápidamente un sitio WordPress. El plugin ayuda a administradores, diseñadores y desarrolladores a acelerar el proceso de migración de un sitio WordPress. Por favor, ayúdanos a continuar con el desarrollo dando al plugin 5 estrellas y considera la compra de nuestro producto Pro."
 
-#: views/settings/packages.php:310
+#: views/settings/packages.php:311
 msgid " Valid only when Archive Engine for ZipArchive is enabled."
 msgstr "Válido solo cuando está activado el motor de archivo para ZipArchive."
 
@@ -1740,11 +1740,11 @@ msgstr "Directorios: <b>%1$s</b> no es una ruta válida"
 msgid "Package name can't be empty"
 msgstr "El nombre del paquete no puede estar vacío"
 
-#: classes/package/class.pack.installer.php:154
+#: classes/package/class.pack.installer.php:153
 msgid "Error writing installer contents"
 msgstr "Error al escribir el contenido del instalador"
 
-#: classes/package/class.pack.installer.php:141
+#: classes/package/class.pack.installer.php:140
 msgid "Error reading DupArchive expander"
 msgstr "Error al leer el expansor DupArchive"
 
@@ -1896,7 +1896,7 @@ msgstr "Para un acceso fiable a mysqldump."
 msgid "Successfully Found:"
 msgstr "Encontrado con éxito:"
 
-#: views/settings/packages.php:413
+#: views/settings/packages.php:414
 msgid "To use WordPress timezone formats consider an upgrade to Duplicator Pro."
 msgstr "Para usar los formatos de zona horaria de WordPress plantéate actualizar a Duplicator Pro."
 
@@ -2515,7 +2515,7 @@ msgstr "Simplemente elije la ubicación de almacenamiento y cuándo quieres que 
 msgid "Create robust schedules that automatically create packages while you sleep."
 msgstr "Crea programaciones robustas que creen paquetes automáticamente mientras duermes."
 
-#: views/settings/packages.php:422
+#: views/settings/packages.php:423
 msgid "Save Package Settings"
 msgstr "Guardar parámetros del paquete"
 
@@ -2523,7 +2523,7 @@ msgstr "Guardar parámetros del paquete"
 msgid "Processing"
 msgstr "Preparación"
 
-#: views/settings/packages.php:382
+#: views/settings/packages.php:383
 msgid "Visuals"
 msgstr "Visuales"
 
@@ -2640,15 +2640,15 @@ msgstr "¿Borrar la opción?"
 msgid "Clear Build Cache?"
 msgstr "¿Vaciar la caché de creación?"
 
-#: views/settings/packages.php:404
+#: views/settings/packages.php:405
 msgid "By Day"
 msgstr "Por día"
 
-#: views/settings/packages.php:397
+#: views/settings/packages.php:398
 msgid "By Month"
 msgstr "Por mes"
 
-#: views/settings/packages.php:390
+#: views/settings/packages.php:391
 msgid "By Year"
 msgstr "Por año"
 
@@ -2712,7 +2712,7 @@ msgstr "Procesando, por favor espera..."
 msgid "Top 20"
 msgstr "Top 20"
 
-#: views/settings/packages.php:305
+#: views/settings/packages.php:306
 msgid "enable only for large archives"
 msgstr "activar sólo para archivos grandes"
 
@@ -2736,7 +2736,7 @@ msgstr "Mysqldump"
 msgid "See the"
 msgstr "Mira el"
 
-#: views/settings/packages.php:339
+#: views/settings/packages.php:340
 msgid "recommended"
 msgstr "recomendado"
 
@@ -2748,11 +2748,11 @@ msgstr "Por favor contacta con tu alojamiento o con el administrador del servido
 msgid "This server does not support the PHP shell_exec or exec function which is required for mysqldump to run. "
 msgstr "Este servidor no es compatible con la función shell_exec o exec de PHP, que es necesaria para que mysqldump funcione."
 
-#: views/settings/packages.php:412
+#: views/settings/packages.php:413
 msgid "The UTC date format shown in the 'Created' column on the Packages screen."
 msgstr "El formato de fecha UTC mostrado en la columna 'Creado' en la pantalla Paquetes."
 
-#: views/settings/packages.php:386
+#: views/settings/packages.php:387
 msgid "Created Format"
 msgstr "Formato creado"
 
@@ -2968,12 +2968,12 @@ msgstr "Paquetes &raquo; Todos"
 msgid "Learn More"
 msgstr "Saber más"
 
-#: views/packages/details/detail.php:493 views/packages/details/detail.php:497
-#: views/packages/details/detail.php:501
+#: views/packages/details/detail.php:506 views/packages/details/detail.php:510
+#: views/packages/details/detail.php:514
 msgid "- not set -"
 msgstr "- no establecido -"
 
-#: views/packages/details/detail.php:426 views/packages/main/s2.scan3.php:610
+#: views/packages/details/detail.php:427 views/packages/main/s2.scan3.php:610
 msgid "MySQL Compatibility Mode Enabled"
 msgstr "Activado el modo compatibilidad de MySQL"
 
@@ -2986,11 +2986,11 @@ msgid "Extensions"
 msgstr "Extensiones"
 
 #: views/packages/details/detail.php:377 views/packages/details/detail.php:387
-#: views/packages/details/detail.php:396 views/packages/details/detail.php:443
+#: views/packages/details/detail.php:396 views/packages/details/detail.php:444
 msgid "- no filters -"
 msgstr "- sin filtros -"
 
-#: views/packages/details/detail.php:369 views/packages/details/detail.php:433
+#: views/packages/details/detail.php:369 views/packages/details/detail.php:434
 #: views/packages/main/s1.setup2.php:229 views/packages/main/s1.setup2.php:332
 msgid "Filters"
 msgstr "Filtros"
@@ -3368,15 +3368,15 @@ msgstr "Mysqldump no se ha encontrado en su ubicación predeterminada o en la ub
 msgid "Query Limit Size"
 msgstr "Limite del tamaño de la consulta"
 
-#: views/settings/packages.php:308
+#: views/settings/packages.php:309
 msgid "This will attempt to keep a network connection established for large archives."
 msgstr "Esto intentará mantener una conexión de red para archivos grandes."
 
-#: views/settings/packages.php:304
+#: views/settings/packages.php:305
 msgid "Attempt Network Keep Alive"
 msgstr "Intentar mantener la red activa"
 
-#: views/settings/packages.php:301
+#: views/settings/packages.php:302
 msgid "Archive Flush"
 msgstr "Archivo Flush"
 
@@ -3487,7 +3487,7 @@ msgstr "Reparación y optimización"
 msgid "Records"
 msgstr "Registros"
 
-#: views/packages/details/detail.php:439 views/packages/main/s2.scan3.php:402
+#: views/packages/details/detail.php:440 views/packages/main/s2.scan3.php:402
 msgid "Tables"
 msgstr "Tablas"
 
@@ -3538,7 +3538,7 @@ msgstr "Nota: Los tiempos de espera también pueden establecerse en la capa del 
 msgid "Max Execution Time"
 msgstr "Tiempo máximo de ejecución"
 
-#: views/packages/details/detail.php:427 views/packages/main/s1.setup2.php:420
+#: views/packages/details/detail.php:428 views/packages/main/s1.setup2.php:420
 #: views/packages/main/s2.scan2.php:83 views/packages/main/s2.scan2.php:94
 #: views/packages/main/s2.scan2.php:100 views/packages/main/s2.scan3.php:611
 msgid "details"
@@ -3589,11 +3589,11 @@ msgstr "Opciones mejoradas"
 msgid "Host Port"
 msgstr "Puerto host"
 
-#: views/packages/details/detail.php:492 views/packages/main/s1.setup2.php:554
+#: views/packages/details/detail.php:505 views/packages/main/s1.setup2.php:554
 msgid "Host"
 msgstr "Servidor"
 
-#: views/packages/details/detail.php:489 views/packages/main/s1.setup2.php:551
+#: views/packages/details/detail.php:501 views/packages/main/s1.setup2.php:551
 msgid " MySQL Server"
 msgstr " MySQL Server"
 
@@ -3664,7 +3664,7 @@ msgstr "Separa todos los filtros con punto y coma"
 msgid "Enable File Filters"
 msgstr "Activar filtros de archivo"
 
-#: views/packages/details/detail.php:496 views/packages/main/s1.setup2.php:223
+#: views/packages/details/detail.php:509 views/packages/main/s1.setup2.php:223
 #: views/packages/main/s1.setup2.php:562 views/packages/main/s2.scan3.php:373
 #: views/packages/main/s2.scan3.php:599 views/settings/packages.php:88
 msgid "Database"
@@ -3696,7 +3696,7 @@ msgstr "Por defecto"
 msgid "Location"
 msgstr "Ubicación"
 
-#: views/packages/details/detail.php:277 views/packages/details/detail.php:416
+#: views/packages/details/detail.php:277 views/packages/details/detail.php:417
 #: views/packages/main/s1.setup2.php:133 views/settings/license.php:12
 msgid "Type"
 msgstr "Tipo"
@@ -3774,9 +3774,9 @@ msgstr "Crear"
 msgid "Scan"
 msgstr "Explorar"
 
-#: views/packages/main/s1.setup1.php:62 views/packages/main/s1.setup2.php:495
-#: views/packages/main/s2.scan1.php:186 views/packages/main/s2.scan2.php:7
-#: views/packages/main/s3.build.php:117
+#: views/packages/details/detail.php:465 views/packages/main/s1.setup1.php:62
+#: views/packages/main/s1.setup2.php:495 views/packages/main/s2.scan1.php:186
+#: views/packages/main/s2.scan2.php:7 views/packages/main/s3.build.php:117
 msgid "Setup"
 msgstr "Configuración"
 
@@ -3784,15 +3784,15 @@ msgstr "Configuración"
 msgid "Package settings have been reset."
 msgstr "Se han restablecido los ajustes del paquete."
 
-#: views/packages/details/detail.php:532
+#: views/packages/details/detail.php:545
 msgid "LOG"
 msgstr "REGISTRO"
 
-#: views/packages/details/detail.php:408
+#: views/packages/details/detail.php:409
 msgid "DATABASE"
 msgstr "BASE DE DATOS"
 
-#: views/packages/details/detail.php:526
+#: views/packages/details/detail.php:539
 msgid "Package File Links"
 msgstr "Enlaces de paquetes de archivos"
 
@@ -3812,7 +3812,7 @@ msgstr "Enlaces de descarga"
 msgid "Total Size"
 msgstr "Tamaño total"
 
-#: views/packages/details/detail.php:509
+#: views/packages/details/detail.php:522
 msgid "View Package Object"
 msgstr "Ver el objeto de paquete"
 
@@ -3825,7 +3825,7 @@ msgstr "Notas"
 msgid "Hash"
 msgstr "Hash"
 
-#: views/packages/details/detail.php:163 views/packages/details/detail.php:500
+#: views/packages/details/detail.php:163 views/packages/details/detail.php:513
 #: views/packages/main/s1.setup2.php:566
 #: views/tools/diagnostics/inc.settings.php:128
 msgid "User"
@@ -3845,9 +3845,9 @@ msgstr "Versión"
 msgid "Archive"
 msgstr "Archivo"
 
-#: views/packages/details/detail.php:221 views/packages/details/detail.php:456
+#: views/packages/details/detail.php:221 views/packages/details/detail.php:457
 #: views/packages/main/packages.php:277 views/packages/main/s1.setup2.php:465
-#: views/packages/main/s3.build.php:182 views/settings/packages.php:317
+#: views/packages/main/s3.build.php:182 views/settings/packages.php:318
 msgid "Installer"
 msgstr "Instalador"
 
@@ -3856,7 +3856,7 @@ msgid "Package"
 msgstr "Paquete"
 
 #: views/packages/details/detail.php:96 views/packages/details/detail.php:276
-#: views/packages/details/detail.php:412 views/packages/main/packages.php:182
+#: views/packages/details/detail.php:413 views/packages/main/packages.php:182
 #: views/packages/main/s1.setup2.php:95 views/packages/main/s1.setup2.php:132
 #: views/packages/main/s2.scan3.php:593
 msgid "Name"

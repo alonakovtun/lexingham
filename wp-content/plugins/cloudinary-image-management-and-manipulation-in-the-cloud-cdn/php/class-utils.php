@@ -552,7 +552,7 @@ class Utils {
 		// If it's not an obvious WP ajax request, check if it's a custom frontend ajax request.
 		if ( ! $is_frontend_ajax && ! $is_admin ) {
 			// Catch the content type of the $_SERVER['CONTENT_TYPE'] variable.
-			$type             = filter_input( INPUT_SERVER, 'CONTENT_TYPE', FILTER_CALLBACK, array( 'options' => 'sanitize_text_field' ) );
+			$type = filter_input( INPUT_SERVER, 'CONTENT_TYPE', FILTER_CALLBACK, array( 'options' => 'sanitize_text_field' ) ) ?? '';
 			$is_frontend_ajax = false !== strpos( $type, 'json' );
 		}
 

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-11-10 18:28:03+0000\n"
+"PO-Revision-Date: 2022-11-22 08:11:09+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13919,7 +13919,7 @@ msgstr "Recopilamos información tuya durante el proceso de pago en nuestra tien
 
 #: includes/class-wc-privacy.php:83
 msgid "This sample language includes the basics around what personal data your store may be collecting, storing and sharing, as well as who may have access to that data. Depending on what settings are enabled and which additional plugins are used, the specific information shared by your store will vary. We recommend consulting with a lawyer when deciding what information to disclose on your privacy policy."
-msgstr "Este texto de muestra incluye los básicos sobre qué datos personales recopila, almacena y comparte tu tienda, así como quién tiene acceso a esos datos. Dependiendo de qué ajustes estén activos y qué plugins adicionales se usane, la información específica compartida por tu tienda puede variar. Te recomendamos que consultes a un abogado para decidir qué información mostrar en tu política de privacidad."
+msgstr "Este texto de muestra incluye los básicos sobre qué datos personales recopila, almacena y comparte tu tienda, así como quién tiene acceso a esos datos. Dependiendo de qué ajustes estén activos y qué plugins adicionales se use, la información específica compartida por tu tienda puede variar. Te recomendamos que consultes a un abogado para decidir qué información mostrar en tu política de privacidad."
 
 #: includes/class-wc-privacy-exporters.php:428
 msgid "Token"
@@ -13984,7 +13984,7 @@ msgstr "Eliminado el token de pago «%d»"
 
 #: includes/class-wc-privacy-erasers.php:354
 msgid "Personal data removed."
-msgstr "Datos personales borrados."
+msgstr "Datos personales eliminados."
 
 #: includes/class-wc-privacy-erasers.php:204
 msgid "Customer download permissions have been retained."
@@ -14303,7 +14303,7 @@ msgstr "API heredada"
 
 #: includes/admin/settings/class-wc-settings-accounts.php:216
 msgid "Retain completed orders for a specified duration before anonymizing the personal data within them."
-msgstr "Conserva pedidos completados una duración especificada antes de anoninizar los datos personales que contengan."
+msgstr "Conserva pedidos completados una duración especificada antes de anonimizar los datos personales que contengan."
 
 #: includes/admin/settings/class-wc-settings-accounts.php:215
 msgid "Retain completed orders"
@@ -14400,8 +14400,8 @@ msgstr "Política de privacidad"
 #: src/Internal/Admin/Orders/ListTable.php:1083
 msgid "Removed personal data from %s order."
 msgid_plural "Removed personal data from %s orders."
-msgstr[0] "Eliminados datos personales de %s pedido."
-msgstr[1] "Eliminados datos personales de %s pedidos."
+msgstr[0] "Eliminados datos personales de %s pedido"
+msgstr[1] "Eliminados datos personales de %s pedidos"
 
 #: includes/admin/settings/class-wc-settings-accounts.php:104
 msgid "Account erasure requests"
@@ -14446,7 +14446,7 @@ msgstr "Filtrar por cliente registrado"
 #: includes/admin/list-tables/class-wc-admin-list-table-orders.php:152
 #: src/Internal/Admin/Orders/ListTable.php:225
 msgid "Remove personal data"
-msgstr "Borrar datos personales"
+msgstr "Eliminar datos personales"
 
 #: includes/admin/importers/views/html-product-csv-import-form.php:78
 msgid "Use previous column mapping preferences?"

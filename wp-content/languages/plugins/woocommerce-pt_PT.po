@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-11-16 13:27:35+0000\n"
+"PO-Revision-Date: 2022-11-17 19:42:40+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -74,6 +74,11 @@ msgstr "Funcionalidades experimentais"
 #: src/Internal/Features/FeaturesController.php:563
 msgid "These features are either experimental or incomplete, enable them at your own risk!"
 msgstr "Estas funcionalidades são experimentais ou incompletas, active-as por sua conta e risco!"
+
+#. translators: %s = URL of the custom data stores settings page
+#: src/Internal/DataStores/Orders/DataSynchronizer.php:493
+msgid "<a href='%s'>Manage orders synchronization</a>"
+msgstr "<a href='%s'>Gerir sincronização de ecomendas</a>"
 
 #: packages/woocommerce-blocks/assets/js/blocks/price-filter/block.json
 #: packages/woocommerce-blocks/build/price-filter/block.json
@@ -1513,6 +1518,10 @@ msgstr "Aisén del General Carlos Ibañez del Campo"
 msgid "Región Metropolitana de Santiago"
 msgstr "Región Metropolitana de Santiago"
 
+#: includes/class-wc-ajax.php:2169
+msgid "There was an error generating your API Key."
+msgstr "Ocorreu um erro ao gerar a sua chave de API."
+
 #: packages/woocommerce-blocks/assets/js/blocks/checkout/inner-blocks/checkout-shipping-address-block/block.json
 #: packages/woocommerce-blocks/build/inner-blocks/checkout-shipping-address-block/block.json
 msgctxt "block title"
@@ -2737,7 +2746,7 @@ msgstr "Limpar cache de análises"
 #: src/Internal/Admin/Notes/InsightFirstSale.php:58
 #: src/Internal/Admin/Notes/InsightFirstSale.php:66
 msgid "Thanks for your feedback"
-msgstr "Obrigado pelo seu feedback"
+msgstr "Obrigado pelos seus comentários"
 
 #: packages/woocommerce-blocks/src/BlockTypes/MiniCart.php:526
 #: packages/woocommerce-blocks/assets/js/blocks/checkout/empty-cart/index.js:23

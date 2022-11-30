@@ -29,7 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<div id="loading">
 			<?php $site_loader = get_field( 'loader-image', 'option' )['sizes']['thumbnail']; ?>
-			<div class="spinner absolute-center"> <img id="spinner" src="<?= $site_loader; ?>" alt="<?= $site_loader['alt']; ?>"/></div>
+
+			<div class="spinner absolute-center"> <img id="spinner" src="<?= $site_loader; ?>"/></div>
 
 		</div>
 
@@ -46,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</nav>
 			<div class="site-logo pull-left">
 				<?php $site_logo = get_field( 'site-logo', 'option' ); ?>
-				<a href="<?= CLANG != 'en' ? BPATH . '/' . CLANG : BPATH; ?>" title="<?= $site_logo['alt']; ?>" class="display-table width-100-pc line-height-0">
+				<a  title="<?= $site_logo['alt']; ?>" class="display-table width-100-pc line-height-0">
 					<div class="display-table-cell middle">
 						<img src="<?= $site_logo['url']; ?>" alt="<?= $site_logo['alt']; ?>" class="display-block margin-center">
 					</div>
