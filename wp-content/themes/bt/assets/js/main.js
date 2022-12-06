@@ -20,4 +20,28 @@ import { ready } from "./utils";
         prevScrollpos = currentScrollPos;
     }
   });
+
+
+  window.addEventListener("scroll", function (e) {
+        var homePageHeight = jQuery('.site-light-gray-bg').height();
+        var pageHeight = jQuery('#page').height();
+
+        var difference = pageHeight - homePageHeight;
+        jQuery(window).on('scroll', function() {
+            var currentScroll = jQuery(window).scrollTop();
+            if (currentScroll > (homePageHeight - difference - 50 )) {
+              jQuery('.filters-wrapper').css({
+                position: 'absolute'
+            });
+        } else {
+            jQuery('.filters-wrapper').css({
+                position: 'fixed'
+            });
+            }
+        });
+       
+        },
+        { passive: true }
+    );
+
 })();

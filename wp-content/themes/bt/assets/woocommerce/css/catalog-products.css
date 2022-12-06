@@ -1,6 +1,5 @@
 .main-site-header #menu-item-241 > ul.sub-menu {
 	display: block;
-	z-index: 9;
 }
 
 main {
@@ -44,7 +43,7 @@ main {
 	bottom: 0;
 	left: 0;
 	z-index: 2;
-	border-top: 13px solid #164996;
+	border-top: 13px solid #437ed8;
 }
 
 .filters-wrapper .filters-wrapper-btn-wrapper {

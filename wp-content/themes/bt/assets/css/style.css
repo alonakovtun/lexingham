@@ -741,7 +741,7 @@ body.mobile-nav-open {
 .site-light-gray-bg {background-color: #efefef;}
 
 .site-blue {color: #164996;}
-.site-blue-bg {background-color: #164996;}
+.site-blue-bg {background-color: #437ed8;}
 .site-blue-link{color:#437ed7;}
 .site-light-blue {color: #437ED8;}
 .site-light-blue-bg {background-color: #437ED8;}
@@ -1242,7 +1242,7 @@ img.search-custom-icon {
 /*** site footer ***/
 
 .main-site-footer {
-	padding: 120px 0;
+	padding-bottom: 120px;
 }
 
 .main-site-footer a:hover {

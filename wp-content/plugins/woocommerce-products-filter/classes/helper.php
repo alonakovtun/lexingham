@@ -698,7 +698,8 @@ final class WOOF_HELPER {
         if (version_compare(WOOCOMMERCE_VERSION, '2.6', '>')) {
 
             $prices = self::get_filtered_price($additional_taxes);
-            $max = ceil($prices->max_price);
+            $maxPrice = $prices->max_price ?? 0;
+            $max = ceil($maxPrice);
         } else {
             self::set_layered_nav_product_ids();
             if (0 === sizeof(WC()->query->layered_nav_product_ids)) {
@@ -759,7 +760,8 @@ final class WOOF_HELPER {
 
         if (version_compare(WOOCOMMERCE_VERSION, '2.6', '>')) {
             $prices = self::get_filtered_price($additional_taxes);
-            $min = floor($prices->min_price);
+            $minPrice = $prices->min_price ?? 0;
+            $min = floor($minPrice);
         } else {
             self::set_layered_nav_product_ids();
             if (0 === sizeof(WC()->query->layered_nav_product_ids)) {

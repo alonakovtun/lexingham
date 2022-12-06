@@ -299,17 +299,7 @@ get_header();
 		<?php
 		endif; ?>
 
-		<div class="find-us-link">
-			<?php $find_us_link = get_field('find_us_link');
-			if ($find_us_link) :
-				$link_url = $find_us_link['url'];
-				$link_title = $find_us_link['title'];
-				$link_target = $find_us_link['target'] ? $find_us_link['target'] : '_self';
-
-			?>
-				<a target="<?php echo esc_attr($link_target); ?>" href="<?php echo esc_url($link_url); ?>"> <?php echo esc_html($link_title); ?></a>
-			<?php endif; ?>
-		</div>
+		
 
 	</div>
 

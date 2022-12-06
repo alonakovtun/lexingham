@@ -1,3 +1,26 @@
 @import "home";
 @import "footer";
 @import "header";
+@import "shop";
+
+#page{
+    padding-top: 109px;
+    overflow-x: hidden;
+}
+
+body {
+
+    &::-webkit-scrollbar-track {
+        // box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+        background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #437ed8;
+    }
+}

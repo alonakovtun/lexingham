@@ -34,6 +34,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		</div>
 
+		<div id="page">
+
+		
+
 		<header class="main-site-header clear-float position-relative">
 			<nav class="main-nav pull-left">
 				<?php
