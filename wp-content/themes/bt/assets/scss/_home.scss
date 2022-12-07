@@ -84,19 +84,12 @@
 
     a {
 
-        &:hover {
-            .all-category-text {
-                color: #fff;
-            }
-
-            .all-category-link {
-                color: #fff;
+        .all-category-link{
+            &:hover{
+                color: #e62930
             }
         }
 
-        &:before {
-            background-color: #e62930;
-        }
     }
 
 

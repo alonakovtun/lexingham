@@ -1,0 +1,65 @@
+.about-banner{
+    p{
+        line-height: 50px;
+        color: #231f20;
+    }
+}
+
+.about-page{
+    background-color: #f3f3f3;
+
+    .top-paragraph{
+        font-size: 30px;
+        line-height: 40px;
+        color: #040000;
+        font-weight: 300;
+        padding: 136px 0;
+    }
+
+    .left-content-wrapper{
+        .paragraph-wrapper{
+            p{
+                line-height: 40px;
+                color: #101110;
+            }
+        }
+    }
+
+    .right-content-wrapper{
+        .paragraph-wrapper{
+            p{
+                line-height: 28px;
+                color: #231f20;
+            }
+        }
+    }
+
+    .bottom-paragraphs-wrapper{
+        display: flex;
+        flex-direction: column;
+        .left-paragraph{
+            display: flex;
+            .paragraph{
+                p{
+                    line-height: 40px;
+                    color: #101110;
+                }
+            }
+        }
+
+        .right-block{
+            display: flex;
+            .right-paragraph{
+                .paragraph{
+                    p{
+                        line-height: 28px;
+                        color: #231f20;
+                    }
+                }
+            }
+        }
+
+        
+    }
+    
+}

@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
 		?>
 			<div class="col boxed line-height-15">
 				<div class="inner-col position-relative">
-					<div class="content content-no-margin-top-bottom"><?= $col_group['content']; ?></div>
+					<div class="content content-no-margin-top-bottom footer-text"><?= $col_group['content']; ?></div>
 					<?php if ($i == 1) : ?>
 						<?php if (!empty($col_group['social_links'])) : ?>
 

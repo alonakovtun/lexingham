@@ -100,7 +100,7 @@ jQuery( '.main-site-header .search-btn a, .main-site-header .close-search-btn, .
 
 /** site header - end **/
 
-AOS.init();
+AOS.init({once: true});
 
 /** site footer **/
 
