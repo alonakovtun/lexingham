@@ -893,6 +893,7 @@ body.mobile-nav-open {
 .main-site-header .site-logo {
 	width: 20%;
 	background: #fff;
+	padding: 0 80px;
 }
 
 .main-site-header .site-logo a {
@@ -906,7 +907,6 @@ body.mobile-nav-open {
 
 .main-site-header nav > ul > li {
 	float: left;
-	width: 30%;
 }
 
 #menu-item-1750,

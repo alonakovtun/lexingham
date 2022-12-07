@@ -1,4 +1,61 @@
-.filters-wrapper{
-    bottom: 0!important;
-    position:fixed;
+.filters-wrapper {
+    bottom: 0 !important;
+    position: fixed;
+
+    &.site-blue-bg {
+        background-color: #437fd7;
+    }
+
+    .filters-content {
+        padding: 14px 16px 17px;
+
+        .woof_radio_label span:nth-child(2) {
+            display: none;
+        }
+    }
+
+    .custom-woof-filters-reset {
+        width: auto;
+        float: right;
+        margin-right: 50px;
+        background: #203bc0;
+        height: 26px;
+        border-radius: 20px;
+        padding: 0 11px;
+        display: flex;
+        align-items: center;
+        transition: all 0.5s ease-in-out;
+
+
+        &:hover {
+            background: #fff;
+
+            a {
+                color: #437fd7
+            }
+        }
+
+
+    }
+
+    .woof_container_sound_color {
+        .woof_radio_label {
+
+            &.woof_radio_label_selected {
+                background: inherit;
+
+            }
+
+            border: none;
+            margin-left: 0;
+            margin-bottom: 0;
+            padding: 0;
+
+            &:hover {
+                background: inherit;
+            }
+        }
+
+
+    }
 }

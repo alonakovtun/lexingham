@@ -4,6 +4,12 @@
 @import "shop";
 @import "about";
 
+
+a{
+    &:hover{
+        cursor: pointer;
+    }
+}
 #page{
     padding-top: 109px;
     overflow-x: hidden;

@@ -5,7 +5,21 @@
     top: 0;
     left: 0;
     right: 0;
+    display: flex;
     background: #fff;
     z-index: 99;
     transition: all 0.5s ease-in-out;
+
+    .header-menu{
+        display: flex;
+        justify-content: space-between;
+
+        &#menu-main-site-menu-left{
+            padding-left: 80px;
+        }
+
+        &#menu-main-site-menu-right{
+            padding-right: 80px;
+        }
+    }
 }
