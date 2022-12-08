@@ -90,7 +90,7 @@ get_header();
 		?>
 
 			<style>
-				.cw-<?= $key; ?> a:before {
+				.cw-<?= $key; ?>a:before {
 					background-color: <?php the_field('color', $category); ?>;
 				}
 			</style>
@@ -272,34 +272,37 @@ get_header();
 
 		<?php if (have_rows('social_media_images')) : ?>
 			<div class="social_media_images">
-				<?php
-				while (have_rows('social_media_images')) : the_row(); ?>
-					<div class="social_media_image">
-						<?php
-						$slider_link = get_sub_field('link');
-						if ($slider_link) :
-							$link_url = $slider_link['url'];
-							$link_title = $slider_link['title'];
-							$link_target = $slider_link['target'] ? $slider_link['target'] : '_self';
+				<div class="swiper-wrapper">
+					<?php
+					while (have_rows('social_media_images')) : the_row(); ?>
+						<div class="swiper-slide social_media_image">
+							<?php
+							$slider_link = get_sub_field('link');
+							if ($slider_link) :
+								$link_url = $slider_link['url'];
+								$link_title = $slider_link['title'];
+								$link_target = $slider_link['target'] ? $slider_link['target'] : '_self';
 
-						?>
-							<a target="<?php echo esc_attr($link_target); ?>" href="<?php echo esc_url($link_url); ?>">
-								<img class="" src="<?php the_sub_field('image'); ?>" alt=""></a>
-						<?php endif; ?>
-
-
-					</div>
-
-				<?php
-				endwhile; ?>
+							?>
+								<a target="<?php echo esc_attr($link_target); ?>" href="<?php echo esc_url($link_url); ?>">
+									<img class="" src="<?php the_sub_field('image'); ?>" alt=""></a>
+							<?php endif; ?>
 
 
+						</div>
+
+					<?php
+					endwhile; ?>
+
+				</div>
+				<div class="swiper-button swiper-button-prev"></div>
+      			<div class="swiper-button swiper-button-next"></div>
 			</div>
 
 		<?php
 		endif; ?>
 
-		
+
 
 	</div>
 

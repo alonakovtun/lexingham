@@ -44,3 +44,36 @@ new Swiper(".home-top-slider", {
     clickable: true,
   },
 });
+
+var slidercontent  = new Swiper(".check-social-media .social_media_images", {
+  slidesPerView: 4,
+  spaceBetween: 0,
+  direction: 'horizontal',
+  loop: true,
+
+  // If we need pagination
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+},  
+
+  breakpoints: {
+    768: {
+      slidesPerView: 1,
+    },
+    1024: {
+      slidesPerView: 3,
+    },
+
+    1400: {
+      slidesPerView: 4,
+    },
+  
+  }
+});
+
+jQuery('.check-social-media .social_media_images .swiper-button').hover(function() {
+  jQuery( this ).trigger( "click" );
+});
+
+
