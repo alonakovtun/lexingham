@@ -14,7 +14,7 @@ get_header();
 
 	<div class="headlines-wrapper text-center">
 		<h1 class="no-margin font30px-to-em coresans-300 font400"><?php the_field( 'main-headline' ); ?></h1>
-		<h2 class="no-margin font30px-to-em coresans-300 font400 margin-top-5"><?php the_field( 'main-sub-headline' ); ?></h2>
+		<h2 class="no-margin font30px-to-em coresans-300 font400"><?php the_field( 'main-sub-headline' ); ?></h2>
 	</div>
 
 	<?php
@@ -46,13 +46,11 @@ get_header();
 			</a>
 			<div class="content-wrapper margin-center">
 				<div class="post-date font18px-to-em"><?php the_date(); ?></div>
-				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="post-title coresans-300 font30px-to-em padding-top-15 position-relative display-block transition-030"><?php the_title(); ?>
-					<?php $mp_plus_icon = get_field( 'mp-plus-icon', 'option' ); ?>
-					<img src="<?= $mp_plus_icon['url']; ?>" alt="<?= $mp_plus_icon['alt']; ?>">
+				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="post-title coresans-300 font30px-to-em padding-top-20 position-relative display-block transition-030"><?php the_title(); ?>
 				</a>
 				<div class="short-desc font18px-to-em line-height-15 padding-top-35 content-no-margin-top-bottom open-300"><?php the_excerpt(); ?></div>
-				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="icon-after-sd display-block">
-					<img src="<?= $mp_plus_icon['url']; ?>" alt="<?= $mp_plus_icon['alt']; ?>">
+				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="read-more">
+					<?= _e( 'Read', 'bt')?>
 				</a>
 			</div>
 		</div>

@@ -1,0 +1,38 @@
+.find-us-page{
+    padding-top: 98px;
+    padding-bottom: 155px;
+
+    .repeater-blocks{
+        padding-top: 97px;
+        display: flex;
+        justify-content: space-between;
+
+        
+
+        .find-content{
+            width: 33%;
+
+            display: flex;
+            flex-direction: column;
+            margin-left: 8%;
+
+            .title{
+                color: #437ed7;
+                margin-bottom: 40px;
+            }
+
+            .content{
+                margin-bottom: 25px;
+                p{
+                    margin-bottom: 40px;
+                }
+            }
+
+            br{
+                display: block;
+                margin-top: 10px;
+                content: "";
+            }
+        }
+    }
+}

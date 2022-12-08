@@ -6,6 +6,7 @@ import { ready } from "./utils";
 
     var prevScrollpos = window.pageYOffset;
     var heightHeader = jQuery(".main-site-header").css("height");
+
     window.onscroll = function () {
         var currentScrollPos = window.pageYOffset;
 
@@ -14,6 +15,8 @@ import { ready } from "./utils";
                 jQuery(".main-site-header").css("top", "0");
             } else {
                 jQuery(".main-site-header").css("top", "-" + heightHeader);
+                jQuery(".archive .main-site-header, .page-template-page-magazine .main-site-header").css("top", "-" + ( heightHeader + 62));
+
             }
         }
 

@@ -3,7 +3,9 @@
 }
 
 main {
-	padding-top: 60px;
+	padding-top: 55px;
+	padding-right: 65px;
+	padding-left: 65px;
 	position: relative;
 	min-height: -webkit-calc( 100vh - 169px );
 	min-height: expression( 100vh - 169px );
@@ -22,11 +24,12 @@ main {
 .woocommerce-page ul.products.columns-5 li.product {
 	width: 20%;
 	margin: 0;
+	margin-bottom: 90px;
 }
 
 .woocommerce ul.products li.product > a:first-child {
 	display: block;
-	padding: 55px 15px;
+	/* padding: 55px 15px; */
 }
 
 .woocommerce ul.products li.product a img {

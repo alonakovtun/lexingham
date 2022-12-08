@@ -9,7 +9,7 @@ main {
 }
 
 .contact-headline-paragraph {
-	padding: 189px 0 95px;
+	padding: 93px 0 100px;
 }
 
 .contact-form-wrapper form:after { 
@@ -33,7 +33,7 @@ main {
 }
 
 .contact-form-wrapper .inputs-col .margin-me {
-	margin-bottom: 44px;
+	margin-bottom: 27px;
 }
 
 .contact-form-wrapper input,
@@ -45,14 +45,14 @@ main {
 	box-sizing: border-box;
 	width: 100%;
 	border: none;
-	font-size: 1.125em;
-	height: 80px;
-	font-family: sans-serif;
+	font-size: 16px;
+	height: 56px;
+	border-radius: 27px;
 }
 
 .contact-form-wrapper textarea {
-	height: 204px;
-	padding-top: 30px;
+	height: 141px;
+	padding-top: 22px;
 }
 
 ::placeholder {
@@ -69,8 +69,9 @@ main {
 }
 
 .contact-form-wrapper .input-wrapper.submit input {
-	background-color: #164996;
+	background-color: #164a96;
 	cursor: pointer;
+	text-align: center;
 }
 
 .contact-form-wrapper .input-wrapper.submit input:hover {

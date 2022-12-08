@@ -10,7 +10,7 @@ function custom_woocommerce_before_shop_loop_item_title () {
 add_action( 'woocommerce_before_shop_loop_item_title', 'custom_woocommerce_before_shop_loop_item_title' );
 
 function new_loop_product_title () {
-	echo '<div class="text-center padding-top-35 coresans-300">' . get_the_title() . '</div>';
+	echo '<div class="text-center padding-top-30 coresans-300">' . get_the_title() . '</div>';
 	if ( !empty( $product_sub_title = get_field( 'sub-title' ) ) ) {
 		echo '<div class="text-center coresans-300">' . $product_sub_title . '</div>';
 	}

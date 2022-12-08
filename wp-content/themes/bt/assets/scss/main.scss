@@ -3,14 +3,24 @@
 @import "header";
 @import "shop";
 @import "about";
+@import "find-us";
 
 
-a{
-    &:hover{
+a {
+    &:hover {
         cursor: pointer;
     }
 }
-#page{
+
+textarea {
+    resize: none;
+}
+
+input {
+    all: unset;
+  }
+
+#page {
     padding-top: 109px;
     overflow-x: hidden;
 }
@@ -30,4 +40,8 @@ body {
     &::-webkit-scrollbar-thumb {
         background-color: #437ed8;
     }
+}
+
+.contact-form-wrapper{
+    margin-bottom: 150px;
 }

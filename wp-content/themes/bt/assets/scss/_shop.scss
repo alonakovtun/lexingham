@@ -59,3 +59,36 @@
 
     }
 }
+
+.post-type-archive-product{
+    .header-menu {
+        li.menu-item {
+            &:first-child {
+                .sub-menu {
+                    transform: translateY(1px);
+                }
+            }
+        }
+    }
+
+    main{
+        padding-top: 128px;
+    }
+}
+
+.page-template-page-magazine,
+.archive.category {
+    .header-menu {
+        li.menu-item {
+            &:nth-child(3) {
+                .sub-menu {
+                    transform: translateY(1px);
+                }
+            }
+        }
+    }
+
+    main{
+        padding-top: 128px;
+    }
+}
