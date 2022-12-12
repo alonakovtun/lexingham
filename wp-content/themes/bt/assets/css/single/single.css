@@ -2,13 +2,18 @@
 	color: #164996;
 }
 
+.top-post-image-wrapper{
+	height: calc(100vh - 110px);
+}
+
 .top-post-image-wrapper img {
 	width: 100%;
-	height: auto;
+	height: 100%;
+	object-fit: cover;
 }
 
 .headlines-wrapper {
-	padding: 200px 0 185px;
+	padding: 139px 0 202px;
 }
 
 .headlines-wrapper .category-link:hover {

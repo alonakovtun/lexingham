@@ -90,7 +90,7 @@ get_header();
 		?>
 
 			<style>
-				.cw-<?= $key; ?>a:before {
+				.cw-<?= $key; ?> a:before {
 					background-color: <?php the_field('color', $category); ?>;
 				}
 			</style>
