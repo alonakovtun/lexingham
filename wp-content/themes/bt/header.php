@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			gtag('config', 'UA-24222569-3');
 		</script>
+		<script src="/wp-content/themes/bt/assets/choises.js/assets/scripts/dist/choices.js"></script>
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<title><?php the_title(); ?></title>
@@ -51,8 +52,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</nav>
 			<div class="site-logo ">
 				<?php $site_logo = get_field( 'site-logo', 'option' ); ?>
-				<a  title="<?= $site_logo['alt']; ?>" class="display-table width-100-pc line-height-0">
-					<div class="display-table-cell middle">
+				<a href="<?php // CLANG != 'en' ? BPATH . '/' . CLANG : BPATH; ?>" title="<?= $site_logo['alt']; ?>" class="display-table width-100-pc line-height-0">					<div class="display-table-cell middle">
 						<img src="<?= $site_logo['url']; ?>" alt="<?= $site_logo['alt']; ?>" class="display-block margin-center">
 					</div>
 				</a>

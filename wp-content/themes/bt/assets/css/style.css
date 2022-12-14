@@ -941,6 +941,18 @@ width:50%;}
     justify-content: space-between;
 }
 
+.main-site-header nav li.wpml-ls-item ul.sub-menu {
+	justify-content: flex-end;
+}
+
+.main-site-header nav li.wpml-ls-item ul.sub-menu .wpml-ls-item {
+	width: 20%;
+}
+
+.main-site-header nav li.wpml-ls-item ul.sub-menu .wpml-ls-item a {
+	text-align: right;
+}
+
 .main-site-header nav li a:hover + .sub-menu,
 .main-site-header nav ul.sub-menu:hover {
 	transform: translateY(1px);
