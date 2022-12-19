@@ -120,8 +120,24 @@ get_header();
 	</div>
 
 	<div class="catalog-wrapper-mobile position-relative">
-		<div class="swiper-container full-height-percent">
-			<div class="swiper-wrapper">
+		<div class="full-height-percent">
+			<div class="">
+
+				<div class="mobile-category-wrapper boxed full-height-percent site-white custom-slide" >
+					<a href="<?= esc_url(get_category_link($category->cat_ID)); ?>" title="<?= esc_html($category->name); ?>" class="display-block full-height-percent position-relative">
+						<div class="category-image-wrapper display-table width-100-pc">
+							<div class="">
+								<div class="display-block margin-center transition-050 all-category-text"><?= get_field('all_category_text') ?></div>
+
+							</div>
+						</div>
+						<div class="category-desc-wrapper boxed width-100-pc absolute-bottom-center coresans-300 mobile-check">
+							<div class="headline text-center padding-bottom-20">
+								<?= __('Check All', 'bt') ?>
+							</div>
+						</div>
+					</a>
+				</div>
 
 				<?php
 
@@ -137,7 +153,7 @@ get_header();
 
 				?>
 
-					<div class="swiper-slide mobile-category-wrapper boxed full-height-percent site-white" style="background-color: <?php the_field('color', $category); ?>;">
+					<div class=" mobile-category-wrapper boxed full-height-percent site-white">
 						<a href="<?= esc_url(get_category_link($category->cat_ID)); ?>" title="<?= esc_html($category->name); ?>" class="display-block full-height-percent position-relative">
 							<div class="category-image-wrapper display-table width-100-pc">
 								<div class="display-table-cell middle">
@@ -151,11 +167,6 @@ get_header();
 							<div class="category-desc-wrapper boxed width-100-pc absolute-bottom-center coresans-300">
 								<div class="headline text-center padding-bottom-20">
 									<?= esc_html($category->name); ?>
-								</div>
-								<div class="desc text-center content-no-margin-top-bottom"><?php the_field('description', $category); ?></div>
-								<div class="plus-icon text-center padding-top-25 padding-bottom-25">
-									<?php $plus_icon = get_field('hp-plus-icon', 'option'); ?>
-									<img src="<?= $plus_icon['url']; ?>" alt="<?= $plus_icon['alt']; ?>">
 								</div>
 							</div>
 						</a>
@@ -296,7 +307,7 @@ get_header();
 
 				</div>
 				<div class="swiper-button swiper-button-prev"></div>
-      			<div class="swiper-button swiper-button-next"></div>
+				<div class="swiper-button swiper-button-next"></div>
 			</div>
 
 		<?php

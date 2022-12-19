@@ -52,7 +52,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</nav>
 			<div class="site-logo ">
 				<?php $site_logo = get_field( 'site-logo', 'option' ); ?>
-				<a href="<?php // CLANG != 'en' ? BPATH . '/' . CLANG : BPATH; ?>" title="<?= $site_logo['alt']; ?>" class="display-table width-100-pc line-height-0">					<div class="display-table-cell middle">
+				<a href="<?php echo home_url(); ?>" title="<?= $site_logo['alt']; ?>" class="display-table width-100-pc line-height-0">					<div class="display-table-cell middle">
 						<img src="<?= $site_logo['url']; ?>" alt="<?= $site_logo['alt']; ?>" class="display-block margin-center">
 					</div>
 				</a>
@@ -67,14 +67,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 				wp_nav_menu( $defaults );
 				?>
 				<?php
-				// $search_icon 	   			 = get_field( 'search-icon', 'option' );
-				// $search_icon_title 			 = get_field( 'search-icon-title', 'option' );
-				// $search_box_placeholder_text = get_field( 'search-box-placeholder-text', 'option' );
+				$search_icon 	   			 = get_field( 'search-icon', 'option' );
+				$search_icon_title 			 = get_field( 'search-icon-title', 'option' );
+				$search_box_placeholder_text = get_field( 'search-box-placeholder-text', 'option' );
+				$iconUrl = $search_icon['url'];
 				?>
-				<!-- <div class="search-btn width-10-pc pull-left">
-					<a href="javascript:void(0);" title="<?= $search_icon_title; ?>" class="display-table text-center full-height-percent width-100-pc">
+				<div class="search-btn width-10-pc pull-left">
+					<a href="javascript:void(0);" title="<?= $search_icon_title; ?>" class="display-table text-center full-height-percent search-link">
 						<div class="display-table-cell middle">
-							<img src="<?php // $search_icon['url']; ?>" alt="<?php // $search_icon_title; ?>" class="search-custom-icon">
+						<img src="<?php echo $iconUrl ?>" alt="Search icon" class="search-custom-icon">
 						</div>
 					</a>
 				</div>
@@ -82,13 +83,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<div class="width-80-pc margin-center full-height-percent clear-float">
 						<div class="display-table full-height-percent width-5-pc pull-left">
 							<div class="display-table-cell middle">
-								<img src="<?php //$search_icon['url']; ?>" alt="Search icon" class="search-custom-icon">
+							<img src="<?php echo $iconUrl ?>" alt="Search icon" class="search-custom-icon">
 							</div>
 						</div>
-						<form action="<?php //BPATH; ?>" method="get" class="display-table width-90-pc full-height-percent pull-left">
+						<form action="<?php BPATH; ?>" method="get" class="display-table width-90-pc full-height-percent pull-left">
 							<div class="display-table-cell middle">
-								<label for="sf-search" class="visually-hidden"><?php //$search_box_placeholder_text; ?></label>
-								<input type="text" name="s" id="sf-search" placeholder="<?php //$search_box_placeholder_text; ?>">
+								<label for="sf-search" class="visually-hidden"><?php $search_box_placeholder_text; ?></label>
+								<input type="text" name="s" id="sf-search" placeholder="<?php $search_box_placeholder_text; ?>">
 							</div>
 						</form>
 						<div class="full-height-percent width-5-pc pull-left">
@@ -102,18 +103,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 				<div class="search-quick-links boxed site-white-bg z-index-11 padding-top-30 padding-bottom-30">
 					<div class="width-80-pc margin-center">
-						<div class="headline padding-bottom-20"><?php //the_field( 'quick-links-headline', 'option' ); ?></div>
+						<div class="headline padding-bottom-20"><?php the_field( 'quick-links-headline', 'option' ); ?></div>
 						<div class="quick-links-nav">
 							<?php
-							// $defaults = [
-							// 	'container' => false,
-							// 	'theme_location' => 'search-quick-links',
-							// ];
-							// wp_nav_menu( $defaults );
+							$defaults = [
+								'container' => false,
+								'theme_location' => 'search-quick-links',
+							];
+							wp_nav_menu( $defaults );
 							?>
 						</div>
 					</div>
-				</div> -->
+				</div>
 			</nav>
 
 			<div class="mobile-nav-btn">
@@ -121,7 +122,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<img src="<?= BPATH . '/wp-content/uploads/2019/04/mobile-close-nav-icon.png'; ?>" class="absolute-center transition-030">
 			</div>
 			<div class="mobile-search-btn">
-				<img src="<?= $search_icon['url']; ?>" alt="<?= $search_icon_title; ?>" class="absolute-center search-custom-icon">
+				<img src="<?php $search_icon['url']; ?>" alt="<?php $search_icon_title; ?>" class="absolute-center search-custom-icon">
 			</div>
 			<div class="mobile-close-sub-menu">
 				<img src="<?= BPATH . '/wp-content/uploads/2019/04/mobile-nav-left-icon.png'; ?>" class="absolute-center">

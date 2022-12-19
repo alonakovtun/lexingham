@@ -18,16 +18,16 @@
 //   }
 // );
 
-if (screen.width <= 1000) {
-  new Swiper(".catalog-wrapper-mobile .swiper-container", {
-    speed: 300,
-    loop: true,
-    navigation: {
-      nextEl: ".catalog-wrapper-mobile .cwmn-btn-right",
-      prevEl: ".catalog-wrapper-mobile .cwmn-btn-left",
-    },
-  });
-}
+// if (screen.width <= 1000) {
+//   new Swiper(".catalog-wrapper-mobile .swiper-container", {
+//     speed: 300,
+//     loop: true,
+//     navigation: {
+//       nextEl: ".catalog-wrapper-mobile .cwmn-btn-right",
+//       prevEl: ".catalog-wrapper-mobile .cwmn-btn-left",
+//     },
+//   });
+// }
 
 new Swiper(".home-top-slider", {
   speed: 500,

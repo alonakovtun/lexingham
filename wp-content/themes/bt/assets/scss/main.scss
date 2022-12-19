@@ -23,6 +23,10 @@ textarea {
 #page {
     padding-top: 109px;
     overflow-x: hidden;
+
+    @include media-breakpoint-down(md) {
+        padding-top: 79px;
+    }
 }
 
 body {

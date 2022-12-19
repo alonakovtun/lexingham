@@ -65,8 +65,8 @@ main {
     right: 65px;
     left: auto;
     margin-left: auto;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
 }
 
 .filters-wrapper .filters-wrapper-btn :last-child {
@@ -163,7 +163,7 @@ main {
 	margin-left: 9px;
 	margin-bottom: 5px;
     border: 1px solid #fff;
-    border-radius: 20px;
+    border-radius: 13px;
     padding: 0 9px;
     height: 29px;
     align-items: center;
@@ -225,9 +225,7 @@ main {
 
 @media only all and ( max-width: 850px ) {
 	
-	.main-site-footer {
-		border-top: 57px solid #efefef;
-	}
+	
 	
 	.woocommerce ul.products.columns-5 li.product,
 	.woocommerce-page ul.products.columns-5 li.product,

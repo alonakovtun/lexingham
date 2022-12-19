@@ -956,6 +956,25 @@ width:50%;}
 .main-site-header nav li a:hover + .sub-menu,
 .main-site-header nav ul.sub-menu:hover {
 	transform: translateY(1px);
+	z-index: 9;
+}
+
+#menu-search-quick-links ul.sub-menu:hover{
+    transform: translateY(-60px);
+	z-index: -9;
+}
+
+#menu-search-quick-links li a{
+	background-color: #fff;
+}
+
+#menu-search-quick-links li a + .sub-menu{
+    border-top: 1px solid #fff;
+	padding-right: 10%;
+}
+
+#menu-search-quick-links li a:hover + .sub-menu{
+    border-color: #f3f3f3;
 }
 
 .main-site-header nav ul.sub-menu li {
@@ -981,6 +1000,15 @@ width:50%;}
 
 .main-site-header .search-btn {
 	height: 109px;
+    position: absolute;
+    right: 30px;
+    top: 6px;
+    width: auto;
+}
+
+.main-site-header .search-btn .search-link{
+	width: auto;
+    margin-left: auto;
 }
 
 img.search-custom-icon {
@@ -1066,6 +1094,9 @@ img.search-custom-icon {
 
 @media only all and ( max-width: 1000px ) {
 	
+	.page-404 section{
+		width: auto;
+	}
 	.main-site-header .search-form {
 		top: 109px;
 		z-index: 40;
@@ -1124,6 +1155,12 @@ img.search-custom-icon {
 		display: none;
 	}
 
+}
+
+@media only all and ( max-width: 1024px ) {
+	.main-site-header .site-logo {
+		padding: 0 50px;
+	}
 }
 
 @media only all and ( max-width: 1000px ) {
@@ -1310,16 +1347,24 @@ footer .logos-list li img {
 
 @media only all and ( max-width: 1000px ) {
 
+	footer .logos-list li:not(:last-child){
+		margin-bottom: 35px;
+	}
+
+	.main-site-footer{
+		padding-bottom: 47px;
+	}
+
 	.main-site-footer .container-1020 {
 		width: 260px;
 	}
 
 	.main-site-footer .col {
-		width: 100%; padding:0; margin-bottom:10px;
+		 padding:0; margin-bottom:10px;
 	}
 
 
-.main-site-footer .col:first-child {width: 40%;}
+.main-site-footer .col:first-child {width: 50%;}
 
 }
 

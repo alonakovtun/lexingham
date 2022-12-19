@@ -60,7 +60,8 @@
     }
 }
 
-.post-type-archive-product{
+.post-type-archive-product,
+.tax-product_cat{
     .header-menu {
         li.menu-item {
             &:first-child {
@@ -73,12 +74,15 @@
 
     main{
         padding-top: 128px;
+        @include media-breakpoint-down(sm) {
+            padding-top: 79px;
+        }
     }
 }
 
 .page-template-page-magazine,
 .archive.category {
-    .header-menu {
+    .header-menu#menu-main-site-menu-left {
         li.menu-item {
             &:nth-child(3) {
                 .sub-menu {
@@ -92,3 +96,26 @@
         padding-top: 128px;
     }
 }
+
+.woocommerce ul.products li.product a{
+	// overflow: hidden;
+
+    img{
+        transform: scale(1);
+        transition: all 0.5s ease-in-out;
+    }
+
+    &:hover{
+        img{
+            transform: scale(1.1);
+        }
+    }
+}
+
+.filters-wrapper .filters-wrapper-btn {
+    @include media-breakpoint-down(sm) {
+        right: 27px;
+    }
+}
+
+

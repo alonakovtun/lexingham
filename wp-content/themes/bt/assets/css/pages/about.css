@@ -86,7 +86,7 @@
 @media only all and ( max-width: 1000px ) {
 
 	.about-banner {
-		margin-top: 79px;
+		/* margin-top: 79px; */
 		height: -webkit-calc( 100vh - 79px );
 		height: expression( 100vh - 79px );
 		height: -moz-calc( 100vh - 79px );

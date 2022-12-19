@@ -13,7 +13,7 @@ $current_category = get_queried_object();
 <main class="site-light-gray-bg">
 	
 	<div class="headlines-wrapper text-center">
-		<span class="coresans-300">Category</span>
+		<span class="coresans-300"><?php _e('Category', 'bt')?></span>
 		<h1 class="no-margin font30px-to-em coresans-300 font400 margin-top-5"><?= $current_category->name; ?></h1>
 		<?php if ( !empty( $current_category->category_description ) ) : ?>
 		<h2 class="no-margin font30px-to-em coresans-300 font400 margin-top-5"><?= $current_category->category_description; ?></h2>
@@ -36,27 +36,30 @@ $current_category = get_queried_object();
 
 	if ( $posts->have_posts() ) : ?>
 
-	<div class="posts-wrapper clear-float display-flex-wrap">
+<div class="posts-wrapper clear-float display-flex-wrap">
 
-		<?php while ( $posts->have_posts() ) : $posts->the_post();
+<?php while ( $posts->have_posts() ) : $posts->the_post();
 
-		?>
-		<div class="post-wrapper boxed width-50-pc pull-left">
-			<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
-				<div class="image-wrapper site-bg" style="background-image: url( '<?= get_the_post_thumbnail_url(); ?>' );"></div>
-			</a>
-			<div class="content-wrapper margin-center">
-				<div class="post-date font18px-to-em"><?php the_date(); ?></div>
-				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="post-title coresans-300 font30px-to-em padding-top-15 position-relative display-block transition-030"><?php the_title(); ?>
-					<?php $mp_plus_icon = get_field( 'mp-plus-icon', 'option' ); ?>
-					<img src="<?= $mp_plus_icon['url']; ?>" alt="<?= $mp_plus_icon['alt']; ?>">
-				</a>
-				<div class="short-desc font18px-to-em line-height-15 padding-top-35 content-no-margin-top-bottom"><?php the_excerpt(); ?></div>
-			</div>
-		</div>
-		<?php endwhile; ?>
-
+?>
+<div class="post-wrapper boxed width-50-pc pull-left">
+	<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
+	<div class="image-wrapper site-bg" style="background-image: url( '<?= get_the_post_thumbnail_url(); ?>' );">
+		<img src="<?= get_the_post_thumbnail_url(); ?>" alt="<?php bt_the_post_thumbnail_alt( get_the_ID() ); ?>">
 	</div>
+	</a>
+	<div class="content-wrapper margin-center">
+		<div class="post-date font18px-to-em"><?php the_date(); ?></div>
+		<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="post-title coresans-300 font30px-to-em padding-top-20 position-relative display-block transition-030"><?php the_title(); ?>
+		</a>
+		<div class="short-desc font18px-to-em line-height-15 padding-top-35 content-no-margin-top-bottom open-300"><?php the_excerpt(); ?></div>
+		<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>" class="read-more">
+			<?= _e( 'Read', 'bt')?>
+		</a>
+	</div>
+</div>
+<?php endwhile; ?>
+
+</div>
 
 	<div class="pagination-wrap padding-top-60">
 		<?php

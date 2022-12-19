@@ -56,16 +56,16 @@ import { ready } from "./utils";
 			}
 
 			if(!jQuery('#2pin').is(":checked") && !jQuery('#3pin').is(":checked")) {
-				jQuery('.checkbox-item-pins .item-tooltip').addClass('active');
+				jQuery('.checkbox-items .item-tooltip').addClass('active');
 				setTimeout(function() {
-					jQuery('.checkbox-item-pins .item-tooltip').removeClass('active');
+					jQuery('.checkbox-items .item-tooltip').removeClass('active');
 				}, 5000);
 			}
 
 			if(!jQuery('#need_usb1').is(":checked") && !jQuery('#need_usb2').is(":checked")) {
-				jQuery('.checkbox-item-usb .item-tooltip').addClass('active');
+				jQuery('.checkbox-items .item-tooltip').addClass('active');
 				setTimeout(function() {
-					jQuery('.checkbox-item-usb .item-tooltip').removeClass('active');
+					jQuery('.checkbox-items .item-tooltip').removeClass('active');
 				}, 5000);
 			}
 

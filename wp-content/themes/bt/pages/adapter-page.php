@@ -86,7 +86,7 @@ if (!defined('ABSPATH')) {
                                                                         <?php else : ?>
                                                                             <input class="two-pin" type="radio" id="2pin" name="pins" value="2">
                                                                         <?php endif; ?>
-                                                                        <label for="2pin"><?php _e('2 pin plug', 'bt')?></label>
+                                                                        <label for="2pin"><?php _e('2 pin plug', 'bt') ?></label>
                                                                     </div>
                                                                     <div class="checkbox-item checkbox-item-pins">
                                                                         <?php if (!empty($_GET['pins']) && $_GET['pins'] == 3) : ?>
@@ -94,8 +94,12 @@ if (!defined('ABSPATH')) {
                                                                         <?php else : ?>
                                                                             <input class="three-pin" type="radio" id="3pin" name="pins" value="3">
                                                                         <?php endif; ?>
-                                                                        <label for="3pin"><?php _e('3 pin plug', 'bt')?></label>
+                                                                        <label for="3pin"><?php _e('3 pin plug', 'bt') ?></label>
 
+                                                                    </div>
+                                                                    
+                                                                    <div class="item-tooltip">
+                                                                        <?php _e('Please choose between <br>2 pin and 3 pin plugs', 'bt') ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -109,7 +113,7 @@ if (!defined('ABSPATH')) {
                                                                         <?php else : ?>
                                                                             <input type="radio" id="need_usb1" name="need_usb" value="true">
                                                                         <?php endif; ?>
-                                                                        <label for="need_usb1"><?php _e('Yes', 'bt')?></label>
+                                                                        <label for="need_usb1"><?php _e('Yes', 'bt') ?></label>
                                                                     </div>
                                                                     <div class="checkbox-item checkbox-item-usb">
                                                                         <?php if (!empty($_GET['need_usb']) && $_GET['need_usb'] == 'false') : ?>
@@ -117,7 +121,12 @@ if (!defined('ABSPATH')) {
                                                                         <?php else : ?>
                                                                             <input type="radio" id="need_usb2" name="need_usb" value="false">
                                                                         <?php endif; ?>
-                                                                        <label for="need_usb2"><?php _e('No', 'bt')?></label>
+                                                                        <label for="need_usb2"><?php _e('No', 'bt') ?></label>
+                                                                    </div>
+
+                                                                    <div class="item-tooltip">
+
+                                                                        <?php _e('Please choose between<br>USB options', 'bt') ?>
                                                                     </div>
                                                                 </div>
 
@@ -160,6 +169,8 @@ if (!defined('ABSPATH')) {
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
+
+
                                                         </div>
 
                                                         <div class="submit-btn-wrap">
@@ -237,7 +248,7 @@ if (!defined('ABSPATH')) {
                     $tax_query[] = array(
                         'taxonomy' => 'product_cat',
                         'field'    => 'slug',
-                        'terms'    => 'travel-adaptors'
+                        'terms'    => 'connect'
                     );
                     if (isset($_GET['need_usb'])) {
                         if ($_GET['need_usb'] == 'true') {
@@ -309,8 +320,6 @@ if (!defined('ABSPATH')) {
                             'meta_query' => $meta_query,
                             'post__not_in' => $excluded_product_ids
                         );
-
-                        
                     } else {
                         $params = array(
                             'posts_per_page' => -1,
@@ -318,21 +327,15 @@ if (!defined('ABSPATH')) {
                             'tax_query' => $tax_query,
                             'meta_query' => $meta_query
                         );
-
-                        
-    
                     }
 
 
                     $wc_query = new WP_Query($params);
-                    
+
                     $found_products = $wc_query->found_posts;
-                   
+
 
                     ?>
-                   <pre>
-                    <?php  var_dump($found_products); ?>
-                   </pre>
                     <section id="scroll-to" class="products-sort-bar">
                         <div class="respons-wraper">
                             <div class="container-fluid">
@@ -398,8 +401,8 @@ if (!defined('ABSPATH')) {
                                     <div class="col-md-12">
                                         <div class="count-wrap clearfix">
 
-                                        <?php _e('Are you staycationing?', 'bt')?>
-                                            
+                                            <?php _e('Are you staycationing?', 'bt') ?>
+
                                         </div>
                                     </div>
                                 </div>
