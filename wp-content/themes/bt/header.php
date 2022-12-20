@@ -25,6 +25,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 		<?php wp_head(); ?>
+
+		<script>
+			jQuery('onload', function() {
+				setTimeout(function() {
+					jQuery('body').css('opacity', '1');
+					jQuery('body').css('visibility', 'visible')
+
+			}, 500);
+			})
+		</script>
 	</head>
 	<body <?php body_class(); ?>>
 
